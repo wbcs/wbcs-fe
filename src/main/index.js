@@ -34,7 +34,7 @@ const setIPCEventHandlers = () => {
     setTimeout(() => {
       mainWindow.close()
       global.isAllowLogin = true
-      openHomeWindow()
+      createWindow()
     }, 100)
   })
   ipcMain.on('logout', () => {
@@ -56,7 +56,7 @@ const setAppEventHandlers = () => {
     global.socket.emit('is-allow-login', uid, data => {
       if (data.isAllowLogin) {
         global.isAllowLogin = true
-        openHomeWindow()
+        createWindow()
       } else {
         openLoginWindow()
       }
@@ -79,12 +79,6 @@ const openLoginWindow = () => {
     height: 400
   })
 }
-const openHomeWindow = () => {
-  createWindow({
-    width: 885,
-    height: 550
-  })
-}
 const createWindow = (configObj = {}) => {
   const winURL =
     process.env.NODE_ENV === 'development'
@@ -92,9 +86,10 @@ const createWindow = (configObj = {}) => {
       : `file://${__dirname}/index.html`
 
   mainWindow = new BrowserWindow(Object.assign({
-    width: 280,
-    height: 400,
-    // useContentSize: true,
+    width: 900,
+    height: 600,
+    minWidth: 850,
+    minHeight: 550,
     resizable: true,
     titleBarStyle: 'hidden'
   }, configObj))
