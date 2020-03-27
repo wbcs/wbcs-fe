@@ -97,7 +97,7 @@ const createWindow = (configObj = {}) => {
     useContentSize: true,
     maximizable: false,
     fullscreen: false,
-    resizable: false,
+    resizable: true,
     titleBarStyle: 'hidden'
   }, configObj))
 

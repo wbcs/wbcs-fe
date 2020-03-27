@@ -54,7 +54,6 @@ export default {
   -webkit-user-select: none;
   position: relative;
   width: $menu-bar-width;
-  height: $app-height;
   background: $menu-bar-bg;
 
   .avatar {

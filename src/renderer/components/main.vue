@@ -52,26 +52,20 @@ export default {
 <style lang="stylus">
 #app {
   display: flex;
-  width: $app-width;
-  height: $app-height;
+  width: 100vw;
+  height: 100vh;
   background: $app-bg;
+  overflow: hidden;
 }
-
 #sidebar {
   display: flex;
-  width: $sidebar-width;
-  height: $app-height;
+  border-right: 1px solid #d9dbde;
 }
-
 #menu-content {
-  width: $search-bar-width;
-  height: $app-height - $search-bar-height;
-  background: $menu-content-bg;
+  // height: $app-height - $search-bar-height;
   overflow-y: auto;
 }
-
 #content {
-  width: $content-width;
-  height: $app-height;
+  flex: 1;
 }
 </style>
