@@ -1,12 +1,14 @@
 <template>
   <div id="search-bar">
     <div class="content">
-      <input type="text"
-             v-model="keyword"
-             :placeholder="placeholder"
-             @focus="removePlaceholder"
-             @blur="setPlaceholder"
-             @keydown.enter="searchFunc">
+      <input
+        type="text"
+        v-model="keyword"
+        :placeholder="placeholder"
+        @focus="handleFocus"
+        @blur="handleBlur"
+        @keydown.enter="handleEnter"
+      />
     </div>
   </div>
 </template>
@@ -18,64 +20,65 @@ export default {
     return {
       keyword: '',
       placeholder: ''
-    };
+    }
   },
   created() {
-    this.setPlaceholder();
+    this.handleBlur()
   },
   methods: {
-    removePlaceholder() {
-      this.placeholder = '';
+    handleFocus() {
+      this.placeholder = ''
     },
-    setPlaceholder() {
-      this.placeholder = this.$lang.sidebar.search;
+    handleBlur() {
+      this.placeholder = this.$lang.sidebar.search
     },
-    searchFunc() {
-      console.log('searching...');
+    handleEnter() {
+      console.log('searching...')
     }
   }
-};
+}
 </script>
 
-<style lang="stylus">
+<style scoped lang="less">
 #search-bar {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: $search-bar-width;
-  height: $search-bar-height;
-  background: $search-bar-bg;
+  padding: 0.7em 0;
   -webkit-app-region: drag;
+}
+.content,
+input {
+  transition: all 0.3s;
+}
 
-  .content {
-    width: 190px;
-    height: 26px;
-    background: #485057;
-    border-radius: 100px;
-    -webkit-app-region: no-drag;
+.content {
+  width: 90%;
+  height: 100%;
+  border-radius: 100px;
+  border: 1px solid #dee0e3;
+  -webkit-app-region: no-drag;
+  &:hover {
+    border: 1px solid #3e74f6;
+    input::placeholder {
+      color: #3e74f6;
+    }
   }
+}
 
-  input {
-    display: block;
-    width: 100%;
-    height: 26px;
-    padding: 0 15px;
-    border: none;
-    background: none;
-    font-size: 12px;
-    color: #aaa;
-    text-align: center;
-
-    &:focus {
-      outline: none;
-    }
-
-    &::placeholder {
-      color: #797979;
-      letter-spacing: 0.1px;
-      font-family: 'icomoon';
-      font-weight: 400;
-    }
+input {
+  display: block;
+  padding-left: 15px;
+  width: 100%;
+  height: 30px;
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 12px;
+  color: #666;
+  &::placeholder {
+    color: #797979;
+    font-family: 'icomoon';
   }
 }
 </style>
