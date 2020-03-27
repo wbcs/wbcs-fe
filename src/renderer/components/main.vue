@@ -2,7 +2,7 @@
   <div id="app">
     <div id="sidebar">
       <menu-bar />
-      <div>
+      <div class="user-list">
         <search-bar />
         <div id="menu-content">
           <keep-alive>
@@ -49,7 +49,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style scoped lang="stylus">
 #app {
   display: flex;
   width: 100vw;
@@ -60,6 +60,11 @@ export default {
 #sidebar {
   display: flex;
   border-right: 1px solid #d9dbde;
+}
+.user-list {
+  width: 250px;
+  min-width: 200px;
+  max-width: 300px;
 }
 #menu-content {
   // height: $app-height - $search-bar-height;

@@ -108,7 +108,7 @@ export default {
   .delete-chat {
     display: block;
     position: absolute;
-    right: 10px;
+    right: 5px;
     z-index: 10;
     width: 20px;
     text-align: center;
@@ -127,7 +127,7 @@ export default {
 .detail {
   width: 145px;
   font-size: 12px;
-
+  width: 70%;
   .group-dissolve {
     color: #e06c72;
   }

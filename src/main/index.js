@@ -94,9 +94,7 @@ const createWindow = (configObj = {}) => {
   mainWindow = new BrowserWindow(Object.assign({
     width: 280,
     height: 400,
-    useContentSize: true,
-    maximizable: false,
-    fullscreen: false,
+    // useContentSize: true,
     resizable: true,
     titleBarStyle: 'hidden'
   }, configObj))
