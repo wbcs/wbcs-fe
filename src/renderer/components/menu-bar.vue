@@ -1,43 +1,39 @@
 <template>
-  <div id="menu-bar">
+  <div class="menu-bar">
     <div class="avatar">
       <img :src="userInfo.avatar" />
     </div>
-
     <div class="menu">
       <router-link
         tag="span"
         to="/app/chats"
         exact-active-class="active"
         class="icon-commenting"
-      ></router-link>
+      />
     </div>
-
     <div class="menu">
       <router-link
         tag="span"
         to="/app/contacts"
         exact-active-class="active"
         class="icon-address-book"
-      ></router-link>
+      />
     </div>
-
     <div class="menu">
       <router-link
         tag="span"
         to="/app/functions"
         exact-active-class="active"
         class="icon-th-large2"
-      ></router-link>
+      />
     </div>
-
     <div class="menu last-menu">
       <router-link
         tag="span"
         to="/app/settings"
         exact-active-class="active"
         class="icon-cog"
-      ></router-link>
+      />
     </div>
   </div>
 </template>
@@ -56,65 +52,60 @@ export default {
 }
 </script>
 
-<style lang="stylus">
-#menu-bar {
-  -webkit-app-region: drag;
-  -webkit-user-select: none;
+<style scoped lang="less">
+.menu-bar {
   position: relative;
   width: 65px;
   background: linear-gradient(#55607d, #2b3244);
+  -webkit-app-region: drag;
+}
+.avatar {
+  width: 40px;
+  height: 40px;
+  margin: 30px auto 20px;
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
 
-  .avatar {
-    width: 40px;
-    height: 40px;
-    margin: 30px auto 20px;
-
-    img {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-
-      &:hover {
-        filter: brightness(1.2);
-      }
+    &:hover {
+      filter: brightness(1.2);
     }
   }
+}
 
-  .menu {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 20px;
-    color: #9298a8;
-    cursor: pointer;
+.menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  color: #9298a8;
+  cursor: pointer;
 
-    span {
-      transition: all 0.3s;
-      height: 100%;
-      width: 100%;
-      padding: 0.6em 0;
-      text-align center
-    }
-
-    :hover {
-      color: #fff;
-    }
-    .active {
-      background: #4277f6;
-    }
-
-    .active, .router-link-active {
-      color: #fff;
-    }
+  span {
+    transition: all 0.3s;
+    height: 100%;
+    width: 100%;
+    padding: 0.6em 0;
+    text-align: center;
   }
-
-  .last-menu {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 2;
-    margin-bottom: 20px;
+  :hover {
+    color: #fff;
   }
+  .active {
+    background: #4277f6;
+  }
+  .active,
+  .router-link-active {
+    color: #fff;
+  }
+}
+.last-menu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  margin-bottom: 20px;
 }
 </style>
