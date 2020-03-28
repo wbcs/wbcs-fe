@@ -1,8 +1,11 @@
 <template>
-  <div class="function-item"
-       :class="{ active : isActive }"
-       @click="activeFunc">
-    <span :class="`icon icon-${config.icon}`"></span>{{ config.title }}
+  <div
+    class="function-item"
+    :class="{ active: isActive }"
+    @click="activeFunc"
+  >
+    <span :class="`icon icon-${config.icon}`"></span>
+    <span>{{ config.title }}</span>
   </div>
 </template>
 
@@ -23,43 +26,51 @@ export default {
     }
   },
   data() {
-    return {};
+    return {}
   },
   methods: {
     activeFunc() {
-      this.$emit('active-item', this.config.id);
-      this.$store.commit('CURRENT_FUNCTION', this.config.flag);
+      this.$emit('active-item', this.config.id)
+      this.$store.commit('CURRENT_FUNCTION', this.config.flag)
     }
   }
-};
+}
 </script>
 
-<style lang="stylus">
+<style scoped lang="less">
 .function-item {
+  position: relative;
   display: flex;
   align-items: center;
-  width: $search-bar-width;
-  height: 34px;
+  height: 50px;
   font-size: 12px;
-  color: #ABABAB;
-  letter-spacing: 0.09px;
   cursor: pointer;
-  transition: 0.15s;
-
-  &:hover {
-    background: #424951;
-  }
-
-  &.active {
-    background: #525C68;
-  }
+  transition: 0.3s;
+  color: #666;
 
   .icon {
     display: block;
     width: 12px;
     text-align: center;
     margin: 7px 10px 7px 16px;
-    color: #BBBBBB;
   }
+}
+.function-item.active {
+  background: #eff0f1;
+  &::before {
+    content: '';
+    top: 0;
+    left: 0;
+    position: absolute;
+    height: 100%;
+    width: 3px;
+    background: #3e74f6;
+  }
+  .icon {
+    color: #3e74f6;
+  }
+}
+.function-item:hover {
+  background: #dee0e3;
 }
 </style>
