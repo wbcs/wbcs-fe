@@ -93,7 +93,7 @@ const createWindow = (configObj = {}) => {
     titleBarStyle: 'hidden',
     webPreferences: {
       nodeIntegration: true,
-      webSecurity: false
+      webSecurity: true
     },
     ...configObj
   })

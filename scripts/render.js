@@ -1,19 +1,17 @@
-process.env.BABEL_ENV = 'renderer';
-const path = require('path');
-const webpack = require('webpack');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path')
+const webpack = require('webpack')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const nodeExternals = require('webpack-node-externals')
 
-let rendererConfig = {
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
+
+const config = {
   mode: 'development',
   entry: path.join(__dirname, '../src/renderer/main.js'),
-  externals: [
-    nodeExternals()
-  ],
+  externals: [nodeExternals()],
   module: {
     rules: [
       {
@@ -36,7 +34,7 @@ let rendererConfig = {
       },
       {
         test: /\.js$/,
-        use: 'babel-loader',
+        use: 'babel-loader'
         // exclude: /node_modules/
       },
       {
@@ -50,12 +48,12 @@ let rendererConfig = {
           options: {
             extractCSS: process.env.NODE_ENV === 'production',
             loaders: {
-              less: 'vue-style-loader!css-loader!less-loader',
+              less: 'vue-style-loader!css-loader!less-loader'
             }
-          },
-        },
+          }
+        }
       },
-      
+
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         use: {
@@ -106,59 +104,38 @@ let rendererConfig = {
           ? path.resolve(__dirname, '../node_modules')
           : false
     }),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    new webpack.DefinePlugin({
+      __static: `"${path
+        .join(__dirname, '../static')
+        .replace(/\\/g, '\\\\')}"`
+    }),
+    new FriendlyErrorsWebpackPlugin({
+      compilationSuccessInfo: {
+        messages: ['You application is running.'],
+        notes: [
+          'Some additional notes to be displayed upon successful compilation'
+        ]
+      },
+      clearConsole: true
+    })
   ],
   output: {
     filename: '[name].js',
-    // libraryTarget: 'umd',
     path: path.join(__dirname, '../dist/electron')
   },
   resolve: {
     alias: {
-      '@': path.join(__dirname, '../src/renderer'),
+      '@': path.join(__dirname, '../src/renderer')
     },
     extensions: ['.js', '.vue', '.json', '.css', '.node']
   },
   target: 'electron-renderer',
   devServer: {
-    port: 9080
-  },
-};
-
-
-
-
-if (process.env.NODE_ENV !== 'production') {
-  rendererConfig.plugins.push(
-    new webpack.DefinePlugin({
-      __static: `"${path.join(__dirname, '../static').replace(/\\/g, '\\\\')}"`
-    })
-  );
-} else {
-  rendererConfig.devtool = '';
-
-  rendererConfig.plugins.push(
-    // new BabiliWebpackPlugin(),
-    new CopyWebpackPlugin([
-      {
-        from: path.join(__dirname, '../static'),
-        to: path.join(__dirname, '../dist/electron/static'),
-        ignore: ['.*']
-      },
-      {
-        from: path.join(__dirname, '../src/renderer/config/lang/langs'),
-        to: path.join(__dirname, '../dist/electron/langs')
-      }
-    ]),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': '"production"'
-    }),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true
-    })
-  );
+    port: 9080,
+    quiet: true
+  }
 }
 
-module.exports = rendererConfig;
+module.exports = config
+
