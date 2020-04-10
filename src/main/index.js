@@ -7,8 +7,8 @@ const loadGlobalVariable = () => {
   const socketClient = require('socket.io-client')
 
   const store = new Store({
-    name: 'hola.config',
-    encryptionKey: 'hola'
+    name: 'wbcs.config',
+    encryptionKey: 'wbcs'
   })
   const socket = socketClient('http://localhost:3000', {
     reconnection: true
@@ -31,18 +31,14 @@ const setIPCEventHandlers = () => {
     dialog.showErrorBox(msg.title, msg.content)
   })
   ipcMain.on('login', () => {
-    setTimeout(() => {
-      mainWindow.close()
-      global.isAllowLogin = true
-      createWindow()
-    }, 100)
+    mainWindow && mainWindow.close()
+    global.isAllowLogin = true
+    createWindow()
   })
   ipcMain.on('logout', () => {
-    setTimeout(() => {
-      mainWindow.close()
-      global.isAllowLogin = false
-      openLoginWindow()
-    }, 100)
+    mainWindow && mainWindow.close()
+    global.isAllowLogin = false
+    openLoginWindow()
   })
 }
 const setAppEventHandlers = () => {
@@ -76,34 +72,35 @@ const setAppEventHandlers = () => {
 const openLoginWindow = () => {
   createWindow({
     width: 280,
-    height: 400
+    height: 400,
+    resizable: false
   })
 }
 const createWindow = (configObj = {}) => {
-  const winURL =
-    process.env.NODE_ENV === 'development'
-      ? 'http://localhost:9080'
-      : `file://${__dirname}/index.html`
+  // const winURL =
+  //   process.env.NODE_ENV === 'development'
+  //     ? 'http://localhost:9080'
+  //     : `file://${__dirname}/index.html`
 
-  mainWindow = new BrowserWindow(Object.assign({
+  const winURL = 'http://localhost:9080'
+
+  mainWindow = new BrowserWindow({
     width: 900,
     height: 600,
     minWidth: 850,
     minHeight: 550,
     resizable: true,
-    titleBarStyle: 'hidden'
-  }, configObj))
+    titleBarStyle: 'hidden',
+    webPreferences: {
+      nodeIntegration: true,
+      webSecurity: false
+    },
+    ...configObj
+  })
 
   mainWindow.on('closed', () => {
     mainWindow = null
   })
-  // disable page zoom
-  mainWindow.webContents.on('did-finish-load', function() {
-    this.setZoomFactor(1)
-    this.setVisualZoomLevelLimits(1, 1)
-    this.setLayoutZoomLevelLimits(0, 0)
-  })
-
   mainWindow.loadURL(winURL)
   mainWindow.show()
 }

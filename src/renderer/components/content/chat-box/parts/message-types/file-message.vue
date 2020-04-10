@@ -13,12 +13,11 @@ export default {
       type: Object
     }
   }
-};
+}
 </script>
 
-<style lang="stylus">
+<style lang="less">
 .file-message {
   padding: 0 2px;
 }
 </style>
-

@@ -1,9 +1,7 @@
 <template>
   <div class="image-message">
-    <img :src="src"
-         :class="{ 'image-unload': !isImageLoad }">
-    <div v-if="!isImageLoad"
-         class="image-loading">
+    <img :src="src" :class="{ 'image-unload': !isImageLoad }" />
+    <div v-if="!isImageLoad" class="image-loading">
       <div class="ball-triangle-path">
         <div></div>
         <div></div>
@@ -26,31 +24,31 @@ export default {
     return {
       isImageLoad: false,
       src: ''
-    };
+    }
   },
   created() {
-    this.loadImage();
+    this.loadImage()
   },
   methods: {
     loadImage() {
-      const img = new Image();
-      const src = this.message.content.url;
+      const img = new Image()
+      const src = this.message.content.url
 
       img.onload = () => {
         // TODO 本地测试，为了展示加载中效果
         setTimeout(() => {
-          this.isImageLoad = true;
-          this.src = src;
-        }, 1200);
-      };
+          this.isImageLoad = true
+          this.src = src
+        }, 1200)
+      }
 
-      img.src = src;
+      img.src = src
     }
   }
-};
+}
 </script>
 
-<style lang="stylus">
+<style lang="less">
 .image-message {
   position: relative;
   cursor: default;
@@ -158,7 +156,7 @@ export default {
   width: 10px;
   height: 10px;
   border-radius: 100%;
-  border: 1px solid #FFF;
+  border: 1px solid #fff;
 }
 
 .ball-triangle-path > div:nth-of-type(1) {
@@ -174,4 +172,3 @@ export default {
   left: 50px;
 }
 </style>
-

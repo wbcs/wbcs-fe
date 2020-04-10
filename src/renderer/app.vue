@@ -4,6 +4,6 @@
 
 <script>
 export default {
-  name: 'app_client'
-};
+  name: 'app'
+}
 </script>

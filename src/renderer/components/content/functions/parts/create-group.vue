@@ -1,25 +1,29 @@
 <template>
   <div class="create-group">
-    <div class="head">{{ contentTitle }}</div>
+    <header>{{ contentTitle }}</header>
 
     <div class="form">
       <div class="form-item form-item-avatar">
         <div class="img">
-          <label for="avatar-input"><img :src="avatar"></label>
+          <label for="avatar-input"><img :src="avatar"/></label>
         </div>
         <div class="input">
-          <input id="avatar-input"
-                 ref="avatarInput"
-                 type="file"
-                 accept="image/*">
+          <input
+            id="avatar-input"
+            ref="avatarInput"
+            type="file"
+            accept="image/*"
+          />
         </div>
       </div>
 
       <div class="form-item form-item-input">
-        <input type="text"
-               v-model="nickname"
-               placeholder="请输入群组名称"
-               required>
+        <input
+          type="text"
+          v-model="nickname"
+          placeholder="请输入群组名称"
+          required
+        />
       </div>
 
       <div class="form-item form-item-button">
@@ -35,19 +39,20 @@ export default {
   data() {
     return {
       nickname: '',
-      avatar: 'http://localhost:3000/upload/default/default-group-avatar.png'
-    };
+      avatar:
+        'http://localhost:3000/upload/default/default-group-avatar.png'
+    }
   },
   computed: {
     contentTitle() {
-      return this.$lang.functions.create_group.main_title;
+      return this.$lang.functions.create_group.main_title
     }
   },
   methods: {
     createGroup() {
       if (!this.nickname) {
-        alert('群组名称不得为空');
-        return;
+        alert('群组名称不得为空')
+        return
       }
       this.$socket.emit(
         'create-group',
@@ -65,25 +70,25 @@ export default {
           }
         },
         data => {
-          alert(data.message);
+          alert(data.message)
         }
-      );
+      )
     }
   }
-};
+}
 </script>
 
-<style lang="stylus">
+<style scoped lang="less">
 .create-group {
-  .head {
+  header {
     width: 100%;
-    height: $search-bar-height;
-    line-height: @height;
+    height: 50px;
+
     padding: 0 0 0 20px;
-    border-bottom: 1px solid #DDD;
+    border-bottom: 1px solid #ddd;
     font-size: 16px;
     color: #666666;
-    letter-spacing: 0.09px;
+    -webkit-app-region: drag;
   }
 
   .form-item {
@@ -110,7 +115,7 @@ export default {
     }
 
     .input {
-      input[type=file] {
+      input[type='file'] {
         width: 0.1px;
         height: 0.1px;
         opacity: 0;
@@ -135,11 +140,11 @@ export default {
     button {
       width: 100px;
       height: 26px;
-      line-height: @height;
+
       border: none;
       border-radius: 4px;
       background: #696969;
-      color: #FFF;
+      color: #fff;
     }
   }
 }

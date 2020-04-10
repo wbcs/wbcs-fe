@@ -2,12 +2,13 @@
   <div class="add-new-contact">
     <div class="head">{{ contentTitle }}</div>
     <div class="search-box">
-      <input type="text"
-             v-model="keyword"
-             placeholder="支持昵称、号码进行查找好友或群组"
-             @keydown.enter="searchFunc">
-      <div class="search-icon"
-           @click="searchFunc">
+      <input
+        type="text"
+        v-model="keyword"
+        placeholder="支持昵称、号码进行查找好友或群组"
+        @keydown.enter="searchFunc"
+      />
+      <div class="search-icon" @click="searchFunc">
         <span class="icon icon-search"></span>
       </div>
     </div>
@@ -16,19 +17,23 @@
       <div class="friend-result">
         <div class="title">{{ friendTitle }}</div>
         <div class="content">
-          <search-result-item v-for="item in friendResultArr"
-                              :key="item.uid"
-                              :isGroup="false"
-                              :data="item"></search-result-item>
+          <search-result-item
+            v-for="item in friendResultArr"
+            :key="item.uid"
+            :isGroup="false"
+            :data="item"
+          ></search-result-item>
         </div>
       </div>
       <div class="group-result">
         <div class="title">{{ groupTitle }}</div>
         <div class="content">
-          <search-result-item v-for="item in groupResultArr"
-                              :key="item.gid"
-                              :isGroup="true"
-                              :data="item"></search-result-item>
+          <search-result-item
+            v-for="item in groupResultArr"
+            :key="item.gid"
+            :isGroup="true"
+            :data="item"
+          ></search-result-item>
         </div>
       </div>
     </div>
@@ -36,7 +41,7 @@
 </template>
 
 <script>
-import searchResultItem from './parts/search-result-item';
+import searchResultItem from './parts/search-result-item'
 
 export default {
   name: 'add-new-contact',
@@ -50,25 +55,24 @@ export default {
       groupNum: 0,
       friendResultArr: [],
       groupResultArr: []
-    };
+    }
   },
   computed: {
     contentTitle() {
-      return this.$lang.functions.add_contact.main_title;
+      return this.$lang.functions.add_contact.main_title
     },
     friendTitle() {
-      return `${this.$lang.functions.add_contact.friend} [${this.friendNum}]`;
+      return `${this.$lang.functions.add_contact.friend} [${this.friendNum}]`
     },
     groupTitle() {
-      return `${this.$lang.functions.add_contact.group} [${this.groupNum}]`;
+      return `${this.$lang.functions.add_contact.group} [${this.groupNum}]`
     }
   },
   methods: {
     searchFunc() {
       if (!this.keyword) {
-        return;
+        return
       }
-
       this.$socket.emit(
         'search-contact',
         {
@@ -76,31 +80,32 @@ export default {
           keyword: this.keyword
         },
         data => {
-          let friendArr = data.data.friendArr || [];
-          let groupArr = data.data.groupArr || [];
+          let friendArr = data.data.friendArr || []
+          let groupArr = data.data.groupArr || []
 
-          this.friendNum = friendArr.length;
-          this.friendResultArr = friendArr;
-          this.groupNum = groupArr.length;
-          this.groupResultArr = groupArr;
+          this.friendNum = friendArr.length
+          this.friendResultArr = friendArr
+          this.groupNum = groupArr.length
+          this.groupResultArr = groupArr
         }
-      );
+      )
     }
   }
-};
+}
 </script>
 
-<style lang="stylus">
+<style lang="less">
 .add-new-contact {
   .head {
     width: 100%;
-    height: $search-bar-height;
-    line-height: @height;
+    height: 50px;
+
     padding: 0 0 0 20px;
-    border-bottom: 1px solid #DDD;
+    border-bottom: 1px solid #ddd;
     font-size: 16px;
     color: #666666;
     letter-spacing: 0.09px;
+    -webkit-app-region: drag;
   }
 
   .search-box {
@@ -108,10 +113,10 @@ export default {
     display: flex;
     width: 300px;
     height: 36px;
-    line-height: @height;
+
     margin: 30px auto;
-    background: #FFFFFF;
-    border: 1px solid #CCCCCC;
+    background: #ffffff;
+    border: 1px solid #cccccc;
     border-radius: 36px;
 
     input {
@@ -141,8 +146,8 @@ export default {
       top: -1px;
       z-index: 3;
       width: 36px;
-      height: @width;
-      background: #525C68;
+      height: 36px;
+      background: #525c68;
       border-radius: 0 50% 50% 0;
       cursor: pointer;
 
@@ -160,10 +165,10 @@ export default {
     width: 100%;
     padding: 0 40px;
 
-    &>div {
+    & > div {
       width: 242px;
       height: 376px;
-      border: 1px solid #DFDFDF;
+      border: 1px solid #dfdfdf;
       border-radius: 5px;
 
       .title {

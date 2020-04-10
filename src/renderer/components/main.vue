@@ -49,12 +49,12 @@ export default {
 }
 </script>
 
-<style scoped lang="stylus">
+<style scoped lang="less">
 #app {
   display: flex;
   width: 100vw;
   height: 100vh;
-  background: $app-bg;
+  // background: #f6f9fd;
   overflow: hidden;
 }
 #sidebar {
@@ -67,7 +67,7 @@ export default {
   max-width: 300px;
 }
 #menu-content {
-  // height: $app-height - $search-bar-height;
+  // height: 550px - 50px;
   overflow-y: auto;
 }
 #content {

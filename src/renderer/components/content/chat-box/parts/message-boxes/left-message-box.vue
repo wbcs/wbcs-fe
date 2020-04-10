@@ -1,10 +1,8 @@
 <template>
-  <div class="left-message-box"
-       :class="{'has-padding':isGroup}">
-    <div v-if="isGroup"
-         class="box-head">{{ nickname }}</div>
+  <div class="left-message-box" :class="{ 'has-padding': isGroup }">
+    <div v-if="isGroup" class="box-head">{{ nickname }}</div>
     <div class="avatar">
-      <img :src="avatar">
+      <img :src="avatar" />
     </div>
     <div class="content">
       <slot></slot>
@@ -25,31 +23,31 @@ export default {
     return {
       avatar: '',
       nickname: ''
-    };
+    }
   },
   computed: {
     isGroup() {
-      return this.message.to.startsWith('g');
+      return this.message.to.startsWith('g')
     }
   },
   created() {
-    this.getContactInfo();
+    this.getContactInfo()
   },
   methods: {
     getContactInfo() {
-      let event = 'get-user-info';
-      let uid = this.message.from;
+      let event = 'get-user-info'
+      let uid = this.message.from
 
       this.$socket.emit(event, uid, data => {
-        this.avatar = data.avatar;
-        this.nickname = data.nickname || data.uid;
-      });
+        this.avatar = data.avatar
+        this.nickname = data.nickname || data.uid
+      })
     }
   }
-};
+}
 </script>
 
-<style lang="stylus">
+<style lang="less">
 .left-message-box {
   position: relative;
   display: flex;
@@ -64,12 +62,12 @@ export default {
     top: 0;
     z-index: 9;
     font-size: 10px;
-    color: #6C7989;
+    color: #6c7989;
   }
 
   .avatar {
     width: 34px;
-    height: @width;
+    height: 34px;
 
     img {
       width: 100%;
@@ -84,9 +82,9 @@ export default {
     margin-left: 20px;
     padding: 8px;
     border-radius: 6px;
-    background: $left-message-box-bg-color;
+    background: #6c7989;
     font-size: 12px;
-    color: $left-message-box-font-color;
+    color: #e0e0e0;
     letter-spacing: 0.06px;
     word-break: break-all;
     cursor: text;
@@ -101,11 +99,10 @@ export default {
       width: 0;
       height: 0;
       border-left: 12px solid transparent;
-      border-right: 12px solid $left-message-box-bg-color;
+      border-right: 12px solid #6c7989;
       border-bottom: 12px solid transparent;
       border-top: 12px solid transparent;
     }
   }
 }
 </style>
-

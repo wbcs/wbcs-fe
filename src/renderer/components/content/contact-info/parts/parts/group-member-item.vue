@@ -1,16 +1,14 @@
 <template>
   <div class="group-member-item">
     <div class="avatar">
-      <img :src="data.avatar"
-           alt="avatar">
+      <img :src="data.avatar" alt="avatar" />
     </div>
 
     <div class="name">
       {{ data.alias || data.nickname || data.uid }}
     </div>
 
-    <div v-if="data.flag"
-         class="tag">{{ data.flag }}</div>
+    <div v-if="data.flag" class="tag">{{ data.flag }}</div>
   </div>
 </template>
 
@@ -24,19 +22,19 @@ export default {
     }
   },
   data() {
-    return {};
+    return {}
   }
-};
+}
 </script>
 
-<style lang="stylus">
+<style lang="less">
 .group-member-item {
   position: relative;
   display: inline-block;
   width: 230px;
   height: 34px;
   margin-bottom: 10px;
-  background: #FFF;
+  background: #fff;
   border-radius: 4px;
   font-size: 12px;
   color: #666666;
@@ -65,7 +63,7 @@ export default {
   .name {
     display: inline-block;
     height: 34px;
-    line-height: @height;
+
     vertical-align: top;
   }
 
@@ -77,10 +75,10 @@ export default {
     height: 10px;
     margin: auto;
     padding: 1px 4px;
-    background: #525C68;
+    background: #525c68;
     border-radius: 4px;
     font-size: 6px;
-    color: #CFCFCF;
+    color: #cfcfcf;
     letter-spacing: 0.03px;
   }
 }

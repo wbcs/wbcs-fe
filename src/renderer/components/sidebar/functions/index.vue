@@ -1,15 +1,17 @@
 <template>
   <div id="menu-functions">
-    <function-item v-for="item in menuArr"
-                   :key="item.id"
-                   :config="item"
-                   :isActive="activatedId === item.id"
-                   @active-item="setActiveId"></function-item>
+    <function-item
+      v-for="item in menuArr"
+      :key="item.id"
+      :config="item"
+      :isActive="activatedId === item.id"
+      @active-item="setActiveId"
+    ></function-item>
   </div>
 </template>
 
 <script>
-import FunctionItem from '../_parts/function-item';
+import FunctionItem from '@/components/function-item'
 
 export default {
   name: 'menu-functions',
@@ -20,7 +22,7 @@ export default {
     return {
       activatedId: 1,
       menuArr: []
-    };
+    }
   },
   created() {
     this.menuArr.push(
@@ -42,17 +44,17 @@ export default {
         icon: 'list-ul',
         title: this.$lang.functions.manage_category.main_title
       }
-    );
+    )
   },
   methods: {
     setActiveId(id) {
-      this.activatedId = id;
+      this.activatedId = id
     }
   }
-};
+}
 </script>
 
-<style lang="stylus">
+<style lang="less">
 #menu-functions {
 }
 </style>
