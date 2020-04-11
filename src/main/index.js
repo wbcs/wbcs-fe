@@ -1,13 +1,6 @@
-const { app, BrowserWindow, ipcMain, dialog, globalShortcut } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog } = require('electron')
 const setMenu = require('./menu')
 
-const setGlobalShortcut = () => {
-  globalShortcut.register('CommandOrControl+W', app.hide)
-  globalShortcut.register('Command+Q', () => {
-    app.quit()
-    mainWindow = null
-  })
-}
 const loadGlobalVariable = () => {
   const path = require('path')
   const Store = require('electron-store')
@@ -54,7 +47,6 @@ const setIPCEventHandlers = () => {
 const setAppEventHandlers = () => {
   app.on('ready', () => {
     const uid = global.store.get('uid')
-    setGlobalShortcut()
     if (!uid) {
       openLoginWindow()
       return
@@ -110,7 +102,7 @@ const createWindow = (configObj = {}) => {
     },
     ...configObj
   })
-  mainWindow.on('closed', (e) => {
+  mainWindow.on('closed', () => {
     mainWindow = null
   })
   mainWindow.once('ready-to-show', () => {

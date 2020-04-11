@@ -70,7 +70,9 @@ if (isMac) {
         {role: 'paste'},
         {role: 'pasteandmatchstyle'},
         {role: 'delete'},
-        {role: 'selectall'}
+        {role: 'selectall'},
+        { role: 'quit' },
+        { role: 'close' },
       ]
     })
   }
