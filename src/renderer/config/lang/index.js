@@ -1,22 +1,7 @@
-const yaml = require('js-yaml')
-const fs = require('fs')
-const path = require('path')
-const langPath = path.join(__dirname, './langs')
+import EN_US from './en-US'
+import ZH_CN from './zh-CN'
 
-const langArr = fs.readdirSync(langPath)
-const langObj = {}
-
-if (langArr.length) {
-  langArr.forEach(el => {
-    let fileStr = fs.readFileSync(`${langPath}/${el}`, 'utf8')
-
-    langObj[path.parse(el).name] = yaml.safeLoad(fileStr)
-  })
+export default {
+  'zh-CN': ZH_CN,
+  'en': EN_US
 }
-
-// example:
-// {
-//   'zh-CN': [Object],
-//   'en': [Object]
-// }
-export default langObj
