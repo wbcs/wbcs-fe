@@ -2,8 +2,7 @@
   <div class="friend-info">
     <div class="info-head">
       <div class="avatar">
-        <img :src="friendInfo.avatar"
-             alt="avatar">
+        <img :src="friendInfo.avatar" alt="avatar" />
       </div>
 
       <div class="name">
@@ -15,29 +14,25 @@
       </div>
 
       <div class="info-background">
-        <img src="../../../../assets/info-bg.png"
-             alt="background">
+        <img src="../../../../assets/info-bg.png" alt="background" />
       </div>
     </div>
 
     <div class="info-details">
-      <div class="detail-item"
-           v-for="item in titleArr"
-           :key="item">
+      <div class="detail-item" v-for="item in titleArr" :key="item">
         <div class="item-title">{{ infoTitles[item] }}</div>
         <div class="item-content">
-          <span :class="{ 'default-content': !friendInfo[item] }">{{ friendInfo[item] ? friendInfo[item] : defaultInfoContent }}</span>
-          <span v-if="item==='alias'"
-                class="icon icon-edit"></span>
+          <span :class="{ 'default-content': !friendInfo[item] }">{{
+            friendInfo[item] ? friendInfo[item] : defaultInfoContent
+          }}</span>
+          <span v-if="item === 'alias'" class="icon icon-edit"></span>
         </div>
       </div>
     </div>
 
     <div class="info-foot">
-      <span class="icon icon-commenting"
-            @click="readyToChat"></span>
-      <span class="icon icon-delete"
-            @click="deleteFriend"></span>
+      <span class="icon icon-commenting" @click="readyToChat"></span>
+      <span class="icon icon-delete" @click="deleteFriend"></span>
     </div>
   </div>
 </template>
@@ -63,26 +58,26 @@ export default {
         'selfIntro'
       ],
       friendInfo: {}
-    };
+    }
   },
   computed: {
     infoTitles() {
-      return this.$lang.contacts.friend_info_titles;
+      return this.$lang.contacts.friend_info_titles
     },
     defaultInfoContent() {
-      return this.$lang.contacts.info_content.default;
+      return this.$lang.contacts.info_content.default
     }
   },
   watch: {
     id() {
-      this.getFriendInfo();
+      this.getFriendInfo()
     }
   },
   created() {
-    this.getFriendInfo();
+    this.getFriendInfo()
   },
   activated() {
-    this.getFriendInfo();
+    this.getFriendInfo()
   },
   methods: {
     getFriendInfo() {
@@ -93,20 +88,20 @@ export default {
           friendUid: this.id
         },
         data => {
-          this.friendInfo = data;
+          this.friendInfo = data
         }
-      );
+      )
     },
     readyToChat() {
-      let uid = this.friendInfo.uid;
+      let uid = this.friendInfo.uid
 
-      this.$store.commit('NEW_CHAT', { uid });
+      this.$store.commit('NEW_CHAT', { uid })
       this.$router.push({
         path: '/app/chats',
         query: {
           uid
         }
-      });
+      })
     },
     deleteFriend() {
       this.$socket.emit(
@@ -119,18 +114,18 @@ export default {
           if (data.code === 0) {
             this.$store.commit('CURRENT_CONTACT', {
               isDefaultPage: true
-            });
+            })
           }
 
-          alert(data.message);
+          alert(data.message)
         }
-      );
+      )
     }
   }
-};
+}
 </script>
 
-<style lang="stylus">
+<style lang="less">
 .friend-info {
   position: relative;
 
@@ -141,7 +136,7 @@ export default {
     background: #414952;
     overflow: hidden;
 
-    &>div {
+    & > div {
       position: absolute;
       z-index: 3;
     }
@@ -150,7 +145,7 @@ export default {
       left: 120px;
       top: 30px;
       width: 100px;
-      height: @width;
+      height: 100px;
 
       img {
         width: 100%;
@@ -163,7 +158,7 @@ export default {
       left: 250px;
       top: 45px;
       font-size: 24px;
-      color: #DDD;
+      color: #ddd;
       letter-spacing: 0.17px;
       word-break: break-all;
     }
@@ -173,7 +168,7 @@ export default {
       top: 85px;
       width: 310px;
       font-size: 12px;
-      color: #BBB;
+      color: #bbb;
       letter-spacing: 0.09px;
       line-height: 1.5;
       word-break: break-all;
@@ -223,7 +218,7 @@ export default {
 
         .icon {
           margin-left: 10px;
-          color: #A7B0BB;
+          color: #a7b0bb;
           font-size: 14px;
           cursor: pointer;
           transition: 0.2s;
@@ -249,11 +244,11 @@ export default {
       z-index: 3;
       display: block;
       width: 24px;
-      height: @width;
-      line-height: @height;
+      height: 24px;
+
       text-align: center;
       font-size: 20px;
-      color: #A7B0BB;
+      color: #a7b0bb;
       cursor: pointer;
       transition: 0.2s;
 

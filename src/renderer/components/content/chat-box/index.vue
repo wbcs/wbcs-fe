@@ -92,15 +92,12 @@
         </div>
       </div>
     </div>
-      <div v-else class="default-page">
-        <img src="../../../assets/logo.png"
-            alt="Logo">
-      </div>
+    <defaultPage v-else />
   </div>
 </template>
 
 <script>
-import DefaultPage from '../_parts/default-page'
+import DefaultPage from '@/components/default-page'
 import MessageItem from './parts/message-item'
 import GroupMemberItem from '../contact-info/parts/parts/group-member-item'
 
@@ -362,9 +359,9 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="less">
 .icon {
-  color: #A8B0BA;
+  color: #a8b0ba;
   cursor: pointer;
   transition: 0.15s;
   &:hover {
@@ -373,7 +370,7 @@ export default {
 }
 .chat-box {
   position: relative;
-  &>div {
+  & > div {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -384,7 +381,7 @@ export default {
 .chat-box-head {
   position: relative;
   padding: 0.8em 20px;
-  border-bottom: 1px solid #DDD;
+  border-bottom: 1px solid #ddd;
   -webkit-app-region: drag;
   .title {
     font-size: 16px;
@@ -395,8 +392,6 @@ export default {
     top: 0.8em;
     right: 20px;
     z-index: 2;
-    line-height: @height;
-    {icon-hover};
   }
 }
 
@@ -412,7 +407,7 @@ export default {
   width: 100%;
   height: 150px;
   padding: 9px 20px 10px;
-  border-top: 1px solid #DDD;
+  border-top: 1px solid #ddd;
 
   .foot-tools {
     display: flex;
@@ -422,12 +417,12 @@ export default {
     .icon {
       display: block;
       width: 18px;
-      height: @width;
+      height: 18px;
       margin-right: 12px;
-      line-height: @height;
-      font-size: @height;
+
+      font-size: 18px;
       text-align: center;
-      {icon-hover};
+      // // {icon-hover};
     }
 
     .icon-happy2 {
@@ -456,7 +451,7 @@ export default {
       }
 
       &::placeholder {
-        color: #DDD;
+        color: #ddd;
         letter-spacing: 0.1px;
         font-weight: 200;
       }
@@ -466,7 +461,7 @@ export default {
   .icon-send-o {
     line-height: 90px;
     font-size: 35px;
-    {icon-hover};
+    // {icon-hover};
   }
 }
 
@@ -477,7 +472,7 @@ export default {
   z-index: 999;
   width: 240px;
   height: 550px;
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.5);
   transform: translateX(100%);
   transition: 0.2s;
@@ -493,7 +488,7 @@ export default {
     height: 50px;
     line-height: 50px;
     padding: 0 15px;
-    border-bottom: 1px solid #DDDDDD;
+    border-bottom: 1px solid #dddddd;
 
     &__title {
       font-size: 16px;
@@ -512,19 +507,5 @@ export default {
     height: 500px;
     overflow: auto;
   }
-}
-.default-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: $app-height;
-
-  img {
-    width: 247px;
-    height: 170px;
-    opacity: 0.4;
-  }
-  -webkit-app-region: drag;
 }
 </style>

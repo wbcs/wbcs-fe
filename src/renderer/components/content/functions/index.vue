@@ -5,9 +5,9 @@
 </template>
 
 <script>
-import AddNewContact from './parts/add-new-contact';
-import CreateGroup from './parts/create-group';
-import ManageCategory from './parts/manage-category';
+import AddNewContact from './parts/add-new-contact'
+import CreateGroup from './parts/create-group'
+import ManageCategory from './parts/manage-category'
 
 export default {
   name: 'content-functions',
@@ -19,23 +19,22 @@ export default {
   data() {
     return {
       currentComponent: 'AddNewContact'
-    };
+    }
   },
   computed: {
     currentFunction() {
-      return this.$store.state.Function.currentFunction;
+      return this.$store.state.Function.currentFunction
     }
   },
   watch: {
     currentFunction() {
-      this.currentComponent = this.currentFunction;
+      this.currentComponent = this.currentFunction
     }
   },
   methods: {
     //
   }
-};
+}
 </script>
 
-<style lang="stylus">
-</style>
+<style lang="less"></style>

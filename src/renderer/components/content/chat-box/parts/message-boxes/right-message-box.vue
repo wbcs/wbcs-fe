@@ -1,15 +1,15 @@
 <template>
-  <div class="right-message-box"
-       :class="{'has-padding':isGroup}">
-    <div v-if="isGroup"
-         class="box-head">{{ userInfo.nickname || userInfo.uid }}</div>
+  <div class="right-message-box" :class="{ 'has-padding': isGroup }">
+    <div v-if="isGroup" class="box-head">
+      {{ userInfo.nickname || userInfo.uid }}
+    </div>
 
     <div class="content">
       <slot></slot>
     </div>
 
     <div class="avatar">
-      <img :src="userInfo.avatar">
+      <img :src="userInfo.avatar" />
     </div>
   </div>
 </template>
@@ -25,16 +25,16 @@ export default {
   },
   computed: {
     userInfo() {
-      return this.$store.state.Main.userInfo;
+      return this.$store.state.Main.userInfo
     },
     isGroup() {
-      return this.message.to.startsWith('g');
+      return this.message.to.startsWith('g')
     }
   }
-};
+}
 </script>
 
-<style lang="stylus">
+<style lang="less">
 .right-message-box {
   position: relative;
   display: flex;
@@ -49,12 +49,12 @@ export default {
     top: 0;
     z-index: 9;
     font-size: 10px;
-    color: #6C7989;
+    color: #6c7989;
   }
 
   .avatar {
     width: 34px;
-    height: @width;
+    height: 34px;
 
     img {
       width: 100%;
@@ -69,9 +69,9 @@ export default {
     margin-right: 20px;
     padding: 8px;
     border-radius: 6px;
-    background: $right-message-box-bg-color;
+    background: #525c68;
     font-size: 12px;
-    color: $right-message-box-font-color;
+    color: #d6d6d6;
     letter-spacing: 0.06px;
     word-break: break-all;
     cursor: text;
@@ -85,7 +85,7 @@ export default {
       z-index: 3;
       width: 0;
       height: 0;
-      border-left: 12px solid $right-message-box-bg-color;
+      border-left: 12px solid #525c68;
       border-right: 12px solid transparent;
       border-bottom: 12px solid transparent;
       border-top: 12px solid transparent;
@@ -93,4 +93,3 @@ export default {
   }
 }
 </style>
-

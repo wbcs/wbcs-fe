@@ -2,8 +2,7 @@
   <div class="group-info">
     <div class="info-head">
       <div class="avatar">
-        <img :src="groupInfo.avatar"
-             alt="avatar">
+        <img :src="groupInfo.avatar" alt="avatar" />
       </div>
 
       <div class="name">
@@ -11,53 +10,59 @@
       </div>
 
       <div class="info-background">
-        <img src="../../../../assets/info-bg.png"
-             alt="background">
+        <img src="../../../../assets/info-bg.png" alt="background" />
       </div>
     </div>
 
     <div class="info-details">
-      <div class="detail-item"
-           v-for="item in titleArr"
-           :key="item">
+      <div class="detail-item" v-for="item in titleArr" :key="item">
         <div class="item-title">
           <span>{{ infoTitles[item] }}</span>
-          <div v-if="item === 'members'"
-               class="member-count">{{ groupInfo[item] && groupInfo[item].length }}</div>
+          <div v-if="item === 'members'" class="member-count">
+            {{ groupInfo[item] && groupInfo[item].length }}
+          </div>
         </div>
         <div class="item-content">
           <div v-if="item !== 'members'">
-            <span :class="{ 'default-content': !groupInfo[item] }">{{ groupInfo[item] ? groupInfo[item] : defaultInfoContent }}</span>
-            <span v-if="isGroupOwner && (item === 'nickname' || item === 'group_info')"
-                  class="icon icon-edit"></span>
+            <span :class="{ 'default-content': !groupInfo[item] }">{{
+              groupInfo[item] ? groupInfo[item] : defaultInfoContent
+            }}</span>
+            <span
+              v-if="
+                isGroupOwner &&
+                  (item === 'nickname' || item === 'group_info')
+              "
+              class="icon icon-edit"
+            ></span>
           </div>
-          <div v-else
-               class="group-info-members">
-            <group-member-item v-for="member in groupInfo.members"
-                               :key="member.uid"
-                               :data="member"></group-member-item>
+          <div v-else class="group-info-members">
+            <group-member-item
+              v-for="member in groupInfo.members"
+              :key="member.uid"
+              :data="member"
+            ></group-member-item>
           </div>
         </div>
       </div>
 
-      <div class="group-not-active"
-           v-if="!isGroupActive">
+      <div class="group-not-active" v-if="!isGroupActive">
         群组已被解散
       </div>
     </div>
 
     <div class="info-foot">
-      <span v-if="isGroupActive"
-            class="icon icon-commenting"
-            @click="readyToChat"></span>
-      <span class="icon icon-delete"
-            @click="leaveOrDissolveGroup"></span>
+      <span
+        v-if="isGroupActive"
+        class="icon icon-commenting"
+        @click="readyToChat"
+      ></span>
+      <span class="icon icon-delete" @click="leaveOrDissolveGroup"></span>
     </div>
   </div>
 </template>
 
 <script>
-import GroupMemberItem from './parts/group-member-item';
+import GroupMemberItem from './parts/group-member-item'
 
 export default {
   name: 'group-info',
@@ -73,68 +78,68 @@ export default {
     return {
       titleArr: ['nickname', 'gid', 'createdAt', 'groupInfo', 'members'],
       groupInfo: {}
-    };
+    }
   },
   computed: {
     infoTitles() {
-      return this.$lang.contacts.group_info_titles;
+      return this.$lang.contacts.group_info_titles
     },
     defaultInfoContent() {
-      return this.$lang.contacts.info_content.default;
+      return this.$lang.contacts.info_content.default
     },
     isGroupOwner() {
-      return this.$uid === this.groupInfo.ownerUid;
+      return this.$uid === this.groupInfo.ownerUid
     },
     isGroupActive() {
-      return this.groupInfo.status === 'active';
+      return this.groupInfo.status === 'active'
     }
   },
   watch: {
     id() {
-      this.getGroupInfo();
+      this.getGroupInfo()
     }
   },
   created() {
-    this.getGroupInfo();
+    this.getGroupInfo()
   },
   activated() {
-    this.getGroupInfo();
+    this.getGroupInfo()
   },
   methods: {
     getGroupInfo() {
       this.$socket.emit('get-group-info', this.id, data => {
-        this.groupInfo = data;
-      });
+        this.groupInfo = data
+      })
     },
     readyToChat() {
-      let gid = this.groupInfo.gid;
+      let gid = this.groupInfo.gid
 
-      this.$store.commit('NEW_CHAT', { gid });
+      this.$store.commit('NEW_CHAT', { gid })
       this.$router.push({
         path: '/app/chats',
         query: {
           gid
         }
-      });
+      })
     },
     leaveOrDissolveGroup() {
-      let event = this.isGroupOwner ? 'dissolve-group' : 'leave-group';
+      let event = this.isGroupOwner ? 'dissolve-group' : 'leave-group'
 
       this.$socket.emit(event, { uid: this.$uid, gid: this.id }, data => {
         if (data.code === 0) {
           this.$store.commit('CURRENT_CONTACT', {
             isDefaultPage: true
-          });
+          })
         }
 
-        alert(data.message);
-      });
+        alert(data.message)
+      })
     }
   }
-};
+}
 </script>
 
-<style lang="stylus">
+<style lang="less">
 .group-info {
   position: relative;
 
@@ -145,7 +150,7 @@ export default {
     background: #414952;
     overflow: hidden;
 
-    &>div {
+    & > div {
       position: absolute;
       z-index: 3;
     }
@@ -154,7 +159,7 @@ export default {
       left: 120px;
       top: 30px;
       width: 100px;
-      height: @width;
+      height: 100px;
 
       img {
         width: 100%;
@@ -167,7 +172,7 @@ export default {
       left: 250px;
       top: 64px;
       font-size: 24px;
-      color: #DDD;
+      color: #ddd;
       letter-spacing: 0.17px;
       word-break: break-all;
     }
@@ -224,7 +229,7 @@ export default {
 
         .icon {
           margin-left: 10px;
-          color: #A7B0BB;
+          color: #a7b0bb;
           font-size: 14px;
           cursor: pointer;
           transition: 0.2s;
@@ -243,7 +248,7 @@ export default {
       z-index: 12;
       width: 100%;
       height: 300px;
-      line-height: @height;
+
       text-align: center;
       background: rgba(200, 200, 200, 0.5);
     }
@@ -262,11 +267,11 @@ export default {
       z-index: 3;
       display: block;
       width: 24px;
-      height: @width;
-      line-height: @height;
+      height: 24px;
+
       text-align: center;
       font-size: 20px;
-      color: #A7B0BB;
+      color: #a7b0bb;
       cursor: pointer;
       transition: 0.2s;
 

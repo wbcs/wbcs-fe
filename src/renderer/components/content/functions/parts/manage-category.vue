@@ -8,32 +8,33 @@
 export default {
   name: 'manage-category',
   data() {
-    return {};
+    return {}
   },
   computed: {
     contentTitle() {
-      return this.$lang.functions.manage_category.main_title;
+      return this.$lang.functions.manage_category.main_title
     }
   },
   methods: {
     chatFunc(e) {
-      console.log(e);
+      console.log(e)
     }
   }
-};
+}
 </script>
 
-<style lang="stylus">
+<style lang="less">
 .manage-category {
   .head {
     width: 100%;
-    height: $search-bar-height;
-    line-height: @height;
+    height: 50px;
+
     padding: 0 0 0 20px;
-    border-bottom: 1px solid #DDD;
+    border-bottom: 1px solid #ddd;
     font-size: 16px;
     color: #666666;
     letter-spacing: 0.09px;
+    -webkit-app-region: drag;
   }
 }
 </style>

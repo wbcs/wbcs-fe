@@ -1,12 +1,10 @@
 <template>
   <div class="search-result-item">
     <div class="avatar">
-      <img :src="data.avatar"
-           alt="avatar">
+      <img :src="data.avatar" alt="avatar" />
     </div>
     <div class="name">{{ data.nickname || data.uid }}</div>
-    <div class="icon"
-         @click="addContactRequest">
+    <div class="icon" @click="addContactRequest">
       <span :class="iconStatus"></span>
     </div>
   </div>
@@ -28,42 +26,41 @@ export default {
   data() {
     return {
       iconStatus: 'icon-add'
-    };
+    }
   },
   methods: {
     addContactRequest() {
       if (this.iconStatus === 'icon-check') {
-        return;
+        return
       }
 
-      const event = this.isGroup ? 'join-group' : 'add-friend';
-      const prop = this.isGroup ? 'gid' : 'friendUid';
+      const event = this.isGroup ? 'join-group' : 'add-friend'
+      const prop = this.isGroup ? 'gid' : 'friendUid'
 
       let obj = {
         uid: this.$uid,
         [prop]: this.isGroup ? this.data.gid : this.data.uid
-      };
+      }
 
       this.$socket.emit(event, obj, data => {
         if (data.code === 0) {
-          this.iconStatus = 'icon-check';
-          alert(data.message);
+          this.iconStatus = 'icon-check'
+          alert(data.message)
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 
-
-<style lang="stylus">
+<style lang="less">
 .search-result-item {
   display: flex;
   align-items: center;
   width: 220px;
   height: 36px;
   margin: 0 auto 10px;
-  background: #FFF;
+  background: #fff;
   border-radius: 4px;
 
   .avatar {
@@ -90,12 +87,12 @@ export default {
 
   .icon {
     width: 14px;
-    height: @width;
+    height: 14px;
     margin: 0 8px 0 16px;
-    line-height: @height;
+
     text-align: center;
     font-size: 14px;
-    color: #A7B0BB;
+    color: #a7b0bb;
     cursor: pointer;
 
     &:hover {

@@ -13,10 +13,10 @@ export default {
       type: Object
     }
   }
-};
+}
 </script>
 
-<style lang="stylus">
+<style lang="less">
 .text-message {
   padding: 0 2px;
 
@@ -26,4 +26,3 @@ export default {
   }
 }
 </style>
-

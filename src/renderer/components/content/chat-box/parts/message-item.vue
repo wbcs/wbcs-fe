@@ -9,8 +9,10 @@
     <div v-else-if="message.from === $uid">
       <right-message-box :message="message">
         <keep-alive>
-          <component :is="currentMessageType"
-                     :message="message"></component>
+          <component
+            :is="currentMessageType"
+            :message="message"
+          ></component>
         </keep-alive>
       </right-message-box>
     </div>
@@ -18,8 +20,10 @@
     <div v-else>
       <left-message-box :message="message">
         <keep-alive>
-          <component :is="currentMessageType"
-                     :message="message"></component>
+          <component
+            :is="currentMessageType"
+            :message="message"
+          ></component>
         </keep-alive>
       </left-message-box>
     </div>
@@ -27,15 +31,15 @@
 </template>
 
 <script>
-import LeftMessageBox from './message-boxes/left-message-box';
-import RightMessageBox from './message-boxes/right-message-box';
+import LeftMessageBox from './message-boxes/left-message-box'
+import RightMessageBox from './message-boxes/right-message-box'
 
-import TextMessage from './message-types/text-message';
-import ImageMessage from './message-types/image-message';
-import FileMessage from './message-types/file-message';
-import AudioMessage from './message-types/audio-message';
-import VideoMessage from './message-types/video-message';
-import SystemMessage from './message-types/system-message';
+import TextMessage from './message-types/text-message'
+import ImageMessage from './message-types/image-message'
+import FileMessage from './message-types/file-message'
+import AudioMessage from './message-types/audio-message'
+import VideoMessage from './message-types/video-message'
+import SystemMessage from './message-types/system-message'
 
 export default {
   name: 'message-item',
@@ -57,16 +61,16 @@ export default {
   },
   computed: {
     currentMessageType() {
-      return `${this.$capitalizeFirstLetter(this.message.type)}Message`;
+      return `${this.$capitalizeFirstLetter(this.message.type)}Message`
     },
     isGroup() {
-      return this.message.to.startsWith('g');
+      return this.message.to.startsWith('g')
     }
   }
-};
+}
 </script>
 
-<style lang="stylus">
+<style lang="less">
 .message-item {
   margin-bottom: 15px;
 }
