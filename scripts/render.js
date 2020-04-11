@@ -8,31 +8,31 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
-const config = new WebapckChain()
+const chainConfig = new WebapckChain()
 
-config.mode('development').end()
+chainConfig.mode('development').end()
 
-config
+chainConfig
   .context(path.resolve(__dirname, '../'))
   .entry('app')
   .add('./src/renderer/main.js')
   .end()
 
-config.output
+chainConfig.output
   .path(path.resolve(__dirname, '../dist'))
   .filename('[name].[hash].js')
   .end()
 
-config.externals([nodeExternals()]).end()
+chainConfig.externals([nodeExternals()]).end()
 
-config.module
+chainConfig.module
   .rule('js')
   .test(/\.(js)$/)
   .use('babel')
   .loader('babel-loader')
   .end()
 
-config.module
+chainConfig.module
   .rule('vue')
   .test(/\.vue$/)
   .use('vue-loader')
@@ -49,7 +49,7 @@ const lessLoaders = ExtractTextPlugin.extract({
   fallback: 'style-loader',
   use: ['css-loader', 'less-loader']
 })
-const lessConfig = config.module.rule('less').test(/\.(less)$/)
+const lessConfig = chainConfig.module.rule('less').test(/\.(less)$/)
 
 lessLoaders.reduce(
   (conf, { loader, options }) =>
@@ -65,7 +65,7 @@ const cssLoaders = ExtractTextPlugin.extract({
   fallback: 'style-loader',
   use: ['css-loader']
 })
-const cssConfig = config.module.rule('css').test(/\.(css)$/)
+const cssConfig = chainConfig.module.rule('css').test(/\.(css)$/)
 
 cssLoaders.reduce(
   (conf, { loader, options }) =>
@@ -77,7 +77,7 @@ cssLoaders.reduce(
   cssConfig
 )
 
-config.module
+chainConfig.module
   .rule('images')
   .test(/\.(png|jpe?g|gif|webp)(\?.*)?$/)
   .use('url-loader')
@@ -93,7 +93,7 @@ config.module
  * svg不适用inline
  * inline的svg会破坏svg片段标识符，它被用在雪碧图当中
  */
-config.module
+chainConfig.module
   .rule('svg')
   .test(/\.(svg|mp4|webm|ogg|mp3|wav|flac|aac|woff2?|eot|ttf|otf)(\?.*)?$/)
   .use('file-loader')
@@ -105,7 +105,7 @@ config.module
   })
   .end()
 
-config
+chainConfig
   .plugin('html-webpack-plugin')
   .use(HtmlWebpackPlugin, [
     {
@@ -122,17 +122,17 @@ config
   ])
   .end()
 
-config
+chainConfig
   .plugin('extract-text-plugin')
   .use(ExtractTextPlugin, ['style.css'])
   .end()
 
-config
+chainConfig
   .plugin('vue-loader-plugin')
   .use(VueLoaderPlugin)
   .end()
 
-config
+chainConfig
   .plugin('webpack-define-plugin')
   .use(webpack.DefinePlugin, [
     {
@@ -143,7 +143,7 @@ config
   ])
   .end()
 
-config
+chainConfig
   .plugin('friendly-errors-webpack-plugin')
   .use(FriendlyErrorsWebpackPlugin, [
     {
@@ -158,7 +158,7 @@ config
   ])
   .end()
 
-config.resolve.alias
+chainConfig.resolve.alias
   .set('@', path.resolve(__dirname, '../src/renderer'))
   .end()
   .extensions.add('.js')
@@ -168,9 +168,10 @@ config.resolve.alias
   .add('.css')
   .end()
 
-config.devServer
+chainConfig.devServer
   .set('port', 9080)
   .set('quiet', true)
   .end()
 
-module.exports = config.toConfig()
+const config = chainConfig.toConfig()
+module.exports = config
