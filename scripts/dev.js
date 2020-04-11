@@ -15,7 +15,7 @@ const run = () => {
       'electron',
       [resolve('../src/main/index.js'), 'NODE_ENV=development'],
       { stdout: 'pipe' }
-    )
+    ).catch(console.log)
   })
   const server = new WebpackDevServer(compiler, config.devServer || {})
   server.listen(config.devServer.port)
