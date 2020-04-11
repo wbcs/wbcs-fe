@@ -1,6 +1,13 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog, globalShortcut } = require('electron')
 const setMenu = require('./menu')
 
+const setGlobalShortcut = () => {
+  globalShortcut.register('CommandOrControl+W', app.hide)
+  globalShortcut.register('Command+Q', () => {
+    app.quit()
+    mainWindow = null
+  })
+}
 const loadGlobalVariable = () => {
   const path = require('path')
   const Store = require('electron-store')
@@ -40,15 +47,18 @@ const setIPCEventHandlers = () => {
     global.isAllowLogin = false
     openLoginWindow()
   })
+  ipcMain.on('beforeunload', () => {
+    app.hide()
+  })
 }
 const setAppEventHandlers = () => {
   app.on('ready', () => {
     const uid = global.store.get('uid')
+    setGlobalShortcut()
     if (!uid) {
       openLoginWindow()
       return
     }
-
     global.socket.emit('is-allow-login', uid, data => {
       if (data.isAllowLogin) {
         global.isAllowLogin = true
@@ -58,15 +68,18 @@ const setAppEventHandlers = () => {
       }
     })
   })
-  app.on('window-all-closed', () => {
-    if (process.platform === 'darwin') return
-    app.quit()
-  })
   app.on('open-file', e => e.preventDefault())
   app.on('open-url', e => e.preventDefault())
   app.on('activate', () => {
-    if (!mainWindow) return
+    if (mainWindow) {
+      return
+    }
     createWindow()
+  })
+  app.on('window-all-closed', () => {
+    if (process.platform === 'darwin') return
+    app.quit()
+    mainWindow = null
   })
 }
 const openLoginWindow = () => {
@@ -97,12 +110,13 @@ const createWindow = (configObj = {}) => {
     },
     ...configObj
   })
-
-  mainWindow.on('closed', () => {
+  mainWindow.on('closed', (e) => {
     mainWindow = null
   })
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show()
+  })
   mainWindow.loadURL(winURL)
-  mainWindow.show()
 }
 
 let mainWindow = null

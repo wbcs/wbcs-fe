@@ -1,4 +1,4 @@
-const { Menu, BrowserWindow, dialog, app } = require('electron')
+const { Menu, BrowserWindow, dialog } = require('electron')
 const isMac = process.platform === 'darwin'
 
 const template = [
@@ -58,61 +58,22 @@ const template = [
 
 
 if (isMac) {
-  template.unshift({
-    label: 'wbcs',
-    submenu: [
-      {
-        label: `About wbcs`,
-        role: 'about'
-      },
-      {
-        type: 'separator'
-      },
-      {
-        label: 'Services',
-        role: 'services',
-        submenu: []
-      },
-      {
-        type: 'separator'
-      },
-      {
-        label: `Hide wbcs`,
-        accelerator: 'Command+H',
-        role: 'hide'
-      },
-      {
-        label: 'Hide Others',
-        accelerator: 'Command+Alt+H',
-        role: 'hideothers'
-      },
-      {
-        label: 'Show All',
-        role: 'unhide'
-      },
-      {
-        type: 'separator'
-      },
-      {
-        label: 'Quit',
-        accelerator: 'Command+Q',
-        click() {
-          app.quit()
-        }
-      },
-      {
-        label: 'Edit',
-        submenu: [
-          { label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
-          {
-            label: 'Paste',
-            accelerator: 'CmdOrCtrl+V',
-            selector: 'paste:'
-          }
-        ]
-      }
-    ]
-  })
+  if (process.platform === 'darwin') {
+    template.push({
+      label: 'Edit',
+      submenu: [
+        {role: 'undo'},
+        {role: 'redo'},
+        {type: 'separator'},
+        {role: 'cut'},
+        {role: 'copy'},
+        {role: 'paste'},
+        {role: 'pasteandmatchstyle'},
+        {role: 'delete'},
+        {role: 'selectall'}
+      ]
+    })
+  }
 }
 
 module.exports = () => {

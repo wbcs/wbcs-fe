@@ -25,12 +25,12 @@ chainConfig.output
 
 chainConfig.externals([nodeExternals()]).end()
 
-chainConfig.module
-  .rule('js')
-  .test(/\.(js)$/)
-  .use('babel')
-  .loader('babel-loader')
-  .end()
+// chainConfig.module
+//   .rule('js')
+//   .test(/\.(js)$/)
+//   .use('babel')
+//   .loader('babel-loader')
+//   .end()
 
 chainConfig.module
   .rule('vue')
