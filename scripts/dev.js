@@ -1,9 +1,9 @@
-const path = require('path')
 const execa = require('execa')
 const webpack = require('webpack')
 const WebpackDevServer = require('webpack-dev-server')
+
 const config = require('./render')
-const resolve = filename => path.resolve(__dirname, filename)
+const { resolve } = require('./utils')
 
 let lock = false
 const run = () => {
