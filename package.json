@@ -4,11 +4,6 @@
   "author": "wbcs",
   "description": "",
   "main": "./dist/electron/main.js",
-  "scripts": {
-    "build-mac": "electron-builder --mac --config build.yml",
-    "dev": "node scripts/dev.js",
-    "start": "webpack-dev-server --config scripts/temp.js"
-  },
   "dependencies": {
     "axios": "^0.19.2",
     "electron-store": "^5.1.1",
@@ -70,5 +65,10 @@
     "webpack-hot-middleware": "^2.25.0",
     "webpack-merge": "^4.2.2",
     "webpack-node-externals": "^1.7.2"
+  },
+  "scripts": {
+    "build-mac": "electron-builder --mac --config build.yml",
+    "dev": "NODE_ENV=development node scripts/dev.js",
+    "start": "webpack-dev-server --config scripts/temp.js"
   }
 }
