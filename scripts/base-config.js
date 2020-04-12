@@ -2,48 +2,24 @@ const path = require('path')
 const webpack = require('webpack')
 const WebapckChain = require('webpack-chain')
 const nodeExternals = require('webpack-node-externals')
-
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const { resolve } = require('./utils')
 
 const chainConfig = new WebapckChain()
 
-chainConfig.mode('development').end()
-
 chainConfig
-  .context(path.resolve(__dirname, '../'))
+  .context(resolve('../'))
   .entry('app')
   .add('./src/renderer/main.js')
   .end()
 
 chainConfig.output
-  .path(path.resolve(__dirname, '../dist'))
+  .path(resolve('../dist'))
   .filename('[name].[hash].js')
   .end()
 
 chainConfig.externals([nodeExternals()]).end()
-
-// chainConfig.module
-//   .rule('js')
-//   .test(/\.(js)$/)
-//   .use('babel')
-//   .loader('babel-loader')
-//   .end()
-
-chainConfig.module
-  .rule('vue')
-  .test(/\.vue$/)
-  .use('vue-loader')
-  .loader('vue-loader')
-  .options({
-    extractCSS: process.env.NODE_ENV === 'production',
-    loaders: {
-      less: 'vue-style-loader!css-loader!less-loader'
-    }
-  })
-  .end()
 
 const lessLoaders = ExtractTextPlugin.extract({
   fallback: 'style-loader',
@@ -106,23 +82,6 @@ chainConfig.module
   .end()
 
 chainConfig
-  .plugin('html-webpack-plugin')
-  .use(HtmlWebpackPlugin, [
-    {
-      template: path.resolve(__dirname, '../public/index.html'),
-      minify: {
-        collapseWhitespace: true,
-        removeComments: true
-      },
-      nodeModules:
-        process.env.NODE_ENV !== 'production'
-          ? path.resolve(__dirname, '../node_modules')
-          : false
-    }
-  ])
-  .end()
-
-chainConfig
   .plugin('extract-text-plugin')
   .use(ExtractTextPlugin, ['style.css'])
   .end()
@@ -143,23 +102,8 @@ chainConfig
   ])
   .end()
 
-chainConfig
-  .plugin('friendly-errors-webpack-plugin')
-  .use(FriendlyErrorsWebpackPlugin, [
-    {
-      compilationSuccessInfo: {
-        messages: ['You application is running.'],
-        notes: [
-          'Some additional notes to be displayed upon successful compilation'
-        ]
-      },
-      clearConsole: true
-    }
-  ])
-  .end()
-
 chainConfig.resolve.alias
-  .set('@', path.resolve(__dirname, '../src/renderer'))
+  .set('@', resolve('../src/renderer'))
   .end()
   .extensions.add('.js')
   .add('.vue')
@@ -168,10 +112,7 @@ chainConfig.resolve.alias
   .add('.css')
   .end()
 
-chainConfig.devServer
-  .set('port', 9080)
-  .set('quiet', true)
-  .end()
+chainConfig.target('electron-renderer').end()
 
 const config = chainConfig.toConfig()
 module.exports = config

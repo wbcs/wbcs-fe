@@ -3,7 +3,7 @@ const electron = require('electron')
 const { spawn } = require('child_process')
 const WebpackDevServer = require('webpack-dev-server')
 
-const config = require('./render')
+const config = require('./dev-config')
 const { resolve } = require('./utils')
 
 const runElectron = () => {
