@@ -1,3 +1,5 @@
+const path = require('path')
+
 let willQuit = false
 const getQuit = () => willQuit
 const setQuit = quit => (willQuit = quit)
@@ -12,7 +14,8 @@ const DEFAULT_CONFIG = {
   webPreferences: {
     nodeIntegration: true,
     webSecurity: true
-  }
+  },
+  icon: path.join(__dirname, '../icon.png')
 }
 
 module.exports = {

@@ -1,4 +1,5 @@
 const { app } = require('electron')
+const path = require('path')
 const { setQuit } = require('./utils')
 
 const setAppEventHandlers = (winRef, createWindow, openLoginWindow) => {
@@ -34,6 +35,12 @@ const setAppEventHandlers = (winRef, createWindow, openLoginWindow) => {
   })
 }
 
+const setIconInMAC = () => {
+  if (process.platform !== 'darwin') return
+  app.dock.setIcon(path.join(__dirname, '../icon.png'))
+}
+
 module.exports = {
+  setIconInMAC,
   setAppEventHandlers
 }
