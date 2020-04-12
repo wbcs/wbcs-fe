@@ -1,118 +1,45 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron')
-const setMenu = require('./menu')
+const path = require('path')
+const { BrowserWindow } = require('electron')
 
-const loadGlobalVariable = () => {
-  const path = require('path')
-  const Store = require('electron-store')
-  const socketClient = require('socket.io-client')
+const { setMenu } = require('./menu')
+const { setIPCEventHandlers } = require('./ipc')
+const { setAppEventHandlers, setIconInMAC } = require('./app')
+const { loadGlobalVariable } = require('./global')
+const { DEFAULT_CONFIG, getQuit } = require('./utils')
 
-  const store = new Store({
-    name: 'wbcs.config',
-    encryptionKey: 'wbcs'
-  })
-  const socket = socketClient('http://localhost:3000', {
-    reconnection: true
-  })
-
-  global.store = store
-  global.socket = socket
-  global.isAllowLogin = false
-  if (process.env.NODE_ENV !== 'development') {
-    global.__static = path
-      .join(__dirname, '/static')
-      .replace(/\\/g, '\\\\')
-  }
-}
-const setIPCEventHandlers = () => {
-  ipcMain.on('save-user-data', (_, data) => {
-    global.store.set(data)
-  })
-  ipcMain.on('show-error-dialog', (_, msg) => {
-    dialog.showErrorBox(msg.title, msg.content)
-  })
-  ipcMain.on('login', () => {
-    mainWindow && mainWindow.close()
-    global.isAllowLogin = true
-    createWindow()
-  })
-  ipcMain.on('logout', () => {
-    mainWindow && mainWindow.close()
-    global.isAllowLogin = false
-    openLoginWindow()
-  })
-  ipcMain.on('beforeunload', () => {
-    app.hide()
-  })
-}
-const setAppEventHandlers = () => {
-  app.on('ready', () => {
-    const uid = global.store.get('uid')
-    if (!uid) {
-      openLoginWindow()
-      return
-    }
-    global.socket.emit('is-allow-login', uid, data => {
-      if (data.isAllowLogin) {
-        global.isAllowLogin = true
-        createWindow()
-      } else {
-        openLoginWindow()
-      }
-    })
-  })
-  app.on('open-file', e => e.preventDefault())
-  app.on('open-url', e => e.preventDefault())
-  app.on('activate', () => {
-    if (mainWindow) {
-      return
-    }
-    createWindow()
-  })
-  app.on('window-all-closed', () => {
-    if (process.platform === 'darwin') return
-    app.quit()
-    mainWindow = null
-  })
-}
-const openLoginWindow = () => {
+const openLoginWindow = () =>
   createWindow({
     width: 280,
     height: 400,
     resizable: false
   })
-}
 const createWindow = (configObj = {}) => {
-  // const winURL =
-  //   process.env.NODE_ENV === 'development'
-  //     ? 'http://localhost:9080'
-  //     : `file://${__dirname}/index.html`
+  const WIN_URL =
+    process.env.NODE_ENV === 'development'
+      ? 'http://localhost:9080'
+      : `file://${path.resolve(__dirname, '../../dist/index.html')}`
 
-  const winURL = 'http://localhost:9080'
-
-  mainWindow = new BrowserWindow({
-    width: 900,
-    height: 600,
-    minWidth: 850,
-    minHeight: 550,
-    resizable: true,
-    titleBarStyle: 'hidden',
-    webPreferences: {
-      nodeIntegration: true,
-      webSecurity: true
-    },
+  winRef.mainWindow = new BrowserWindow({
+    ...DEFAULT_CONFIG,
     ...configObj
   })
-  mainWindow.on('closed', () => {
-    mainWindow = null
+  setIconInMAC()
+  winRef.mainWindow.on('close', e => {
+    if (getQuit()) {
+      winRef.mainWindow = null
+      return
+    }
+    e.preventDefault()
+    winRef.mainWindow.hide()
   })
-  mainWindow.once('ready-to-show', () => {
-    mainWindow.show()
-  })
-  mainWindow.loadURL(winURL)
+  winRef.mainWindow.loadURL(WIN_URL)
 }
 
-let mainWindow = null
+const winRef = {
+  mainWindow: null
+}
+
 loadGlobalVariable()
-setIPCEventHandlers()
-setAppEventHandlers()
+setIPCEventHandlers(winRef, createWindow, openLoginWindow)
+setAppEventHandlers(winRef, createWindow, openLoginWindow)
 setMenu()

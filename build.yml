@@ -2,9 +2,9 @@ productName: wbcs
 appId: wbcs
 
 directories:
-  output: dist-electron
+  output: dist/electron
 
-copyright: Copyright © 2019 wbcs
+copyright: Copyright © 2020 wbcs
 
 dmg:
   contents:
