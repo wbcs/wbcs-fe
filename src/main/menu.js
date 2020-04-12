@@ -1,5 +1,5 @@
 const { Menu, BrowserWindow, dialog } = require('electron')
-const isMac = process.platform === 'darwin'
+const IS_MAC = process.platform === 'darwin'
 
 const template = [
   {
@@ -55,30 +55,32 @@ const template = [
   }
 ]
 
-
-
-if (isMac) {
+if (IS_MAC) {
   if (process.platform === 'darwin') {
     template.push({
       label: 'Edit',
       submenu: [
-        {role: 'undo'},
-        {role: 'redo'},
-        {type: 'separator'},
-        {role: 'cut'},
-        {role: 'copy'},
-        {role: 'paste'},
-        {role: 'pasteandmatchstyle'},
-        {role: 'delete'},
-        {role: 'selectall'},
+        { role: 'undo' },
+        { role: 'redo' },
+        { type: 'separator' },
+        { role: 'cut' },
+        { role: 'copy' },
+        { role: 'paste' },
+        { role: 'pasteandmatchstyle' },
+        { role: 'delete' },
+        { role: 'selectall' },
         { role: 'quit' },
-        { role: 'close' },
+        { role: 'close' }
       ]
     })
   }
 }
 
-module.exports = () => {
+const setMenu = () => {
   const menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
+}
+
+module.exports = {
+  setMenu
 }
