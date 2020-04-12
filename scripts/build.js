@@ -6,7 +6,7 @@ const config = require('./build-config')
 const buildElectron = async () => {
   await execa(
     'electron-builder',
-    ['--mac', '--config', ['build.yml'].filter(_ => _).join(',')],
+    ['--mac', '--config', 'build.yml'],
     { stdio: 'inherit' }
   )
   console.log(chalk.green('build electron success.'))
