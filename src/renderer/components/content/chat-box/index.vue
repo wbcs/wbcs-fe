@@ -58,7 +58,7 @@
               @compositionstart="detectCompositionInput(true)"
               @compositionend="detectCompositionInput(false)"
               @keydown.enter="sendTextMessage($event)"
-            ></textarea>
+            />
           </div>
         </div>
         <div>
@@ -100,6 +100,7 @@
 import DefaultPage from '@/components/default-page'
 import MessageItem from './parts/message-item'
 import GroupMemberItem from '../contact-info/parts/parts/group-member-item'
+import { openChat } from '@/utils/chat'
 
 export default {
   name: 'chat-box',
@@ -123,9 +124,13 @@ export default {
       return this.$store.state.Main.userInfo
     },
     currentChat() {
+      // const { query } = this.$router.history.current
+      // return query
       return this.$store.state.Chat.currentChat
     },
     isGroup() {
+      // const { gid } = this.$router.history.current.query
+      // return gid
       return this.currentChat.gid ? true : false
     },
     memberArr() {
@@ -162,6 +167,17 @@ export default {
     // TODO 时间比较紧，暂时在客户端这样分发消息
     // 这样做的局限是，无法全局监听消息，所以有新消息时，没法及时给出通知
     this.$socket.on('new-message', message => {
+      const { nickname, avatar, content, from } = message
+      const noti = {
+        title: nickname || 'hehe',
+        body: content.text,
+        icon: avatar || 'http://localhost:3000/upload/default/default-user-avatar.png'
+      }
+      const notification = new Notification(noti.title, noti)
+      notification.onclick = () => {
+        openChat(from)
+      }
+      console.log(message)
       const fromId = message.from
       const toId = message.to
       const isGroupMessage = message.to.startsWith('g')
@@ -327,33 +343,27 @@ export default {
         // enter+shift  next line
         return
       }
-
       e.preventDefault()
-
-      if (!this.message.length) {
-        return
-      }
-
-      let message = {
+      if (!this.message) return
+      const { nickname, avatar } = this.userInfo
+      const message = {
         uuid: this.$generateUUID(),
         from: this.$uid,
         to: this.currentChat[this.isGroup ? 'gid' : 'uid'],
         type: 'text',
+        nickname,
+        avatar,
         content: {
           text: this.message
         }
       }
-
       this.sendMessage(message)
       this.message = ''
     },
 
-    sendMessage(message) {
-      this.$socket.send(message, data => {
-        console.log(data.message)
-      })
-
-      this.messageArr.push(message)
+    sendMessage(msg) {
+      this.$socket.emit('message', msg, res => console.log(res))
+      this.messageArr.push(msg)
     }
   }
 }

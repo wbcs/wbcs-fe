@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import { openChat } from '@/utils/chat'
+
 export default {
   name: 'recent-chat-item',
   props: {
@@ -63,10 +65,7 @@ export default {
         return
       }
       if (!this.isActive) {
-        this.$emit('active-item', this._id)
-        this.$store.commit('CURRENT_CHAT', {
-          [this._idName]: this._id
-        })
+        openChat(this._id)
       }
     },
     handleDeleteClick() {
