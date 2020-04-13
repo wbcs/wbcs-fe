@@ -6,7 +6,6 @@ import Chat from '@/components/content/chat-box'
 
 import MenuOfGrouping from '@/views/grouping/menu'
 
-
 import MenuOfSetting from '@/views/setting/menu'
 import Setting from '@/views/setting'
 
