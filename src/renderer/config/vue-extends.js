@@ -1,5 +1,4 @@
 import electron from 'electron'
-import Chance from 'chance'
 import lang from '@/config/lang'
 import utils from '@/utils'
 

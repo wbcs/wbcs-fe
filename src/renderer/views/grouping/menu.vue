@@ -53,8 +53,3 @@ export default {
   }
 }
 </script>
-
-<style lang="less">
-#menu-contacts {
-}
-</style>
