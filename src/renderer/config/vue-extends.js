@@ -38,12 +38,6 @@ export default Vue => {
   Vue.prototype.$uid = uid || null
 
   /*
-   * @desc: tools for generate random data
-   * @use: this.$chance
-   */
-  Vue.prototype.$chance = new Chance()
-
-  /*
    * @desc: socket.io for communicate
    * @use: this.$socket
    */
