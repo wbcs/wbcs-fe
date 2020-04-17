@@ -23,3 +23,8 @@ npm run dev
 + [ ] 视频(打算单独整成一个组件，发布出去)
 + [ ] 消息加密解密
 + [ ] 更新：思路是 `app.asar`
+
+
+# 坑
++ BrowserWindow在loadURL的时候，url如果是hash模式会报错
++ 需要请求权限的操作，在vscode的zsh里没权限导致失败
