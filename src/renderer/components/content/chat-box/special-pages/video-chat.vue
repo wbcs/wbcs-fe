@@ -303,6 +303,7 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  -webkit-app-region: drag;
 
   &:hover .video-tools {
     opacity: 1;

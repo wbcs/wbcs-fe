@@ -6,11 +6,16 @@
 export default {
   name: 'app',
   mounted() {
-    // window.addEventListener('beforeunload', (e) => {
-    //   this.$electron.ipcRenderer.send('beforeunload')
-    //   alert()
-    //   e.returnValue = false
-    // })
+    const { ipcRenderer } = this.$electron
+    ipcRenderer.on('goto-video', ({ uid, type }) => {
+      this.$router.push({
+        path: '/video-chat',
+        query: {
+          to: uid,
+          type
+        }
+      })
+    })
   }
 }
 </script>

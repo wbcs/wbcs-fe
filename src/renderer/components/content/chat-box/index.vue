@@ -101,6 +101,7 @@ import DefaultPage from '@/components/default-page'
 import MessageItem from './parts/message-item'
 import GroupMemberItem from '../contact-info/parts/parts/group-member-item'
 import { openChat } from '@/utils/chat'
+import fs from 'fs'
 
 export default {
   name: 'chat-box',
@@ -263,7 +264,6 @@ export default {
     },
 
     sendImage(path) {
-      const fs = require('fs')
       const base64Data = fs.readFileSync(path, 'base64')
 
       this.$socket.emit('store-image', { base64Data }, data => {
@@ -292,25 +292,8 @@ export default {
     },
 
     openVideoChatDialog(type) {
-      const BrowserWindow = this.$electron.remote.BrowserWindow
-      const devServer = `http://localhost:9080/#/video-chat?to=${this.contactInfo.uid}&type=${type}`
-      const winURL =
-        process.env.NODE_ENV === 'development'
-          ? devServer
-          : `file://${__dirname}/index.html/#/video-chat?to=${this.contactInfo.uid}&type=${type}`
-      const config = {
-        width: 600,
-        height: 360,
-        minWidth: 600,
-        minHeight: 360,
-        resizeable: false,
-        useContentSize: true,
-        titleBarStyle: 'hidden'
-      }
-
-      this.videoWindow = new BrowserWindow(config)
-
-      this.videoWindow.on('closed', () => {
+      const { ipcRenderer } = this.$electron
+      const handleClose = () => {
         if (type === 'call') {
           let message = {
             uuid: this.$generateUUID(),
@@ -321,17 +304,15 @@ export default {
               text: '视频通话已结束'
             }
           }
-
           this.sendMessage(message)
         }
-
         this.videoWindow = null
+      }
+      ipcRenderer.send('open-window', {
+        uid: this.contactInfo.uid,
+        type 
       })
-
-      // force resize window with a constant ratio
-      this.videoWindow.setAspectRatio(600 / 360)
-      this.videoWindow.loadURL(winURL)
-      this.videoWindow.show()
+      ipcRenderer.on('sub-closed', handleClose)
     },
 
     detectCompositionInput(value) {
