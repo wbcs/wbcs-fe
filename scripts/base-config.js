@@ -19,6 +19,10 @@ chainConfig.output
   .filename('[name].[hash].js')
   .end()
 
+chainConfig.output
+  .publicPath('./')
+  .end()
+
 chainConfig.externals([nodeExternals()]).end()
 
 const lessLoaders = ExtractTextPlugin.extract({
@@ -61,6 +65,7 @@ chainConfig.module
   .options({
     limit: 1024,
     esModule: false,
+    publicPath: '/',
     name: 'images/[name].[hash:7].[ext]'
   })
   .end()
