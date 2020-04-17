@@ -54,6 +54,7 @@ chainConfig
 chainConfig.devServer
   .set('port', 9080)
   .set('quiet', true)
+  .set('historyApiFallback', true)
   .end()
 
 const devConfig = merge(baseConfig, chainConfig.toConfig())

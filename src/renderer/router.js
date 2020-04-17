@@ -22,6 +22,7 @@ import VideoChat from '@/components/content/chat-box/special-pages/video-chat.vu
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '*',
