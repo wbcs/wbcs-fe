@@ -10,12 +10,8 @@ import './index.less'
 Vue.use(VueExtend)
 
 // stop drag file to the app
-document.addEventListener('dragover', function(event) {
-  event.preventDefault()
-})
-document.addEventListener('drop', function(event) {
-  event.preventDefault()
-})
+document.addEventListener('dragover', e => e.preventDefault())
+document.addEventListener('drop', e => e.preventDefault())
 
 new Vue({
   store,
