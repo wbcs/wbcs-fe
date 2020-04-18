@@ -1,5 +1,5 @@
 const path = require('path')
-const { ipcMain, dialog, BrowserWindow } = require('electron')
+const { ipcMain, BrowserWindow } = require('electron')
 
 const openVideoWindow = (winRef, data) => {
   const { uid, type } = data
@@ -35,9 +35,6 @@ const openVideoWindow = (winRef, data) => {
 const setIPCEventHandlers = (winRef, createWindow, openLoginWindow) => {
   ipcMain.on('save-user-data', (_, data) => {
     global.store.set(data)
-  })
-  ipcMain.on('show-error-dialog', (_, msg) => {
-    dialog.showErrorBox(msg.title, msg.content)
   })
   ipcMain.on('login', () => {
     winRef.mainWindow && winRef.mainWindow.close()
