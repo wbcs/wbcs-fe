@@ -32,13 +32,13 @@
         />
         <button
           class="btn-get-authcode"
-          :disabled="isAlreadyGetAuthcode"
-          :class="isAlreadyGetAuthcode ? 'disabled' : 'not-disabled'"
+          :disabled="authcodeLock"
+          :class="authcodeLock ? 'disabled' : 'not-disabled'"
         >
-          <span v-if="!isAlreadyGetAuthcode" @click="getAuthcode">
+          <span v-if="!authcodeLock" @click="getAuthcode">
             {{ MULTI_LANG_TEXT.authcode_button }}
           </span>
-          <span v-if="isAlreadyGetAuthcode">{{ countDownTime }} s</span>
+          <span v-if="authcodeLock">{{ countDownTime }} s</span>
         </button>
       </div>
       <footer>
@@ -58,8 +58,12 @@
 <script>
 import * as Vue from 'vue'
 import { remote, ipcRenderer } from 'electron'
-import { fetchLogin } from '@/request'
+
+import * as Message from '@/utils/message'
+import { fetchLogin, fetchAuthcode } from '@/request'
 import MULTI_LANGUAGE from '@/config/lang'
+
+const REMOTE_STORE = remote.getGlobal('store')
 
 export default {
   name: 'login',
@@ -67,8 +71,8 @@ export default {
     return {
       phone: '',
       authcode: '',
-      isAlreadyGetAuthcode: false,
-      countDownTime: 60
+      countDownTime: 60,
+      authcodeLock: false,
     }
   },
   computed: {
@@ -84,7 +88,7 @@ export default {
       return isLegal
     },
     MULTI_LANG_TEXT() {
-      const currentLanguage = remote.getGlobal('store').get('lang')
+      const currentLanguage = REMOTE_STORE.get('lang')
       return MULTI_LANGUAGE[currentLanguage].login
     }
   },
@@ -94,34 +98,30 @@ export default {
       const prevVal = this[phoneOrAuthcode]
       this[phoneOrAuthcode] = prevVal.replace(/[^\d]/g, '')
     },
-    startCountDown() {
-      let timer = setInterval(() => {
+    startTiming() {
+      const timer = setInterval(() => {
         this.countDownTime--
-        if (this.countDownTime === 0) {
-          clearInterval(timer)
-          this.isAlreadyGetAuthcode = false
-          this.countDownTime = 60
-        }
+        if (this.countDownTime) return
+        clearInterval(timer)
+        this.authcodeLock = false
+        this.countDownTime = 60
       }, 1000)
     },
     showIllgalPhoneNumberNotification() {
-      ipcRenderer.send('show-error-dialog', {
-        title: this.MULTI_LANG_TEXT.error.title,
-        content: this.MULTI_LANG_TEXT.error.phone_error
+      const { error } = this.MULTI_LANG_TEXT
+      Message.error({
+        title: error.title,
+        message: error.phone_error,
       })
     },
     getAuthcode() {
-      if (this.isPhoneNumberValid) {
-        this.isAlreadyGetAuthcode = true
-        this.startCountDown()
-        this.requestAuthcode()
-      }
-    },
-    requestAuthcode() {
-      this.$socket.emit('get-authcode', this.phone, data => {
-        // alert(JSON.stringify(data));
-        alert(data.authcode)
-      })
+      if (!this.isPhoneNumberValid) return
+      this.authcodeLock = true
+      this.startTiming()
+      fetchAuthcode(this.phone)
+        .then(data => Message.info({
+          message: data.authcode
+        }))
     },
     login() {
       if (!this.isPhoneNumberValid) return
@@ -131,14 +131,15 @@ export default {
           Vue.prototype.$uid = data.uid
           ipcRenderer.send('save-user-data', {
             uid: data.uid,
-            lang: this.$electronStore.get('lang') || 'zh-CN'
+            lang: REMOTE_STORE.get('lang') || 'zh-CN'
           })
           ipcRenderer.send('login')
         })
         .catch(() => {
-          ipcRenderer.send('show-error-dialog', {
-            title: this.MULTI_LANG_TEXT.error.title,
-            content: this.MULTI_LANG_TEXT.error.login_error
+          const { error } = this.MULTI_LANG_TEXT
+          Message.error({
+            title: error.title,
+            content: error.login_error
           })
         })
     }
