@@ -59,7 +59,7 @@
 import * as Vue from 'vue'
 import { remote, ipcRenderer } from 'electron'
 
-import * as Message from '@/utils/message'
+import { Message } from '@/utils'
 import { fetchLogin, fetchAuthcode } from '@/request'
 import MULTI_LANGUAGE from '@/config/lang'
 
