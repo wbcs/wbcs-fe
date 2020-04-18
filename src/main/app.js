@@ -1,9 +1,12 @@
 const { app } = require('electron')
 const path = require('path')
+const { setMenu } = require('./menu')
 const { setQuit } = require('./utils')
 
 const setAppEventHandlers = (winRef, createWindow, openLoginWindow) => {
   app.on('ready', () => {
+    setMenu()
+
     const uid = global.store.get('uid')
     if (!uid) {
       openLoginWindow()
