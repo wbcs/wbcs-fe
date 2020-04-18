@@ -156,7 +156,10 @@ export default {
     getUserInfo() {
       this.$socket.emit('get-user-info', this.$uid, data => {
         this.avatar = data.avatar
-        this.$mergeObjects(this.userInfo, data)
+        this.userInfo = {
+          ...this.userInfo,
+          ...data
+        }
         this.$store.commit('SET_USERINFO', data)
       })
     },
