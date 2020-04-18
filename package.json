@@ -39,6 +39,7 @@
     "webpack-merge": "^4.2.2",
     "webpack-node-externals": "^1.7.2"
   },
+  "sideEffects": false,
   "scripts": {
     "build-mac": "electron-builder --mac --config build.yml",
     "dev": "NODE_ENV=development node scripts/dev.js",
