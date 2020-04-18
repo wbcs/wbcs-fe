@@ -1,6 +1,5 @@
 import electron from 'electron'
 import lang from '@/config/lang'
-import utils from '@/utils'
 
 const remote = electron.remote
 const uid = remote.getGlobal('store').get('uid')
@@ -9,15 +8,6 @@ const language = remote.getGlobal('store').get('lang')
 export default Vue => {
   // do not show the tips of the develop mode
   Vue.config.productionTip = false
-
-  /*
-   * @desc: bind some useful methods to the prototype of Vue
-   * @use: this.$[method]
-   */
-  Object.keys(utils).forEach(key => {
-    Vue.prototype[`$${key}`] = utils[key]
-  })
-
   /*
    * @desc: use electron
    * @use: this.$electron
