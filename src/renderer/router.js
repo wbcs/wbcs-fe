@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import Login from '@/views/login'
+
 import MenuOfChat from '@/views/chat/menu'
 import Chat from '@/components/content/chat-box'
 
@@ -9,7 +11,6 @@ import MenuOfGrouping from '@/views/grouping/menu'
 import MenuOfSetting from '@/views/setting/menu'
 import Setting from '@/views/setting'
 
-import Login from '@/components/login.vue'
 import Main from '@/components/main.vue'
 
 import MenuFunctions from '@/components/sidebar/functions'
