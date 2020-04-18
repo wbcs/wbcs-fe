@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import { capitalizeFirstLetter } from '@/utils'
+
 import LeftMessageBox from './message-boxes/left-message-box'
 import RightMessageBox from './message-boxes/right-message-box'
 
@@ -61,7 +63,7 @@ export default {
   },
   computed: {
     currentMessageType() {
-      return `${this.$capitalizeFirstLetter(this.message.type)}Message`
+      return `${capitalizeFirstLetter(this.message.type)}Message`
     },
     isGroup() {
       return this.message.to.startsWith('g')

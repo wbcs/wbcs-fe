@@ -103,6 +103,8 @@ import GroupMemberItem from '../contact-info/parts/parts/group-member-item'
 import { openChat } from '@/utils/chat'
 import fs from 'fs'
 
+import { generateUUID } from '@/utils'
+
 export default {
   name: 'chat-box',
   components: {
@@ -268,7 +270,7 @@ export default {
 
       this.$socket.emit('store-image', { base64Data }, data => {
         const message = {
-          uuid: this.$generateUUID(),
+          uuid: generateUUID(),
           from: this.$uid,
           to: this.currentChat[this.isGroup ? 'gid' : 'uid'],
           type: 'image',
@@ -296,7 +298,7 @@ export default {
       const handleClose = () => {
         if (type === 'call') {
           let message = {
-            uuid: this.$generateUUID(),
+            uuid: generateUUID(),
             from: this.$uid,
             to: this.currentChat.uid,
             type: 'video',
@@ -328,7 +330,7 @@ export default {
       if (!this.message) return
       const { nickname, avatar } = this.userInfo
       const message = {
-        uuid: this.$generateUUID(),
+        uuid: generateUUID(),
         from: this.$uid,
         to: this.currentChat[this.isGroup ? 'gid' : 'uid'],
         type: 'text',
