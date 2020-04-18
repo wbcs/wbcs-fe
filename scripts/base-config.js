@@ -19,10 +19,6 @@ chainConfig.output
   .filename('[name].[hash].js')
   .end()
 
-chainConfig.output
-  .publicPath('./')
-  .end()
-
 chainConfig.externals([nodeExternals()]).end()
 
 const lessLoaders = ExtractTextPlugin.extract({
