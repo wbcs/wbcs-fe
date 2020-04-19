@@ -5,23 +5,27 @@
       <div class="user-list">
         <search-bar />
         <div class="menu-content">
-          <keep-alive>
+          <router-view name="menus" />
+          <!-- <keep-alive>
             <router-view name="menus" />
-          </keep-alive>
+          </keep-alive> -->
         </div>
       </div>
     </div>
-    <keep-alive>
+
+    <router-view id="content" name="contents" />
+
+    <!-- <keep-alive>
       <router-view id="content" name="contents" />
-    </keep-alive>
+    </keep-alive> -->
   </div>
 </template>
 
 <script>
 import { ipcRenderer } from 'electron'
 import { socket } from '@/utils'
-import MenuBar from './menu-bar.vue'
-import SearchBar from './search-bar.vue'
+import MenuBar from '@/components/menu-bar.vue'
+import SearchBar from '@/components/search-bar.vue'
 
 export default {
   name: 'app',
