@@ -10,6 +10,6 @@ export const fetchLogin = params =>
   })
 
 export const fetchAuthcode = params =>
-  new Promise((resolve) => {
+  new Promise(resolve => {
     SOCKET.emit('get-authcode', params, resolve)
   })

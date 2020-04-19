@@ -25,6 +25,8 @@
 <script>
 // adapter.js is a shim of WebRTC to insulate apps from spec changes and prefix differences
 // https://github.com/webrtc/adapter
+import { remote } from 'electron'
+import { socket } from '@/utils'
 import 'webrtc-adapter'
 
 export default {
@@ -59,19 +61,19 @@ export default {
       this.initConnect()
 
       if (this.type === 'call') {
-        this.$socket.emit('request-video-chat', {
-          from: this.$uid,
+        socket.emit('request-video-chat', {
+          from: this.$store.state.uid,
           to: this.toUid
         })
 
-        this.$socket.on('video-chat-ready', () => {
+        socket.on('video-chat-ready').then(() => {
           this.createOffer()
         })
       } else if (this.type === 'pickUp') {
         this.createAnswer()
 
-        this.$socket.emit('video-chat-ready', {
-          from: this.$uid,
+        socket.emit('video-chat-ready', {
+          from: this.$store.state.uid,
           to: this.toUid
         })
       } else {
@@ -118,7 +120,7 @@ export default {
 
       this.pc = pc
 
-      this.$socket.on('rtc-candidate', ({ candidateSdp }) => {
+      socket.on('rtc-candidate').then(({ candidateSdp }) => {
         let candidate = new RTCIceCandidate({
           candidate: candidateSdp
         })
@@ -138,8 +140,8 @@ export default {
         if (event.candidate) {
           let candidateSdp = event.candidate.candidate
 
-          this.$socket.emit('rtc-candidate', {
-            from: this.$uid,
+          socket.emit('rtc-candidate', {
+            from: this.$store.state.uid,
             to: this.toUid,
             candidateSdp
           })
@@ -193,8 +195,8 @@ export default {
               console.log('pc setLocalDescription complete')
 
               // send offer to remote client
-              this.$socket.emit('rtc-offer', {
-                from: this.$uid,
+              socket.emit('rtc-offer', {
+                from: this.$store.state.uid,
                 to: this.toUid,
                 offerSdp: offer.sdp
               })
@@ -209,7 +211,7 @@ export default {
           console.error(`pc createOffer fail：${err.toString()}`)
         })
 
-      this.$socket.on('rtc-answer', ({ answerSdp }) => {
+      socket.on('rtc-answer').then(({ answerSdp }) => {
         let answer = new RTCSessionDescription({
           type: 'answer',
           sdp: answerSdp
@@ -232,7 +234,7 @@ export default {
     createAnswer() {
       let pc = this.pc
 
-      this.$socket.on('rtc-offer', ({ offerSdp }) => {
+      socket.on('rtc-offer').then(({ offerSdp }) => {
         let offer = new RTCSessionDescription({
           type: 'offer',
           sdp: offerSdp
@@ -265,8 +267,8 @@ export default {
                 console.log('pc setLocalDescription complete')
 
                 // send answer to remote client
-                this.$socket.emit('rtc-answer', {
-                  from: this.$uid,
+                socket.emit('rtc-answer', {
+                  from: this.$store.state.uid,
                   to: this.toUid,
                   answerSdp: answer.sdp
                 })
@@ -283,7 +285,7 @@ export default {
       })
     },
     hangUpFunc() {
-      let win = this.$electron.remote.getCurrentWindow()
+      let win = remote.getCurrentWindow()
 
       this.pc.close()
       win.close()

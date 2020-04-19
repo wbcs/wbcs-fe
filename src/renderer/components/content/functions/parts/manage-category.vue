@@ -12,7 +12,7 @@ export default {
   },
   computed: {
     contentTitle() {
-      return this.$lang.functions.manage_category.main_title
+      return this.$store.state.lang.functions.manage_category.main_title
     }
   },
   methods: {

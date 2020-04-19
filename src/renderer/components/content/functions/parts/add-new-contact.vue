@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { socket } from '@/utils'
 import searchResultItem from './parts/search-result-item'
 
 export default {
@@ -59,13 +60,13 @@ export default {
   },
   computed: {
     contentTitle() {
-      return this.$lang.functions.add_contact.main_title
+      return this.$store.state.lang.functions.add_contact.main_title
     },
     friendTitle() {
-      return `${this.$lang.functions.add_contact.friend} [${this.friendNum}]`
+      return `${this.$store.state.lang.functions.add_contact.friend} [${this.friendNum}]`
     },
     groupTitle() {
-      return `${this.$lang.functions.add_contact.group} [${this.groupNum}]`
+      return `${this.$store.state.lang.functions.add_contact.group} [${this.groupNum}]`
     }
   },
   methods: {
@@ -73,13 +74,12 @@ export default {
       if (!this.keyword) {
         return
       }
-      this.$socket.emit(
-        'search-contact',
-        {
-          uid: this.$uid,
+      socket
+        .emit('search-contact', {
+          uid: this.$store.state.uid,
           keyword: this.keyword
-        },
-        data => {
+        })
+        .then(data => {
           let friendArr = data.data.friendArr || []
           let groupArr = data.data.groupArr || []
 
@@ -87,8 +87,7 @@ export default {
           this.friendResultArr = friendArr
           this.groupNum = groupArr.length
           this.groupResultArr = groupArr
-        }
-      )
+        })
     }
   }
 }

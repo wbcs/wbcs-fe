@@ -3,10 +3,11 @@
 </template>
 
 <script>
+import { ipcRenderer, remote } from 'electron'
+
 export default {
   name: 'app',
   mounted() {
-    const { ipcRenderer } = this.$electron
     ipcRenderer.on('goto-video', ({ uid, type }) => {
       this.$router.push({
         path: '/video-chat',

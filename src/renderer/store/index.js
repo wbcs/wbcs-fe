@@ -1,5 +1,8 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import * as Vuex from 'vuex'
+import { remote } from 'electron'
+
+import MULTI_LANG_TEXT from '@/config/lang'
+const currentLanguage = remote.getGlobal('store').get('lang')
 
 const files = require.context('./modules', false, /\.js$/)
 const modules = {}
@@ -11,9 +14,17 @@ files.keys().forEach(key => {
   modules[key.replace(/(\.\/|\.js)/g, '')] = files(key).default
 })
 
-Vue.use(Vuex)
-
-export default new Vuex.Store({
-  modules,
-  strict: process.env.NODE_ENV !== 'production'
+export default Vuex.createStore({
+  state: {
+    currentLanguage,
+    lang: MULTI_LANG_TEXT[currentLanguage || 'zh-CN'],
+    uid: remote.getGlobal('store').get('uid')
+  },
+  mutations: {
+    setUid(state, uid) {
+      state.uid = uid
+    }
+  },
+  actions: {},
+  modules
 })

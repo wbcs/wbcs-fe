@@ -6,7 +6,7 @@
       </keep-alive>
     </div>
 
-    <div v-else-if="message.from === $uid">
+    <div v-else-if="message.from === uid">
       <right-message-box :message="message">
         <keep-alive>
           <component
@@ -67,6 +67,9 @@ export default {
     },
     isGroup() {
       return this.message.to.startsWith('g')
+    },
+    uid() {
+      return this.$store.state.uid
     }
   }
 }

@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import { socket } from '@/utils'
+
 export default {
   name: 'create-group',
   data() {
@@ -45,7 +47,7 @@ export default {
   },
   computed: {
     contentTitle() {
-      return this.$lang.functions.create_group.main_title
+      return this.$store.state.lang.functions.create_group.main_title
     }
   },
   methods: {
@@ -54,25 +56,23 @@ export default {
         alert('群组名称不得为空')
         return
       }
-      this.$socket.emit(
-        'create-group',
-        {
-          uid: this.$uid,
+      socket
+        .emit('create-group', {
+          uid: this.$store.state.uid,
           groupInfo: {
             // avatar: '',
             nickname: this.nickname,
             members: [
               {
-                uid: this.$uid,
+                uid: this.$store.state.uid,
                 flag: '群主'
               }
             ]
           }
-        },
-        data => {
+        })
+        .then(data => {
           alert(data.message)
-        }
-      )
+        })
     }
   }
 }

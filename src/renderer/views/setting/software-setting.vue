@@ -19,6 +19,9 @@
 </template>
 
 <script>
+import { ipcRenderer, remote } from 'electron'
+import { socket } from '@/utils'
+
 export default {
   name: 'software-setting',
   data() {
@@ -28,25 +31,25 @@ export default {
   },
   computed: {
     contentTitle() {
-      return this.$lang.settings.software_setting.main_title
+      return this.$store.state.lang.settings.software_setting.main_title
     },
     userInfo() {
       return this.$store.state.Main.userInfo
     }
   },
   created() {
-    this.currentLanguage = this.$electronStore.get('lang')
+    this.currentLanguage = remote.getGlobal('store').get('lang')
   },
   methods: {
     changeLanguage() {
-      this.$electronStore.set('lang', this.currentLanguage)
+      remote.getGlobal('store').set('lang', this.currentLanguage)
       location.reload()
     },
     logoutFunc() {
-      this.$socket.emit('logout', this.userInfo.uid, data => {
+      socket.emit('logout', this.userInfo.uid).then(data => {
         if (data.isLogoutSuccess) {
-          this.$socket.emit('user-disconnect', this.userInfo.uid)
-          this.$electron.ipcRenderer.send('logout')
+          socket.emit('user-disconnect', this.userInfo.uid)
+          ipcRenderer.send('logout')
         }
       })
     }

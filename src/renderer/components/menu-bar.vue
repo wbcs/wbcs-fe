@@ -41,9 +41,6 @@
 <script>
 export default {
   name: 'menu-bar',
-  data() {
-    return {}
-  },
   computed: {
     userInfo() {
       return this.$store.state.Main.userInfo
@@ -79,10 +76,12 @@ export default {
   justify-content: center;
   align-items: center;
   font-size: 20px;
-  color: #9298a8;
   cursor: pointer;
 
+  a,
   span {
+    color: #9298a8;
+    text-decoration: none;
     transition: all 0.3s;
     height: 100%;
     width: 100%;

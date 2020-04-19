@@ -30,19 +30,19 @@ export default {
         id: 1,
         flag: 'AddNewContact',
         icon: 'user-plus',
-        title: this.$lang.functions.add_contact.main_title
+        title: this.$store.state.lang.functions.add_contact.main_title
       },
       {
         id: 2,
         flag: 'CreateGroup',
         icon: 'plus',
-        title: this.$lang.functions.create_group.main_title
+        title: this.$store.state.lang.functions.create_group.main_title
       },
       {
         id: 3,
         flag: 'ManageCategory',
         icon: 'list-ul',
-        title: this.$lang.functions.manage_category.main_title
+        title: this.$store.state.lang.functions.manage_category.main_title
       }
     )
   },

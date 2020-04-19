@@ -74,7 +74,7 @@
       >
         <div class="sidebar-head">
           <span class="sidebar-head__title">
-            <span>{{ $lang.chat.groupMember }}</span>
+            <span>{{ $store.state.lang.chat.groupMember }}</span>
             <span style="font-size:12px;">[{{ memberArr.length }}]</span>
           </span>
           <span
@@ -97,13 +97,14 @@
 </template>
 
 <script>
+import { remote, ipcRenderer } from 'electron'
 import DefaultPage from '@/components/default-page'
 import MessageItem from './parts/message-item'
 import GroupMemberItem from '../contact-info/parts/parts/group-member-item'
 import { openChat } from '@/utils/chat'
 import fs from 'fs'
 
-import { generateUUID } from '@/utils'
+import { generateUUID, socket } from '@/utils'
 
 export default {
   name: 'chat-box',
@@ -127,13 +128,9 @@ export default {
       return this.$store.state.Main.userInfo
     },
     currentChat() {
-      // const { query } = this.$router.history.current
-      // return query
       return this.$store.state.Chat.currentChat
     },
     isGroup() {
-      // const { gid } = this.$router.history.current.query
-      // return gid
       return this.currentChat.gid ? true : false
     },
     memberArr() {
@@ -166,15 +163,17 @@ export default {
       })
     }
   },
-  created() {
+  mounted() {
     // TODO 时间比较紧，暂时在客户端这样分发消息
     // 这样做的局限是，无法全局监听消息，所以有新消息时，没法及时给出通知
-    this.$socket.on('new-message', message => {
+    socket.on('new-message').then(message => {
       const { nickname, avatar, content, from } = message
       const noti = {
         title: nickname || 'hehe',
         body: content.text,
-        icon: avatar || 'http://localhost:3000/upload/default/default-user-avatar.png'
+        icon:
+          avatar ||
+          'http://localhost:3000/upload/default/default-user-avatar.png'
       }
       const notification = new Notification(noti.title, noti)
       notification.onclick = () => {
@@ -192,7 +191,7 @@ export default {
       }
     })
 
-    this.$socket.on('request-video-chat', ({ from }) => {
+    socket.on('request-video-chat').then(({ from }) => {
       if (this.currentChat.uid === from) {
         this.openVideoChatDialog('pickUp')
       }
@@ -209,9 +208,9 @@ export default {
         let _id = this.currentChat[_idName]
         let queryObj = this.isGroup
           ? _id
-          : { uid: this.$uid, friendUid: _id }
+          : { uid: this.$store.state.uid, friendUid: _id }
 
-        this.$socket.emit(event, queryObj, data => {
+        socket.emit(event, queryObj).then(data => {
           this.contactInfo = data
           resolve()
         })
@@ -220,9 +219,9 @@ export default {
     getHistoryMessage() {
       let query = this.isGroup
         ? { gid: this.contactInfo.gid }
-        : { uid: this.$uid, friendUid: this.contactInfo.uid }
+        : { uid: this.$store.state.uid, friendUid: this.contactInfo.uid }
 
-      this.$socket.emit('get-history-message', query, data => {
+      socket.emit('get-history-message', query).then(data => {
         let messages = data.data
 
         this.messageArr.push(...messages)
@@ -243,7 +242,7 @@ export default {
     },
 
     openImageDialog() {
-      const dialog = this.$electron.remote.dialog
+      const dialog = remote.dialog
       const option = {
         properties: ['openFile', 'multiSelections'],
         filters: [
@@ -268,10 +267,10 @@ export default {
     sendImage(path) {
       const base64Data = fs.readFileSync(path, 'base64')
 
-      this.$socket.emit('store-image', { base64Data }, data => {
+      socket.emit('store-image', { base64Data }).then(data => {
         const message = {
           uuid: generateUUID(),
-          from: this.$uid,
+          from: this.$store.state.uid,
           to: this.currentChat[this.isGroup ? 'gid' : 'uid'],
           type: 'image',
           content: {
@@ -294,12 +293,11 @@ export default {
     },
 
     openVideoChatDialog(type) {
-      const { ipcRenderer } = this.$electron
       const handleClose = () => {
         if (type === 'call') {
           let message = {
             uuid: generateUUID(),
-            from: this.$uid,
+            from: this.$store.state.uid,
             to: this.currentChat.uid,
             type: 'video',
             content: {
@@ -312,7 +310,7 @@ export default {
       }
       ipcRenderer.send('open-window', {
         uid: this.contactInfo.uid,
-        type 
+        type
       })
       ipcRenderer.on('sub-closed', handleClose)
     },
@@ -331,7 +329,7 @@ export default {
       const { nickname, avatar } = this.userInfo
       const message = {
         uuid: generateUUID(),
-        from: this.$uid,
+        from: this.$store.state.uid,
         to: this.currentChat[this.isGroup ? 'gid' : 'uid'],
         type: 'text',
         nickname,
@@ -345,7 +343,7 @@ export default {
     },
 
     sendMessage(msg) {
-      this.$socket.emit('message', msg, res => console.log(res))
+      socket.emit('message', msg).then(res => console.log(res))
       this.messageArr.push(msg)
     }
   }

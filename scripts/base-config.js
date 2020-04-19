@@ -3,7 +3,7 @@ const webpack = require('webpack')
 const WebapckChain = require('webpack-chain')
 const nodeExternals = require('webpack-node-externals')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const {VueLoaderPlugin} = require('vue-loader')
 const { resolve } = require('./utils')
 
 const chainConfig = new WebapckChain()

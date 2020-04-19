@@ -1,5 +1,4 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
 import Login from '@/views/login'
 
@@ -20,63 +19,82 @@ import ContentFunctions from '@/components/content/functions'
 
 import VideoChat from '@/components/content/chat-box/special-pages/video-chat.vue'
 
-Vue.use(Router)
-
-export default new Router({
-  mode: 'history',
-  routes: [
-    {
-      path: '*',
-      redirect: '/login'
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: Login
-    },
-    {
-      path: '/app',
-      name: 'app',
-      component: Main,
-      children: [
-        {
-          path: 'chats',
-          name: 'chats',
-          components: {
-            menus: MenuOfChat,
-            contents: Chat
-          }
-        },
-        {
-          path: 'contacts',
-          name: 'contacts',
-          components: {
-            menus: MenuOfGrouping,
-            contents: ContentContactInfo
-          }
-        },
-        {
-          path: 'functions',
-          name: 'functions',
-          components: {
-            menus: MenuFunctions,
-            contents: ContentFunctions
-          }
-        },
-        {
-          path: 'settings',
-          name: 'settings',
-          components: {
-            menus: MenuOfSetting,
-            contents: Setting
-          }
+const routes = [
+  {
+    path: '/app',
+    name: 'app',
+    component: Main,
+    children: [
+      {
+        path: 'chats',
+        name: 'chats',
+        components: {
+          menus: MenuOfChat,
+          contents: Chat
         }
-      ]
-    },
-    {
-      path: '/video-chat',
-      name: 'video-chat',
-      component: VideoChat
-    }
-  ]
+      },
+      {
+        path: 'contacts',
+        name: 'contacts',
+        components: {
+          menus: MenuOfGrouping,
+          contents: ContentContactInfo
+        }
+      },
+      {
+        path: 'functions',
+        name: 'functions',
+        components: {
+          menus: MenuFunctions,
+          contents: ContentFunctions
+        }
+      },
+      {
+        path: 'settings',
+        name: 'settings',
+        components: {
+          menus: MenuOfSetting,
+          contents: Setting
+        }
+      }
+    ]
+  },
+  {
+    path: '/video-chat',
+    name: 'video-chat',
+    component: VideoChat
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
+  },
+  {
+    path: '/:catchAll(.*)',
+    redirect: { name: 'login' }
+  }
+]
+
+const router = createRouter({
+  history: createWebHistory('/'),
+  routes
 })
+
+export default router
+
+// const routes = [
+//   {
+//     path: "/",
+//     name: "Home",
+//     component: Home
+//   },
+//   {
+//     path: "/about",
+//     name: "About",
+//     // route level code-splitting
+//     // this generates a separate chunk (about.[hash].js) for this route
+//     // which is lazy-loaded when the route is visited.
+//     component: () =>
+//       import(/* webpackChunkName: "about" */ "../views/About.vue")
+//   }
+// ];

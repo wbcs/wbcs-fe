@@ -1,10 +1,10 @@
 <template>
-  <div id="app">
-    <div id="sidebar">
+  <div class="app">
+    <div class="sidebar">
       <menu-bar />
       <div class="user-list">
         <search-bar />
-        <div id="menu-content">
+        <div class="menu-content">
           <keep-alive>
             <router-view name="menus" />
           </keep-alive>
@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import { ipcRenderer } from 'electron'
+import { socket } from '@/utils'
 import MenuBar from './menu-bar.vue'
 import SearchBar from './search-bar.vue'
 
@@ -28,17 +30,17 @@ export default {
     SearchBar
   },
   created() {
-    this.$socket.emit('user-connect', this.$uid)
+    socket.emit('user-connect', this.$store.state.uid)
     this.getUserInfo()
     this.loadRecentChatList()
   },
   methods: {
     getUserInfo() {
-      if (!this.$uid) {
-        this.$electron.ipcRenderer.send('logout')
+      if (!this.$store.state.uid) {
+        ipcRenderer.send('logout')
         return
       }
-      this.$socket.emit('get-user-info', this.$uid, data => {
+      socket.emit('get-user-info', this.$store.state.uid).then(data => {
         this.$store.commit('SET_USERINFO', data)
       })
     },
@@ -50,14 +52,14 @@ export default {
 </script>
 
 <style scoped lang="less">
-#app {
+.app {
   display: flex;
   width: 100vw;
   height: 100vh;
   // background: #f6f9fd;
   overflow: hidden;
 }
-#sidebar {
+.sidebar {
   display: flex;
   border-right: 1px solid #d9dbde;
 }
@@ -66,8 +68,7 @@ export default {
   min-width: 200px;
   max-width: 300px;
 }
-#menu-content {
-  // height: 550px - 50px;
+.menu-content {
   overflow-y: auto;
 }
 #content {

@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import { socket } from '@/utils'
+
 export default {
   name: 'friend-info',
   props: {
@@ -62,10 +64,10 @@ export default {
   },
   computed: {
     infoTitles() {
-      return this.$lang.contacts.friend_info_titles
+      return this.$store.state.lang.contacts.friend_info_titles
     },
     defaultInfoContent() {
-      return this.$lang.contacts.info_content.default
+      return this.$store.state.lang.contacts.info_content.default
     }
   },
   watch: {
@@ -81,16 +83,14 @@ export default {
   },
   methods: {
     getFriendInfo() {
-      this.$socket.emit(
-        'get-friend-info',
-        {
-          uid: this.$uid,
+      socket
+        .emit('get-friend-info', {
+          uid: this.$store.state.uid,
           friendUid: this.id
-        },
-        data => {
+        })
+        .then(data => {
           this.friendInfo = data
-        }
-      )
+        })
     },
     readyToChat() {
       let uid = this.friendInfo.uid
@@ -104,13 +104,12 @@ export default {
       })
     },
     deleteFriend() {
-      this.$socket.emit(
-        'delete-friend',
-        {
-          uid: this.$uid,
+      socket
+        .emit('delete-friend', {
+          uid: this.$store.state.uid,
           friendUid: this.id
-        },
-        data => {
+        })
+        .then(data => {
           if (data.code === 0) {
             this.$store.commit('CURRENT_CONTACT', {
               isDefaultPage: true
@@ -118,8 +117,7 @@ export default {
           }
 
           alert(data.message)
-        }
-      )
+        })
     }
   }
 }

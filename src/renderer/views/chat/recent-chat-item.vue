@@ -7,7 +7,7 @@
     <img class="avatar" :src="contactInfo.avatar" alt="avatar" />
     <div class="detail">
       <div v-if="isGroup && isGroupDissolve" class="group-dissolve">
-        {{ $lang.sidebar.groupDissolve }}
+        {{ $store.state.lang.sidebar.groupDissolve }}
       </div>
       <div v-else>
         <div class="name">
