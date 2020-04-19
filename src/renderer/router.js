@@ -10,13 +10,12 @@ import MenuOfGrouping from '@/views/grouping/menu'
 import MenuOfSetting from '@/views/setting/menu'
 import Setting from '@/views/setting'
 
-import Main from '@/components/main.vue'
+import Main from '@/views/main.vue'
 
 import MenuFunctions from '@/components/sidebar/functions'
 
 import ContentContactInfo from '@/components/content/contact-info'
 import ContentFunctions from '@/components/content/functions'
-
 import VideoChat from '@/components/content/chat-box/special-pages/video-chat.vue'
 
 const routes = [
@@ -31,7 +30,7 @@ const routes = [
         components: {
           menus: MenuOfChat,
           contents: Chat
-        }
+        },
       },
       {
         path: 'contacts',
