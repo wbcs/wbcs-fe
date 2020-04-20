@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import { SOCKET } from '@/request'
+
 export default {
   name: 'left-message-box',
   props: {
@@ -38,7 +40,7 @@ export default {
       let event = 'get-user-info'
       let uid = this.message.from
 
-      this.$socket.emit(event, uid, data => {
+      SOCKET.emit(event, uid, data => {
         this.avatar = data.avatar
         this.nickname = data.nickname || data.uid
       })

@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { SOCKET } from '@/request'
 import CategoryItem from './category-item'
 
 export default {
@@ -46,7 +47,7 @@ export default {
       this.getCategoryList()
     },
     getCategoryList() {
-      this.$socket.emit('get-category-list', this.$uid, data => {
+      SOCKET.emit('get-category-list', this.$store.uid, data => {
         this.categoryArr = data
       })
     }

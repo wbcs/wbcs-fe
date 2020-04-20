@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import { SOCKET } from '@/request'
+
 export default {
   name: 'friend-info',
   props: {
@@ -62,10 +64,10 @@ export default {
   },
   computed: {
     infoTitles() {
-      return this.$lang.contacts.friend_info_titles
+      return this.$store.MULTI_LANG_TEXT.contacts.friend_info_titles
     },
     defaultInfoContent() {
-      return this.$lang.contacts.info_content.default
+      return this.$store.MULTI_LANG_TEXT.contacts.info_content.default
     }
   },
   watch: {
@@ -81,10 +83,10 @@ export default {
   },
   methods: {
     getFriendInfo() {
-      this.$socket.emit(
+      SOCKET.emit(
         'get-friend-info',
         {
-          uid: this.$uid,
+          uid: this.$store.uid,
           friendUid: this.id
         },
         data => {
@@ -104,10 +106,10 @@ export default {
       })
     },
     deleteFriend() {
-      this.$socket.emit(
+      SOCKET.emit(
         'delete-friend',
         {
-          uid: this.$uid,
+          uid: this.$store.uid,
           friendUid: this.id
         },
         data => {

@@ -8,7 +8,7 @@
           <img :src="avatar" />
         </div>
         <div class="input">
-          <label for="avatar-input">{{ $lang.form.changeAvatar }}</label>
+          <label for="avatar-input">{{ $store.MULTI_LANG_TEXT.form.changeAvatar }}</label>
           <input
             id="avatar-input"
             ref="avatarInput"
@@ -21,7 +21,7 @@
 
       <div class="form-item">
         <div class="label">
-          {{ $lang.contacts.friend_info_titles.nickname }}
+          {{ $store.MULTI_LANG_TEXT.contacts.friend_info_titles.nickname }}
         </div>
         <div class="label-form">
           <input type="text" v-model="userInfo.nickname" />
@@ -29,7 +29,7 @@
       </div>
       <div class="form-item">
         <div class="label">
-          {{ $lang.contacts.friend_info_titles.signature }}
+          {{ $store.MULTI_LANG_TEXT.contacts.friend_info_titles.signature }}
         </div>
         <div class="label-form">
           <input type="text" v-model="userInfo.signature" />
@@ -37,7 +37,7 @@
       </div>
       <div class="form-item">
         <div class="label">
-          {{ $lang.contacts.friend_info_titles.phone }}
+          {{ $store.MULTI_LANG_TEXT.contacts.friend_info_titles.phone }}
         </div>
         <div class="label-form">
           <input type="text" disabled v-model="userInfo.phone" />
@@ -45,7 +45,7 @@
       </div>
       <div class="form-item">
         <div class="label">
-          {{ $lang.contacts.friend_info_titles.gender }}
+          {{ $store.MULTI_LANG_TEXT.contacts.friend_info_titles.gender }}
         </div>
         <div class="label-form">
           <div>
@@ -70,7 +70,7 @@
       </div>
       <div class="form-item">
         <div class="label">
-          {{ $lang.contacts.friend_info_titles.age }}
+          {{ $store.MULTI_LANG_TEXT.contacts.friend_info_titles.age }}
         </div>
         <div class="label-form">
           <input class="age-input" type="text" v-model="userInfo.age" />
@@ -78,7 +78,7 @@
       </div>
       <div class="form-item">
         <div class="label">
-          {{ $lang.contacts.friend_info_titles.email }}
+          {{ $store.MULTI_LANG_TEXT.contacts.friend_info_titles.email }}
         </div>
         <div class="label-form">
           <input type="text" v-model="userInfo.email" />
@@ -86,7 +86,7 @@
       </div>
       <div class="form-item">
         <div class="label">
-          {{ $lang.contacts.friend_info_titles.birthTime }}
+          {{ $store.MULTI_LANG_TEXT.contacts.friend_info_titles.birthTime }}
         </div>
         <div class="label-form">
           <input type="text" v-model="userInfo.birthTime" />
@@ -94,7 +94,7 @@
       </div>
       <div class="form-item">
         <div class="label">
-          {{ $lang.contacts.friend_info_titles.address }}
+          {{ $store.MULTI_LANG_TEXT.contacts.friend_info_titles.address }}
         </div>
         <div class="label-form">
           <input type="text" v-model="userInfo.address" />
@@ -102,7 +102,7 @@
       </div>
       <div class="form-item">
         <div class="label">
-          {{ $lang.contacts.friend_info_titles.selfIntro }}
+          {{ $store.MULTI_LANG_TEXT.contacts.friend_info_titles.selfIntro }}
         </div>
         <div class="label-form">
           <textarea v-model="userInfo.selfIntro" maxlength="150">
@@ -112,7 +112,7 @@
       <div class="form-item form-item-save">
         <div class="label"></div>
         <div class="label-form">
-          <button @click="updateUserInfo">{{ $lang.form.save }}</button>
+          <button @click="updateUserInfo">{{ $store.MULTI_LANG_TEXT.form.save }}</button>
         </div>
       </div>
     </div>
@@ -120,6 +120,8 @@
 </template>
 
 <script>
+import { SOCKET } from '@/request'
+
 export default {
   name: 'profile-setting',
   data() {
@@ -140,10 +142,10 @@ export default {
   },
   computed: {
     contentTitle() {
-      return this.$lang.settings.user_profile_setting.main_title
+      return this.$store.MULTI_LANG_TEXT.settings.user_profile_setting.main_title
     },
     gender() {
-      return this.$lang.form.gender
+      return this.$store.MULTI_LANG_TEXT.form.gender
     }
   },
   created() {
@@ -154,7 +156,7 @@ export default {
   },
   methods: {
     getUserInfo() {
-      this.$socket.emit('get-user-info', this.$uid, data => {
+      SOCKET.emit('get-user-info', this.$store.uid, data => {
         this.avatar = data.avatar
         this.userInfo = {
           ...this.userInfo,
@@ -164,10 +166,10 @@ export default {
       })
     },
     updateUserInfo() {
-      this.$socket.emit(
+      SOCKET.emit(
         'update-user-info',
         {
-          uid: this.$uid,
+          uid: this.$store.uid,
           userInfo: this.userInfo
         },
         data => {
@@ -182,7 +184,7 @@ export default {
         const file = input.files[0]
 
         if (file.size > 500 * 1024) {
-          alert(this.$lang.error.imageMaxSize)
+          alert(this.$store.MULTI_LANG_TEXT.error.imageMaxSize)
           return
         }
 
@@ -193,10 +195,10 @@ export default {
         reader.onload = function() {
           const base64Data = this.result
 
-          that.$socket.emit(
+          SOCKET.emit(
             'update-user-avatar',
             {
-              uid: that.$uid,
+              uid: that.$store.state.uid,
               base64Data
             },
             data => {

@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import { SOCKET } from '@/request'
 import GroupMemberItem from '@/components/group-member-item'
 
 export default {
@@ -82,13 +83,13 @@ export default {
   },
   computed: {
     infoTitles() {
-      return this.$lang.contacts.group_info_titles
+      return this.$store.MULTI_LANG_TEXT.contacts.group_info_titles
     },
     defaultInfoContent() {
-      return this.$lang.contacts.info_content.default
+      return this.$store.MULTI_LANG_TEXT.contacts.info_content.default
     },
     isGroupOwner() {
-      return this.$uid === this.groupInfo.ownerUid
+      return this.$store.uid === this.groupInfo.ownerUid
     },
     isGroupActive() {
       return this.groupInfo.status === 'active'
@@ -107,7 +108,7 @@ export default {
   },
   methods: {
     getGroupInfo() {
-      this.$socket.emit('get-group-info', this.id, data => {
+      SOCKET.emit('get-group-info', this.id, data => {
         this.groupInfo = data
       })
     },
@@ -125,7 +126,7 @@ export default {
     leaveOrDissolveGroup() {
       let event = this.isGroupOwner ? 'dissolve-group' : 'leave-group'
 
-      this.$socket.emit(event, { uid: this.$uid, gid: this.id }, data => {
+      SOCKET.emit(event, { uid: this.$store.uid, gid: this.id }, data => {
         if (data.code === 0) {
           this.$store.commit('CURRENT_CONTACT', {
             isDefaultPage: true

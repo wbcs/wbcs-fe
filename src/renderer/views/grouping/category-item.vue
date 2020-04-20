@@ -11,10 +11,10 @@
       ></span>
 
       <span v-if="isGroupCategory">{{
-        $lang.contacts.category.my_groups
+        $store.MULTI_LANG_TEXT.contacts.category.my_groups
       }}</span>
       <span v-else-if="isDefaultCategory">{{
-        $lang.contacts.category.default_category
+        $store.MULTI_LANG_TEXT.contacts.category.default_category
       }}</span>
       <span v-else>{{ category.alias }}</span>
     </div>

@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { SOCKET } from '@/request'
 import searchResultItem from './search-result-item'
 
 export default {
@@ -59,13 +60,13 @@ export default {
   },
   computed: {
     contentTitle() {
-      return this.$lang.functions.add_contact.main_title
+      return this.$store.MULTI_LANG_TEXT.functions.add_contact.main_title
     },
     friendTitle() {
-      return `${this.$lang.functions.add_contact.friend} [${this.friendNum}]`
+      return `${this.$store.MULTI_LANG_TEXT.functions.add_contact.friend} [${this.friendNum}]`
     },
     groupTitle() {
-      return `${this.$lang.functions.add_contact.group} [${this.groupNum}]`
+      return `${this.$store.MULTI_LANG_TEXT.functions.add_contact.group} [${this.groupNum}]`
     }
   },
   methods: {
@@ -73,10 +74,10 @@ export default {
       if (!this.keyword) {
         return
       }
-      this.$socket.emit(
+      SOCKET.emit(
         'search-contact',
         {
-          uid: this.$uid,
+          uid: this.$store.uid,
           keyword: this.keyword
         },
         data => {

@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { SOCKET } from '@/request'
 import RecentChatHistory from './recent-chat-item.vue'
 
 export default {
@@ -64,10 +65,10 @@ export default {
         this.recentChatHistory = []
         return
       }
-      this.$socket.emit(
+      SOCKET.emit(
         'get-recent-contact-history',
         {
-          userId: this.$uid,
+          userId: this.$store.uid,
           chatIdList: this.recentChatIdArr
         },
         ({ data = [] }) => {

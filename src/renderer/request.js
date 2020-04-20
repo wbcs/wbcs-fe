@@ -1,5 +1,5 @@
 import { remote } from 'electron'
-const SOCKET = remote.getGlobal('socket')
+export const SOCKET = remote.getGlobal('socket')
 
 export const fetchLogin = params =>
   new Promise((resolve, reject) => {

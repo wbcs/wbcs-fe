@@ -13,7 +13,7 @@ export default {
   },
   computed: {
     contentTitle() {
-      return this.$lang.settings.system_message.main_title
+      return this.$store.MULTI_LANG_TEXT.settings.system_message.main_title
     }
   },
 }

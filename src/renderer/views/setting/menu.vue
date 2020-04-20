@@ -30,19 +30,19 @@ export default {
         id: 1,
         flag: 'ProfileSetting',
         icon: 'drivers-license-o',
-        title: this.$lang.settings.user_profile_setting.main_title
+        title: this.$store.MULTI_LANG_TEXT.settings.user_profile_setting.main_title
       },
       {
         id: 2,
         flag: 'SoftwareSetting',
         icon: 'cogs',
-        title: this.$lang.settings.software_setting.main_title
+        title: this.$store.MULTI_LANG_TEXT.settings.software_setting.main_title
       },
       {
         id: 3,
         flag: 'SystemMessage',
         icon: 'info',
-        title: this.$lang.settings.system_message.main_title
+        title: this.$store.MULTI_LANG_TEXT.settings.system_message.main_title
       }
     )
   },

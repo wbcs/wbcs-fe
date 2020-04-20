@@ -128,7 +128,7 @@ export default {
       const { phone, authcode } = this
       fetchLogin({ phone, authcode })
         .then(data => {
-          Vue.prototype.$uid = data.uid
+          this.$store.commit('setUid', data.uid)
           ipcRenderer.send('save-user-data', {
             uid: data.uid,
             lang: REMOTE_STORE.get('lang') || 'zh-CN'

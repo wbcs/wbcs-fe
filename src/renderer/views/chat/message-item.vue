@@ -6,7 +6,7 @@
       </keep-alive>
     </div>
 
-    <div v-else-if="message.from === $uid">
+    <div v-else-if="message.from === $store.state.uid">
       <right-message-box :message="message">
         <keep-alive>
           <component

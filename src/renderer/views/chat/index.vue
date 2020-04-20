@@ -74,7 +74,7 @@
       >
         <div class="sidebar-head">
           <span class="sidebar-head__title">
-            <span>{{ $lang.chat.groupMember }}</span>
+            <span>{{ $store.MULTI_LANG_TEXT.chat.groupMember }}</span>
             <span style="font-size:12px;">[{{ memberArr.length }}]</span>
           </span>
           <span
@@ -98,7 +98,9 @@
 
 <script>
 import * as fs from 'fs'
+import { remote, ipcRenderer } from 'electron'
 
+import { SOCKET } from '@/request'
 import { openChat, generateUUID } from '@/utils'
 import DefaultPage from '@/components/default-page'
 
@@ -165,7 +167,7 @@ export default {
   created() {
     // TODO 时间比较紧，暂时在客户端这样分发消息
     // 这样做的局限是，无法全局监听消息，所以有新消息时，没法及时给出通知
-    this.$socket.on('new-message', message => {
+    SOCKET.on('new-message', message => {
       const { nickname, avatar, content, from } = message
       const noti = {
         title: nickname || 'hehe',
@@ -188,7 +190,7 @@ export default {
       }
     })
 
-    this.$socket.on('request-video-chat', ({ from }) => {
+    SOCKET.on('request-video-chat', ({ from }) => {
       if (this.currentChat.uid === from) {
         this.openVideoChatDialog('pickUp')
       }
@@ -205,9 +207,9 @@ export default {
         let _id = this.currentChat[_idName]
         let queryObj = this.isGroup
           ? _id
-          : { uid: this.$uid, friendUid: _id }
+          : { uid: this.$store.uid, friendUid: _id }
 
-        this.$socket.emit(event, queryObj, data => {
+        SOCKET.emit(event, queryObj, data => {
           this.contactInfo = data
           resolve()
         })
@@ -216,9 +218,9 @@ export default {
     getHistoryMessage() {
       let query = this.isGroup
         ? { gid: this.contactInfo.gid }
-        : { uid: this.$uid, friendUid: this.contactInfo.uid }
+        : { uid: this.$store.uid, friendUid: this.contactInfo.uid }
 
-      this.$socket.emit('get-history-message', query, data => {
+      SOCKET.emit('get-history-message', query, data => {
         let messages = data.data
 
         this.messageArr.push(...messages)
@@ -239,7 +241,7 @@ export default {
     },
 
     openImageDialog() {
-      const dialog = this.$electron.remote.dialog
+      const { dialog } = remote
       const option = {
         properties: ['openFile', 'multiSelections'],
         filters: [
@@ -264,10 +266,10 @@ export default {
     sendImage(path) {
       const base64Data = fs.readFileSync(path, 'base64')
 
-      this.$socket.emit('store-image', { base64Data }, data => {
+      SOCKET.emit('store-image', { base64Data }, data => {
         const message = {
           uuid: generateUUID(),
-          from: this.$uid,
+          from: this.$store.uid,
           to: this.currentChat[this.isGroup ? 'gid' : 'uid'],
           type: 'image',
           content: {
@@ -290,12 +292,11 @@ export default {
     },
 
     openVideoChatDialog(type) {
-      const { ipcRenderer } = this.$electron
       const handleClose = () => {
         if (type === 'call') {
           let message = {
             uuid: generateUUID(),
-            from: this.$uid,
+            from: this.$store.uid,
             to: this.currentChat.uid,
             type: 'video',
             content: {
@@ -327,7 +328,7 @@ export default {
       const { nickname, avatar } = this.userInfo
       const message = {
         uuid: generateUUID(),
-        from: this.$uid,
+        from: this.$store.uid,
         to: this.currentChat[this.isGroup ? 'gid' : 'uid'],
         type: 'text',
         nickname,
@@ -341,7 +342,7 @@ export default {
     },
 
     sendMessage(msg) {
-      this.$socket.emit('message', msg, res => console.log(res))
+      SOCKET.emit('message', msg, res => console.log(res))
       this.messageArr.push(msg)
     }
   }
