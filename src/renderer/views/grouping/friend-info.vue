@@ -14,7 +14,7 @@
       </div>
 
       <div class="info-background">
-        <img src="../../../../assets/info-bg.png" alt="background" />
+        <img src="@/assets/info-bg.png" alt="background" />
       </div>
     </div>
 

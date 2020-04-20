@@ -1,6 +1,6 @@
 <template>
   <div class="default-page">
-    <img src="../assets/background.png" alt="background" />
+    <img src="@/assets/background.png" alt="background" />
   </div>
 </template>
 

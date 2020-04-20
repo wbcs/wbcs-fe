@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import CategoryItem from '@/components/category-item'
+import CategoryItem from './category-item'
 
 export default {
   name: 'menu-contacts',

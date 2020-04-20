@@ -10,7 +10,7 @@
       </div>
 
       <div class="info-background">
-        <img src="../../../../assets/info-bg.png" alt="background" />
+        <img src="@/assets/info-bg.png" alt="background" />
       </div>
     </div>
 
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import GroupMemberItem from './parts/group-member-item'
+import GroupMemberItem from '@/components/group-member-item'
 
 export default {
   name: 'group-info',

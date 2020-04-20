@@ -1,82 +1,80 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import * as Vue from 'vue'
+import * as Router from 'vue-router'
 
-import Login from '@/views/login'
-
+import Main from '@/views/main'
 import MenuOfChat from '@/views/chat/menu'
-import Chat from '@/components/content/chat-box'
-
+import Chat from '@/views/chat'
 import MenuOfGrouping from '@/views/grouping/menu'
-
+import Grouping from '@/views/grouping'
 import MenuOfSetting from '@/views/setting/menu'
 import Setting from '@/views/setting'
+import MenuFunctions from '@/views/functions/menu'
+import ContentFunctions from '@/views/functions'
 
-import Main from '@/components/main.vue'
-
-import MenuFunctions from '@/components/sidebar/functions'
-
-import ContentContactInfo from '@/components/content/contact-info'
-import ContentFunctions from '@/components/content/functions'
-
-import VideoChat from '@/components/content/chat-box/special-pages/video-chat.vue'
+import Login from '@/views/login'
+import VideoChat from '@/views/video-chat'
 
 Vue.use(Router)
 
-export default new Router({
-  mode: 'history',
-  routes: [
-    {
-      path: '*',
-      redirect: '/login'
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: Login
-    },
-    {
-      path: '/app',
-      name: 'app',
-      component: Main,
-      children: [
-        {
-          path: 'chats',
-          name: 'chats',
-          components: {
-            menus: MenuOfChat,
-            contents: Chat
-          }
-        },
-        {
-          path: 'contacts',
-          name: 'contacts',
-          components: {
-            menus: MenuOfGrouping,
-            contents: ContentContactInfo
-          }
-        },
-        {
-          path: 'functions',
-          name: 'functions',
-          components: {
-            menus: MenuFunctions,
-            contents: ContentFunctions
-          }
-        },
-        {
-          path: 'settings',
-          name: 'settings',
-          components: {
-            menus: MenuOfSetting,
-            contents: Setting
-          }
+const routes = [
+  {
+    path: '/app',
+    name: 'app',
+    component: Main,
+    children: [
+      {
+        path: 'chats',
+        name: 'chats',
+        components: {
+          menus: MenuOfChat,
+          contents: Chat
         }
-      ]
-    },
-    {
-      path: '/video-chat',
-      name: 'video-chat',
-      component: VideoChat
-    }
-  ]
+      },
+      {
+        path: 'contacts', // grouping
+        name: 'contacts',
+        components: {
+          menus: MenuOfGrouping,
+          contents: Grouping
+        }
+      },
+      {
+        path: 'functions',
+        name: 'functions',
+        components: {
+          menus: MenuFunctions,
+          contents: ContentFunctions
+        }
+      },
+      {
+        path: 'settings',
+        name: 'settings',
+        components: {
+          menus: MenuOfSetting,
+          contents: Setting
+        }
+      }
+    ]
+  },
+  {
+    path: '*',
+    redirect: { name: 'login' }
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
+  },
+  {
+    path: '/video-chat',
+    name: 'video-chat',
+    component: VideoChat
+  }
+]
+
+const router = new Router({
+  mode: 'history',
+  routes,
 })
+
+export default router
