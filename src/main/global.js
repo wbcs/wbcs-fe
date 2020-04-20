@@ -13,7 +13,7 @@ const loadGlobalVariable = () => {
   global.store = store
   global.socket = socket
   global.isAllowLogin = false
-  if (process.env.NODE_ENV !== 'development') {
+  if (!__DEV__) {
     global.__static = path
       .join(__dirname, '/static')
       .replace(/\\/g, '\\\\')

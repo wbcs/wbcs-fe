@@ -40,7 +40,7 @@ const setAppEventHandlers = (winRef, createWindow, openLoginWindow) => {
 
 const setIconInMAC = () => {
   if (process.platform !== 'darwin') return
-  app.dock.setIcon(path.join(__dirname, '../icon.png'))
+  app.dock.setIcon(path.join(__dirname, '../../public/icon.png'))
 }
 
 module.exports = {

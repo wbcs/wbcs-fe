@@ -68,7 +68,7 @@ export default {
       SOCKET.emit(
         'get-recent-contact-history',
         {
-          userId: this.$store.uid,
+          userId: this.$store.state.uid,
           chatIdList: this.recentChatIdArr
         },
         ({ data = [] }) => {

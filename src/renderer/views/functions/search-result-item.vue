@@ -40,7 +40,7 @@ export default {
       const prop = this.isGroup ? 'gid' : 'friendUid'
 
       let obj = {
-        uid: this.$store.uid,
+        uid: this.$store.state.uid,
         [prop]: this.isGroup ? this.data.gid : this.data.uid
       }
 

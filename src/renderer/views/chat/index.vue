@@ -74,7 +74,9 @@
       >
         <div class="sidebar-head">
           <span class="sidebar-head__title">
-            <span>{{ $store.MULTI_LANG_TEXT.chat.groupMember }}</span>
+            <span>{{
+              $store.state.MULTI_LANG_TEXT.chat.groupMember
+            }}</span>
             <span style="font-size:12px;">[{{ memberArr.length }}]</span>
           </span>
           <span
@@ -172,7 +174,9 @@ export default {
       const noti = {
         title: nickname || 'hehe',
         body: content.text,
-        icon: avatar || 'http://localhost:3000/upload/default/default-user-avatar.png'
+        icon:
+          avatar ||
+          'http://localhost:3000/upload/default/default-user-avatar.png'
       }
       const notification = new Notification(noti.title, noti)
       notification.onclick = () => {
@@ -207,7 +211,7 @@ export default {
         let _id = this.currentChat[_idName]
         let queryObj = this.isGroup
           ? _id
-          : { uid: this.$store.uid, friendUid: _id }
+          : { uid: this.$store.state.uid, friendUid: _id }
 
         SOCKET.emit(event, queryObj, data => {
           this.contactInfo = data
@@ -218,7 +222,7 @@ export default {
     getHistoryMessage() {
       let query = this.isGroup
         ? { gid: this.contactInfo.gid }
-        : { uid: this.$store.uid, friendUid: this.contactInfo.uid }
+        : { uid: this.$store.state.uid, friendUid: this.contactInfo.uid }
 
       SOCKET.emit('get-history-message', query, data => {
         let messages = data.data
@@ -269,7 +273,7 @@ export default {
       SOCKET.emit('store-image', { base64Data }, data => {
         const message = {
           uuid: generateUUID(),
-          from: this.$store.uid,
+          from: this.$store.state.uid,
           to: this.currentChat[this.isGroup ? 'gid' : 'uid'],
           type: 'image',
           content: {
@@ -296,7 +300,7 @@ export default {
         if (type === 'call') {
           let message = {
             uuid: generateUUID(),
-            from: this.$store.uid,
+            from: this.$store.state.uid,
             to: this.currentChat.uid,
             type: 'video',
             content: {
@@ -309,7 +313,7 @@ export default {
       }
       ipcRenderer.send('open-window', {
         uid: this.contactInfo.uid,
-        type 
+        type
       })
       ipcRenderer.on('sub-closed', handleClose)
     },
@@ -328,7 +332,7 @@ export default {
       const { nickname, avatar } = this.userInfo
       const message = {
         uuid: generateUUID(),
-        from: this.$store.uid,
+        from: this.$store.state.uid,
         to: this.currentChat[this.isGroup ? 'gid' : 'uid'],
         type: 'text',
         nickname,

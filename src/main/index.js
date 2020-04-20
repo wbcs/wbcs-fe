@@ -12,13 +12,12 @@ const openLoginWindow = () =>
     height: 400,
     minWidth: 280,
     minHeight: 400,
-    resizable: process.env.NODE_ENV === 'development'
+    resizable: __DEV__
   })
 const createWindow = (configObj = {}) => {
-  const WIN_URL =
-    process.env.NODE_ENV === 'development'
-      ? 'http://localhost:9080'
-      : `file://${path.resolve(__dirname, '../../dist/index.html')}`
+  const WIN_URL = __DEV__
+    ? 'http://localhost:9080'
+    : `file://${path.resolve(__dirname, '../../dist/index.html')}`
 
   winRef.mainWindow = new BrowserWindow({
     ...DEFAULT_CONFIG,

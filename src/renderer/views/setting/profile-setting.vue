@@ -8,7 +8,9 @@
           <img :src="avatar" />
         </div>
         <div class="input">
-          <label for="avatar-input">{{ $store.MULTI_LANG_TEXT.form.changeAvatar }}</label>
+          <label for="avatar-input">{{
+            $store.state.MULTI_LANG_TEXT.form.changeAvatar
+          }}</label>
           <input
             id="avatar-input"
             ref="avatarInput"
@@ -21,7 +23,10 @@
 
       <div class="form-item">
         <div class="label">
-          {{ $store.MULTI_LANG_TEXT.contacts.friend_info_titles.nickname }}
+          {{
+            $store.state.MULTI_LANG_TEXT.contacts.friend_info_titles
+              .nickname
+          }}
         </div>
         <div class="label-form">
           <input type="text" v-model="userInfo.nickname" />
@@ -29,7 +34,10 @@
       </div>
       <div class="form-item">
         <div class="label">
-          {{ $store.MULTI_LANG_TEXT.contacts.friend_info_titles.signature }}
+          {{
+            $store.state.MULTI_LANG_TEXT.contacts.friend_info_titles
+              .signature
+          }}
         </div>
         <div class="label-form">
           <input type="text" v-model="userInfo.signature" />
@@ -37,7 +45,9 @@
       </div>
       <div class="form-item">
         <div class="label">
-          {{ $store.MULTI_LANG_TEXT.contacts.friend_info_titles.phone }}
+          {{
+            $store.state.MULTI_LANG_TEXT.contacts.friend_info_titles.phone
+          }}
         </div>
         <div class="label-form">
           <input type="text" disabled v-model="userInfo.phone" />
@@ -45,7 +55,9 @@
       </div>
       <div class="form-item">
         <div class="label">
-          {{ $store.MULTI_LANG_TEXT.contacts.friend_info_titles.gender }}
+          {{
+            $store.state.MULTI_LANG_TEXT.contacts.friend_info_titles.gender
+          }}
         </div>
         <div class="label-form">
           <div>
@@ -70,7 +82,9 @@
       </div>
       <div class="form-item">
         <div class="label">
-          {{ $store.MULTI_LANG_TEXT.contacts.friend_info_titles.age }}
+          {{
+            $store.state.MULTI_LANG_TEXT.contacts.friend_info_titles.age
+          }}
         </div>
         <div class="label-form">
           <input class="age-input" type="text" v-model="userInfo.age" />
@@ -78,7 +92,9 @@
       </div>
       <div class="form-item">
         <div class="label">
-          {{ $store.MULTI_LANG_TEXT.contacts.friend_info_titles.email }}
+          {{
+            $store.state.MULTI_LANG_TEXT.contacts.friend_info_titles.email
+          }}
         </div>
         <div class="label-form">
           <input type="text" v-model="userInfo.email" />
@@ -86,7 +102,10 @@
       </div>
       <div class="form-item">
         <div class="label">
-          {{ $store.MULTI_LANG_TEXT.contacts.friend_info_titles.birthTime }}
+          {{
+            $store.state.MULTI_LANG_TEXT.contacts.friend_info_titles
+              .birthTime
+          }}
         </div>
         <div class="label-form">
           <input type="text" v-model="userInfo.birthTime" />
@@ -94,7 +113,10 @@
       </div>
       <div class="form-item">
         <div class="label">
-          {{ $store.MULTI_LANG_TEXT.contacts.friend_info_titles.address }}
+          {{
+            $store.state.MULTI_LANG_TEXT.contacts.friend_info_titles
+              .address
+          }}
         </div>
         <div class="label-form">
           <input type="text" v-model="userInfo.address" />
@@ -102,7 +124,10 @@
       </div>
       <div class="form-item">
         <div class="label">
-          {{ $store.MULTI_LANG_TEXT.contacts.friend_info_titles.selfIntro }}
+          {{
+            $store.state.MULTI_LANG_TEXT.contacts.friend_info_titles
+              .selfIntro
+          }}
         </div>
         <div class="label-form">
           <textarea v-model="userInfo.selfIntro" maxlength="150">
@@ -112,7 +137,9 @@
       <div class="form-item form-item-save">
         <div class="label"></div>
         <div class="label-form">
-          <button @click="updateUserInfo">{{ $store.MULTI_LANG_TEXT.form.save }}</button>
+          <button @click="updateUserInfo">
+            {{ $store.state.MULTI_LANG_TEXT.form.save }}
+          </button>
         </div>
       </div>
     </div>
@@ -142,10 +169,11 @@ export default {
   },
   computed: {
     contentTitle() {
-      return this.$store.MULTI_LANG_TEXT.settings.user_profile_setting.main_title
+      return this.$store.state.MULTI_LANG_TEXT.settings
+        .user_profile_setting.main_title
     },
     gender() {
-      return this.$store.MULTI_LANG_TEXT.form.gender
+      return this.$store.state.MULTI_LANG_TEXT.form.gender
     }
   },
   created() {
@@ -156,7 +184,7 @@ export default {
   },
   methods: {
     getUserInfo() {
-      SOCKET.emit('get-user-info', this.$store.uid, data => {
+      SOCKET.emit('get-user-info', this.$store.state.uid, data => {
         this.avatar = data.avatar
         this.userInfo = {
           ...this.userInfo,
@@ -169,7 +197,7 @@ export default {
       SOCKET.emit(
         'update-user-info',
         {
-          uid: this.$store.uid,
+          uid: this.$store.state.uid,
           userInfo: this.userInfo
         },
         data => {
@@ -184,7 +212,7 @@ export default {
         const file = input.files[0]
 
         if (file.size > 500 * 1024) {
-          alert(this.$store.MULTI_LANG_TEXT.error.imageMaxSize)
+          alert(this.$store.state.MULTI_LANG_TEXT.error.imageMaxSize)
           return
         }
 

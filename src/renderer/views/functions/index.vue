@@ -28,7 +28,12 @@ export default {
   },
   watch: {
     currentFunction() {
-      if (!['AddNewContact', 'CreateGroup', 'ManageCategory'].includes(this.currentFunction)) return
+      if (
+        !['AddNewContact', 'CreateGroup', 'ManageCategory'].includes(
+          this.currentFunction
+        )
+      )
+        return
       this.currentComponent = this.currentFunction
     }
   }

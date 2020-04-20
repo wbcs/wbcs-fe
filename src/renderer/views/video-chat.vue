@@ -62,7 +62,7 @@ export default {
 
       if (this.type === 'call') {
         SOCKET.emit('request-video-chat', {
-          from: this.$store.uid,
+          from: this.$store.state.uid,
           to: this.toUid
         })
 
@@ -73,7 +73,7 @@ export default {
         this.createAnswer()
 
         SOCKET.emit('video-chat-ready', {
-          from: this.$store.uid,
+          from: this.$store.state.uid,
           to: this.toUid
         })
       } else {
@@ -141,7 +141,7 @@ export default {
           let candidateSdp = event.candidate.candidate
 
           SOCKET.emit('rtc-candidate', {
-            from: this.$store.uid,
+            from: this.$store.state.uid,
             to: this.toUid,
             candidateSdp
           })
@@ -196,7 +196,7 @@ export default {
 
               // send offer to remote client
               SOCKET.emit('rtc-offer', {
-                from: this.$store.uid,
+                from: this.$store.state.uid,
                 to: this.toUid,
                 offerSdp: offer.sdp
               })
@@ -268,7 +268,7 @@ export default {
 
                 // send answer to remote client
                 SOCKET.emit('rtc-answer', {
-                  from: this.$store.uid,
+                  from: this.$store.state.uid,
                   to: this.toUid,
                   answerSdp: answer.sdp
                 })

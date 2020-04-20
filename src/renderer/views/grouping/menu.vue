@@ -47,7 +47,7 @@ export default {
       this.getCategoryList()
     },
     getCategoryList() {
-      SOCKET.emit('get-category-list', this.$store.uid, data => {
+      SOCKET.emit('get-category-list', this.$store.state.uid, data => {
         this.categoryArr = data
       })
     }

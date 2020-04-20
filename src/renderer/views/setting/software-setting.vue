@@ -31,18 +31,19 @@ export default {
   },
   computed: {
     contentTitle() {
-      return this.$store.MULTI_LANG_TEXT.settings.software_setting.main_title
+      return this.$store.state.MULTI_LANG_TEXT.settings.software_setting
+        .main_title
     },
     userInfo() {
       return this.$store.state.main.userInfo
     }
   },
   created() {
-    this.currentLanguage = this.$store.remoteStore.get('lang')
+    this.currentLanguage = this.$store.state.REMOTE_STORE.get('lang')
   },
   methods: {
     changeLanguage() {
-      this.$store.remoteStore.set('lang', this.currentLanguage)
+      this.$store.state.REMOTE_STORE.set('lang', this.currentLanguage)
       location.reload()
     },
     logoutFunc() {

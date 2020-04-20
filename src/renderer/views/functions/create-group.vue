@@ -47,7 +47,8 @@ export default {
   },
   computed: {
     contentTitle() {
-      return this.$store.MULTI_LANG_TEXT.functions.create_group.main_title
+      return this.$store.state.MULTI_LANG_TEXT.functions.create_group
+        .main_title
     }
   },
   methods: {
@@ -59,13 +60,13 @@ export default {
       SOCKET.emit(
         'create-group',
         {
-          uid: this.$store.uid,
+          uid: this.$store.state.uid,
           groupInfo: {
             // avatar: '',
             nickname: this.nickname,
             members: [
               {
-                uid: this.$store.uid,
+                uid: this.$store.state.uid,
                 flag: '群主'
               }
             ]

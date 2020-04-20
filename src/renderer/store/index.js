@@ -9,16 +9,16 @@ import main from './main'
 import grouping from './grouping'
 import functions from './functions'
 
-const remoteStore = remote.getGlobal('store')
-const language = remoteStore.get('lang')
+const REMOTE_STORE = remote.getGlobal('store')
+const language = REMOTE_STORE.get('lang')
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    uid: REMOTE_STORE.get('uid'),
     language,
-    remoteStore,
-    uid: remoteStore.get('uid') || '',
+    REMOTE_STORE,
     MULTI_LANG_TEXT: MULTI_LANG_TEXT[language || 'zh-CN']
   },
   mutations: {
@@ -32,5 +32,5 @@ export default new Vuex.Store({
     grouping,
     functions
   },
-  strict: process.env.NODE_ENV !== 'production'
+  strict: __DEV__
 })

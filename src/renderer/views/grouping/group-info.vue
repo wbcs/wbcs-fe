@@ -83,13 +83,14 @@ export default {
   },
   computed: {
     infoTitles() {
-      return this.$store.MULTI_LANG_TEXT.contacts.group_info_titles
+      return this.$store.state.MULTI_LANG_TEXT.contacts.group_info_titles
     },
     defaultInfoContent() {
-      return this.$store.MULTI_LANG_TEXT.contacts.info_content.default
+      return this.$store.state.MULTI_LANG_TEXT.contacts.info_content
+        .default
     },
     isGroupOwner() {
-      return this.$store.uid === this.groupInfo.ownerUid
+      return this.$store.state.uid === this.groupInfo.ownerUid
     },
     isGroupActive() {
       return this.groupInfo.status === 'active'
@@ -126,15 +127,19 @@ export default {
     leaveOrDissolveGroup() {
       let event = this.isGroupOwner ? 'dissolve-group' : 'leave-group'
 
-      SOCKET.emit(event, { uid: this.$store.uid, gid: this.id }, data => {
-        if (data.code === 0) {
-          this.$store.commit('CURRENT_CONTACT', {
-            isDefaultPage: true
-          })
-        }
+      SOCKET.emit(
+        event,
+        { uid: this.$store.state.uid, gid: this.id },
+        data => {
+          if (data.code === 0) {
+            this.$store.commit('CURRENT_CONTACT', {
+              isDefaultPage: true
+            })
+          }
 
-        alert(data.message)
-      })
+          alert(data.message)
+        }
+      )
     }
   }
 }

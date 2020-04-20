@@ -13,9 +13,10 @@ export default {
   },
   computed: {
     contentTitle() {
-      return this.$store.MULTI_LANG_TEXT.settings.system_message.main_title
+      return this.$store.state.MULTI_LANG_TEXT.settings.system_message
+        .main_title
     }
-  },
+  }
 }
 </script>
 

@@ -29,7 +29,6 @@ export default {
 
 <style lang="less">
 .group-member-item {
-  border: 1px solid red;
   position: relative;
   display: inline-block;
   width: 230px;

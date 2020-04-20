@@ -3,10 +3,9 @@ const { ipcMain, BrowserWindow } = require('electron')
 
 const openVideoWindow = (winRef, data) => {
   const { uid, type } = data
-  const WIN_URL =
-    process.env.NODE_ENV === 'development'
-      ? `http://localhost:9080/video-chat?to=${uid}&type=${type}`
-      : `file://${path.resolve(__dirname, '../../dist/index.html')}`
+  const WIN_URL = __DEV__
+    ? `http://localhost:9080/video-chat?to=${uid}&type=${type}`
+    : `file://${path.resolve(__dirname, '../../dist/index.html')}`
 
   let subWindow = new BrowserWindow({
     width: 600,
@@ -18,7 +17,7 @@ const openVideoWindow = (winRef, data) => {
     webPreferences: {
       nodeIntegration: true,
       webSecurity: true
-    },
+    }
   })
   subWindow.on('closed', () => {
     subWindow = null

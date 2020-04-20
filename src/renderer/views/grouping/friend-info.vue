@@ -64,10 +64,11 @@ export default {
   },
   computed: {
     infoTitles() {
-      return this.$store.MULTI_LANG_TEXT.contacts.friend_info_titles
+      return this.$store.state.MULTI_LANG_TEXT.contacts.friend_info_titles
     },
     defaultInfoContent() {
-      return this.$store.MULTI_LANG_TEXT.contacts.info_content.default
+      return this.$store.state.MULTI_LANG_TEXT.contacts.info_content
+        .default
     }
   },
   watch: {
@@ -86,7 +87,7 @@ export default {
       SOCKET.emit(
         'get-friend-info',
         {
-          uid: this.$store.uid,
+          uid: this.$store.state.uid,
           friendUid: this.id
         },
         data => {
@@ -109,7 +110,7 @@ export default {
       SOCKET.emit(
         'delete-friend',
         {
-          uid: this.$store.uid,
+          uid: this.$store.state.uid,
           friendUid: this.id
         },
         data => {

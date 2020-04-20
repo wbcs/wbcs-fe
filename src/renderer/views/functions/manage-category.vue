@@ -13,7 +13,8 @@ export default {
   },
   computed: {
     contentTitle() {
-      return this.$store.MULTI_LANG_TEXT.functions.manage_category.main_title
+      return this.$store.state.MULTI_LANG_TEXT.functions.manage_category
+        .main_title
     }
   },
   methods: {

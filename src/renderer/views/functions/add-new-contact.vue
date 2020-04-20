@@ -60,13 +60,14 @@ export default {
   },
   computed: {
     contentTitle() {
-      return this.$store.MULTI_LANG_TEXT.functions.add_contact.main_title
+      return this.$store.state.MULTI_LANG_TEXT.functions.add_contact
+        .main_title
     },
     friendTitle() {
-      return `${this.$store.MULTI_LANG_TEXT.functions.add_contact.friend} [${this.friendNum}]`
+      return `${this.$store.state.MULTI_LANG_TEXT.functions.add_contact.friend} [${this.friendNum}]`
     },
     groupTitle() {
-      return `${this.$store.MULTI_LANG_TEXT.functions.add_contact.group} [${this.groupNum}]`
+      return `${this.$store.state.MULTI_LANG_TEXT.functions.add_contact.group} [${this.groupNum}]`
     }
   },
   methods: {
@@ -77,7 +78,7 @@ export default {
       SOCKET.emit(
         'search-contact',
         {
-          uid: this.$store.uid,
+          uid: this.$store.state.uid,
           keyword: this.keyword
         },
         data => {

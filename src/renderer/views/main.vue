@@ -31,17 +31,17 @@ export default {
     Search
   },
   created() {
-    SOCKET.emit('user-connect', this.$store.uid)
+    SOCKET.emit('user-connect', this.$store.state.uid)
     this.getUserInfo()
     this.loadRecentChatList()
   },
   methods: {
     getUserInfo() {
-      if (!this.$store.uid) {
+      if (!this.$store.state.uid) {
         ipcRenderer.send('logout')
         return
       }
-      SOCKET.emit('get-user-info', this.$store.uid, data => {
+      SOCKET.emit('get-user-info', this.$store.state.uid, data => {
         this.$store.commit('SET_USERINFO', data)
       })
     },

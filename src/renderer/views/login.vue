@@ -72,7 +72,7 @@ export default {
       phone: '',
       authcode: '',
       countDownTime: 60,
-      authcodeLock: false,
+      authcodeLock: false
     }
   },
   computed: {
@@ -111,17 +111,18 @@ export default {
       const { error } = this.MULTI_LANG_TEXT
       Message.error({
         title: error.title,
-        message: error.phone_error,
+        message: error.phone_error
       })
     },
     getAuthcode() {
       if (!this.isPhoneNumberValid) return
       this.authcodeLock = true
       this.startTiming()
-      fetchAuthcode(this.phone)
-        .then(data => Message.info({
+      fetchAuthcode(this.phone).then(data =>
+        Message.info({
           message: data.authcode
-        }))
+        })
+      )
     },
     login() {
       if (!this.isPhoneNumberValid) return

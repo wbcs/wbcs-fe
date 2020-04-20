@@ -77,7 +77,6 @@ if (IS_MAC) {
   }
 }
 
-
 const setMenu = () => {
   // const icon = new Tray(path.join(__dirname, '../icon.png'));
   // icon.setToolTip('hello poetries');
@@ -87,14 +86,12 @@ const setMenu = () => {
   // icon.setContextMenu(menu)
 }
 
-
-
 // const setHehe = () => {
 //   const appIcon = new Tray(path.join(__dirname, '../temp.jpg'));
 // const menu = Menu.buildFromTemplate([
 //     {
 //         label: '设置',
-//         click: function() {} //打开相应页面 
+//         click: function() {} //打开相应页面
 //     },
 //     {
 //         label: '帮助',
@@ -106,7 +103,7 @@ const setMenu = () => {
 //     },
 //     {
 //         label: '退出',
-//         click: function() { 
+//         click: function() {
 //     }
 // }])
 // // 鼠标放上去提示信息

@@ -30,7 +30,7 @@ export default {
       this.placeholder = ''
     },
     handleBlur() {
-      this.placeholder = this.$store.MULTI_LANG_TEXT.sidebar.search
+      this.placeholder = this.$store.state.MULTI_LANG_TEXT.sidebar.search
     },
     handleEnter() {
       console.log('searching...')

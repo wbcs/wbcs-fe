@@ -6,7 +6,7 @@ export class Message {
   static info({ message }) {
     dialog.showMessageBox({
       type: 'info',
-      message,
+      message
     })
   }
   static error({ title, message }) {
