@@ -28,10 +28,10 @@ export default {
   },
   watch: {
     currentFunction() {
+      if (!['ProfileSetting', 'SoftwareSetting', 'SystemMessage'].includes(this.currentFunction)) return
       this.currentComponent = this.currentFunction
     }
   }
 }
 </script>
 
-<style lang="less"></style>

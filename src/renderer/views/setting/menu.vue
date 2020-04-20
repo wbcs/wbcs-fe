@@ -54,7 +54,3 @@ export default {
 }
 </script>
 
-<style lang="less">
-#menu-settings {
-}
-</style>

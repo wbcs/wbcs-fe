@@ -1,6 +1,7 @@
 <template>
   <div class="system-message">
-    <div class="head">{{ contentTitle }}</div>
+    <header class="head">{{ contentTitle }}</header>
+    TODO
   </div>
 </template>
 
@@ -15,11 +16,6 @@ export default {
       return this.$lang.settings.system_message.main_title
     }
   },
-  methods: {
-    chatFunc(e) {
-      console.log(e)
-    }
-  }
 }
 </script>
 

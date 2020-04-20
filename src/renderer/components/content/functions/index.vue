@@ -1,6 +1,6 @@
 <template>
   <keep-alive>
-    <component :is="currentComponent"></component>
+    <component :is="currentComponent" />
   </keep-alive>
 </template>
 
@@ -28,11 +28,9 @@ export default {
   },
   watch: {
     currentFunction() {
+      if (!['AddNewContact', 'CreateGroup', 'ManageCategory'].includes(this.currentFunction)) return
       this.currentComponent = this.currentFunction
     }
-  },
-  methods: {
-    //
   }
 }
 </script>

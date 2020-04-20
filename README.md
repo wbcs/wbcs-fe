@@ -14,7 +14,7 @@ npm run dev
 ## bug
 + [ ] `Notification` 重复
 + [ ] `Router` 有时不跳转
-+ [ ] 组件引用报错
++ [x] 组件引用报错
 
 ## feature
 + [ ] 粘贴板图片问题
