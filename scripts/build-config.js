@@ -17,7 +17,7 @@ chainConfig.module
   .options({
     extractCSS: true,
     loaders: {
-      less: 'vue-style-loader!css-loader!less-loader'
+      less: ['vue-style-loader', 'css-loader', 'less-loader']
     }
   })
   .end()
