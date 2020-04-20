@@ -23,7 +23,7 @@ export default {
   },
   computed: {
     currentContact() {
-      return this.$store.state.Contact.currentContact
+      return this.$store.state.grouping.currentContact
     }
   },
   watch: {

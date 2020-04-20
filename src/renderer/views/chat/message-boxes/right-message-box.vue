@@ -25,7 +25,7 @@ export default {
   },
   computed: {
     userInfo() {
-      return this.$store.state.Main.userInfo
+      return this.$store.state.main.userInfo
     },
     isGroup() {
       return this.message.to.startsWith('g')

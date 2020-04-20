@@ -58,7 +58,7 @@ export default {
   },
   computed: {
     currentCategoryId() {
-      return this.$store.state.Contact.currentCategoryId
+      return this.$store.state.grouping.currentCategoryId
     },
     isGroupCategory() {
       return this.category.cid === 0

@@ -23,7 +23,7 @@ export default {
   },
   computed: {
     currentFunction() {
-      return this.$store.state.Function.currentFunction
+      return this.$store.state.functions.currentFunction
     }
   },
   watch: {

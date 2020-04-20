@@ -31,7 +31,7 @@ export default {
       return this.$lang.settings.software_setting.main_title
     },
     userInfo() {
-      return this.$store.state.Main.userInfo
+      return this.$store.state.main.userInfo
     }
   },
   created() {

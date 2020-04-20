@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     recentChatIdArr() {
-      return this.$store.state.Chat.recentChatIdArr
+      return this.$store.state.chat.recentChatIdArr
     }
   },
   watch: {

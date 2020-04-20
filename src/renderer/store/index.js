@@ -1,19 +1,19 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import * as Vue from 'vue'
+import * as Vuex from 'vuex'
 
-const files = require.context('./modules', false, /\.js$/)
-const modules = {}
-
-files.keys().forEach(key => {
-  if (key === './index.js') {
-    return
-  }
-  modules[key.replace(/(\.\/|\.js)/g, '')] = files(key).default
-})
+import chat from './chat'
+import main from './main'
+import grouping from './grouping'
+import functions from './functions'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  modules,
+  modules: {
+    chat,
+    main,
+    grouping,
+    functions
+  },
   strict: process.env.NODE_ENV !== 'production'
 })

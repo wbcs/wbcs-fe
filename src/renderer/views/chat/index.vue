@@ -124,10 +124,10 @@ export default {
   },
   computed: {
     userInfo() {
-      return this.$store.state.Main.userInfo
+      return this.$store.state.main.userInfo
     },
     currentChat() {
-      return this.$store.state.Chat.currentChat
+      return this.$store.state.chat.currentChat
     },
     isGroup() {
       return this.currentChat.gid ? true : false
