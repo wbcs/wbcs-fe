@@ -1,9 +1,12 @@
 const { app } = require('electron')
 const path = require('path')
+const { setMenu } = require('./menu')
 const { setQuit } = require('./utils')
 
 const setAppEventHandlers = (winRef, createWindow, openLoginWindow) => {
   app.on('ready', () => {
+    setMenu()
+
     const uid = global.store.get('uid')
     if (!uid) {
       openLoginWindow()
@@ -37,7 +40,7 @@ const setAppEventHandlers = (winRef, createWindow, openLoginWindow) => {
 
 const setIconInMAC = () => {
   if (process.platform !== 'darwin') return
-  app.dock.setIcon(path.join(__dirname, '../icon.png'))
+  app.dock.setIcon(path.join(__dirname, '../../public/icon.png'))
 }
 
 module.exports = {

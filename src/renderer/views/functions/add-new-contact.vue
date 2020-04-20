@@ -41,7 +41,8 @@
 </template>
 
 <script>
-import searchResultItem from './parts/search-result-item'
+import { SOCKET } from '@/request'
+import searchResultItem from './search-result-item'
 
 export default {
   name: 'add-new-contact',
@@ -59,13 +60,14 @@ export default {
   },
   computed: {
     contentTitle() {
-      return this.$lang.functions.add_contact.main_title
+      return this.$store.state.MULTI_LANG_TEXT.functions.add_contact
+        .main_title
     },
     friendTitle() {
-      return `${this.$lang.functions.add_contact.friend} [${this.friendNum}]`
+      return `${this.$store.state.MULTI_LANG_TEXT.functions.add_contact.friend} [${this.friendNum}]`
     },
     groupTitle() {
-      return `${this.$lang.functions.add_contact.group} [${this.groupNum}]`
+      return `${this.$store.state.MULTI_LANG_TEXT.functions.add_contact.group} [${this.groupNum}]`
     }
   },
   methods: {
@@ -73,10 +75,10 @@ export default {
       if (!this.keyword) {
         return
       }
-      this.$socket.emit(
+      SOCKET.emit(
         'search-contact',
         {
-          uid: this.$uid,
+          uid: this.$store.state.uid,
           keyword: this.keyword
         },
         data => {
@@ -99,6 +101,7 @@ export default {
   .head {
     width: 100%;
     height: 50px;
+    line-height: 50px;
 
     padding: 0 0 0 20px;
     border-bottom: 1px solid #ddd;

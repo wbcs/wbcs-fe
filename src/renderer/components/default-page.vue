@@ -1,24 +1,16 @@
 <template>
   <div class="default-page">
-    <img src="../assets/background.png" alt="background" />
+    <img src="@/assets/background.png" alt="background" />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'default-page',
-  data() {
-    return {}
-  },
-  methods: {
-    chatFunc(e) {
-      console.log(e)
-    }
-  }
+  name: 'default-page'
 }
 </script>
 
-<style lang="less">
+<style scoped lang="less">
 .default-page {
   display: flex;
   justify-content: center;
@@ -28,10 +20,9 @@ export default {
 
   -webkit-app-region: drag;
   -webkit-user-select: none;
-
-  img {
-    width: 50%;
-    opacity: 0.8;
-  }
+}
+img {
+  width: 50%;
+  opacity: 0.8;
 }
 </style>

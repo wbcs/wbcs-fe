@@ -6,7 +6,7 @@
       </keep-alive>
     </div>
 
-    <div v-else-if="message.from === $uid">
+    <div v-else-if="message.from === $store.state.uid">
       <right-message-box :message="message">
         <keep-alive>
           <component
@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import { capitalizeFirstLetter } from '@/utils'
+
 import LeftMessageBox from './message-boxes/left-message-box'
 import RightMessageBox from './message-boxes/right-message-box'
 
@@ -61,7 +63,7 @@ export default {
   },
   computed: {
     currentMessageType() {
-      return `${this.$capitalizeFirstLetter(this.message.type)}Message`
+      return `${capitalizeFirstLetter(this.message.type)}Message`
     },
     isGroup() {
       return this.message.to.startsWith('g')

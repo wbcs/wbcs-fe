@@ -10,7 +10,8 @@
 </template>
 
 <script>
-import CategoryItem from '@/components/category-item'
+import { SOCKET } from '@/request'
+import CategoryItem from './category-item'
 
 export default {
   name: 'menu-contacts',
@@ -30,7 +31,7 @@ export default {
   },
   computed: {
     currentContact() {
-      return this.$store.state.Contact.currentContact
+      return this.$store.state.grouping.currentContact
     }
   },
   watch: {
@@ -46,7 +47,7 @@ export default {
       this.getCategoryList()
     },
     getCategoryList() {
-      this.$socket.emit('get-category-list', this.$uid, data => {
+      SOCKET.emit('get-category-list', this.$store.state.uid, data => {
         this.categoryArr = data
       })
     }

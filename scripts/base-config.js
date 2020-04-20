@@ -3,7 +3,7 @@ const webpack = require('webpack')
 const WebapckChain = require('webpack-chain')
 const nodeExternals = require('webpack-node-externals')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const { VueLoaderPlugin } = require('vue-loader')
 const { resolve } = require('./utils')
 
 const chainConfig = new WebapckChain()
@@ -61,6 +61,7 @@ chainConfig.module
   .options({
     limit: 1024,
     esModule: false,
+    publicPath: '/',
     name: 'images/[name].[hash:7].[ext]'
   })
   .end()
@@ -95,9 +96,10 @@ chainConfig
   .plugin('webpack-define-plugin')
   .use(webpack.DefinePlugin, [
     {
-      __static: `"${path
+      __DEV__: process.env.NODE_ENV === 'development',
+      __static: `${path
         .join(__dirname, '../static')
-        .replace(/\\/g, '\\\\')}"`
+        .replace(/\\/g, '\\\\')}`
     }
   ])
   .end()

@@ -1,6 +1,7 @@
 <template>
   <div class="system-message">
-    <div class="head">{{ contentTitle }}</div>
+    <header class="head">{{ contentTitle }}</header>
+    TODO
   </div>
 </template>
 
@@ -12,12 +13,8 @@ export default {
   },
   computed: {
     contentTitle() {
-      return this.$lang.settings.system_message.main_title
-    }
-  },
-  methods: {
-    chatFunc(e) {
-      console.log(e)
+      return this.$store.state.MULTI_LANG_TEXT.settings.system_message
+        .main_title
     }
   }
 }

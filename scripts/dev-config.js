@@ -9,6 +9,10 @@ const chainConfig = new WebapckChain()
 
 chainConfig.mode('development').end()
 
+chainConfig.output
+  .publicPath('/')
+  .end()
+
 chainConfig.module
   .rule('vue')
   .test(/\.vue$/)
@@ -16,9 +20,7 @@ chainConfig.module
   .loader('vue-loader')
   .options({
     extractCSS: false,
-    loaders: {
-      less: 'vue-style-loader!css-loader!less-loader'
-    }
+    loaders: ['vue-style-loader', 'css-loader', 'less-loader']
   })
   .end()
 
@@ -54,6 +56,7 @@ chainConfig
 chainConfig.devServer
   .set('port', 9080)
   .set('quiet', true)
+  .set('historyApiFallback', true)
   .end()
 
 const devConfig = merge(baseConfig, chainConfig.toConfig())

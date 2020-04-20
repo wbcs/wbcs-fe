@@ -11,10 +11,10 @@
       ></span>
 
       <span v-if="isGroupCategory">{{
-        $lang.contacts.category.my_groups
+        $store.state.MULTI_LANG_TEXT.contacts.category.my_groups
       }}</span>
       <span v-else-if="isDefaultCategory">{{
-        $lang.contacts.category.default_category
+        $store.state.MULTI_LANG_TEXT.contacts.category.default_category
       }}</span>
       <span v-else>{{ category.alias }}</span>
     </div>
@@ -58,7 +58,7 @@ export default {
   },
   computed: {
     currentCategoryId() {
-      return this.$store.state.Contact.currentCategoryId
+      return this.$store.state.grouping.currentCategoryId
     },
     isGroupCategory() {
       return this.category.cid === 0

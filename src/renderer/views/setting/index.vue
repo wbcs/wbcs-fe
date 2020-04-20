@@ -23,15 +23,19 @@ export default {
   },
   computed: {
     currentFunction() {
-      return this.$store.state.Function.currentFunction
+      return this.$store.state.functions.currentFunction
     }
   },
   watch: {
     currentFunction() {
+      if (
+        !['ProfileSetting', 'SoftwareSetting', 'SystemMessage'].includes(
+          this.currentFunction
+        )
+      )
+        return
       this.currentComponent = this.currentFunction
     }
   }
 }
 </script>
-
-<style lang="less"></style>

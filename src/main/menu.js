@@ -1,4 +1,5 @@
-const { Menu, BrowserWindow, dialog } = require('electron')
+const path = require('path')
+const { Menu, BrowserWindow, Tray, dialog } = require('electron')
 const IS_MAC = process.platform === 'darwin'
 
 const template = [
@@ -77,9 +78,39 @@ if (IS_MAC) {
 }
 
 const setMenu = () => {
+  // const icon = new Tray(path.join(__dirname, '../icon.png'));
+  // icon.setToolTip('hello poetries');
   const menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
+  // setHehe()
+  // icon.setContextMenu(menu)
 }
+
+// const setHehe = () => {
+//   const appIcon = new Tray(path.join(__dirname, '../temp.jpg'));
+// const menu = Menu.buildFromTemplate([
+//     {
+//         label: '设置',
+//         click: function() {} //打开相应页面
+//     },
+//     {
+//         label: '帮助',
+//         click: function() {}
+//     },
+//     {
+//         label: '关于',
+//         click: function() {}
+//     },
+//     {
+//         label: '退出',
+//         click: function() {
+//     }
+// }])
+// // 鼠标放上去提示信息
+// appIcon.setToolTip('hello poetries');
+// appIcon.setContextMenu(menu);
+
+// }
 
 module.exports = {
   setMenu

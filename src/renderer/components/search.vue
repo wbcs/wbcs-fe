@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: 'search-bar',
+  name: 'search',
   data() {
     return {
       keyword: '',
@@ -30,7 +30,7 @@ export default {
       this.placeholder = ''
     },
     handleBlur() {
-      this.placeholder = this.$lang.sidebar.search
+      this.placeholder = this.$store.state.MULTI_LANG_TEXT.sidebar.search
     },
     handleEnter() {
       console.log('searching...')

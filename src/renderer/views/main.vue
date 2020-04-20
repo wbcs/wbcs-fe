@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <div id="sidebar">
-      <menu-bar />
+      <Menu />
       <div class="user-list">
-        <search-bar />
+        <Search />
         <div id="menu-content">
           <keep-alive>
             <router-view name="menus" />
@@ -18,27 +18,30 @@
 </template>
 
 <script>
-import MenuBar from './menu-bar.vue'
-import SearchBar from './search-bar.vue'
+import { ipcRenderer } from 'electron'
+import { SOCKET } from '@/request'
+
+import Search from '@/components/search.vue'
+import Menu from './menu.vue'
 
 export default {
   name: 'app',
   components: {
-    MenuBar,
-    SearchBar
+    Menu,
+    Search
   },
   created() {
-    this.$socket.emit('user-connect', this.$uid)
+    SOCKET.emit('user-connect', this.$store.state.uid)
     this.getUserInfo()
     this.loadRecentChatList()
   },
   methods: {
     getUserInfo() {
-      if (!this.$uid) {
-        this.$electron.ipcRenderer.send('logout')
+      if (!this.$store.state.uid) {
+        ipcRenderer.send('logout')
         return
       }
-      this.$socket.emit('get-user-info', this.$uid, data => {
+      SOCKET.emit('get-user-info', this.$store.state.uid, data => {
         this.$store.commit('SET_USERINFO', data)
       })
     },

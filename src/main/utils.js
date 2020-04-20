@@ -15,7 +15,7 @@ const DEFAULT_CONFIG = {
     nodeIntegration: true,
     webSecurity: true
   },
-  icon: path.join(__dirname, '../icon.png')
+  icon: path.join(__dirname, '../../public/icon.png')
 }
 
 module.exports = {

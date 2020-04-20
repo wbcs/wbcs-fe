@@ -1,6 +1,7 @@
 <template>
   <div class="manage-category">
-    <div class="head">{{ contentTitle }}</div>
+    <header class="head">{{ contentTitle }}</header>
+    TODO
   </div>
 </template>
 
@@ -12,7 +13,8 @@ export default {
   },
   computed: {
     contentTitle() {
-      return this.$lang.functions.manage_category.main_title
+      return this.$store.state.MULTI_LANG_TEXT.functions.manage_category
+        .main_title
     }
   },
   methods: {
@@ -28,6 +30,7 @@ export default {
   .head {
     width: 100%;
     height: 50px;
+    line-height: 50px;
 
     padding: 0 0 0 20px;
     border-bottom: 1px solid #ddd;

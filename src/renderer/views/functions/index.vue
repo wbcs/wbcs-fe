@@ -1,13 +1,13 @@
 <template>
   <keep-alive>
-    <component :is="currentComponent"></component>
+    <component :is="currentComponent" />
   </keep-alive>
 </template>
 
 <script>
-import AddNewContact from './parts/add-new-contact'
-import CreateGroup from './parts/create-group'
-import ManageCategory from './parts/manage-category'
+import AddNewContact from './add-new-contact'
+import CreateGroup from './create-group'
+import ManageCategory from './manage-category'
 
 export default {
   name: 'content-functions',
@@ -23,16 +23,19 @@ export default {
   },
   computed: {
     currentFunction() {
-      return this.$store.state.Function.currentFunction
+      return this.$store.state.functions.currentFunction
     }
   },
   watch: {
     currentFunction() {
+      if (
+        !['AddNewContact', 'CreateGroup', 'ManageCategory'].includes(
+          this.currentFunction
+        )
+      )
+        return
       this.currentComponent = this.currentFunction
     }
-  },
-  methods: {
-    //
   }
 }
 </script>

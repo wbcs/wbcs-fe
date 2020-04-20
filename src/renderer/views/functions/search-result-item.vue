@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import { SOCKET } from '@/request'
+
 export default {
   name: 'search-result-item',
   props: {
@@ -38,11 +40,11 @@ export default {
       const prop = this.isGroup ? 'gid' : 'friendUid'
 
       let obj = {
-        uid: this.$uid,
+        uid: this.$store.state.uid,
         [prop]: this.isGroup ? this.data.gid : this.data.uid
       }
 
-      this.$socket.emit(event, obj, data => {
+      SOCKET.emit(event, obj, data => {
         if (data.code === 0) {
           this.iconStatus = 'icon-check'
           alert(data.message)

@@ -1,7 +1,6 @@
 const path = require('path')
 const { BrowserWindow } = require('electron')
 
-const { setMenu } = require('./menu')
 const { setIPCEventHandlers } = require('./ipc')
 const { setAppEventHandlers, setIconInMAC } = require('./app')
 const { loadGlobalVariable } = require('./global')
@@ -11,13 +10,14 @@ const openLoginWindow = () =>
   createWindow({
     width: 280,
     height: 400,
-    resizable: false
+    minWidth: 280,
+    minHeight: 400,
+    resizable: __DEV__
   })
 const createWindow = (configObj = {}) => {
-  const WIN_URL =
-    process.env.NODE_ENV === 'development'
-      ? 'http://localhost:9080'
-      : `file://${path.resolve(__dirname, '../../dist/index.html')}`
+  const WIN_URL = __DEV__
+    ? 'http://localhost:9080'
+    : `file://${path.resolve(__dirname, '../../dist/index.html')}`
 
   winRef.mainWindow = new BrowserWindow({
     ...DEFAULT_CONFIG,
@@ -42,4 +42,3 @@ const winRef = {
 loadGlobalVariable()
 setIPCEventHandlers(winRef, createWindow, openLoginWindow)
 setAppEventHandlers(winRef, createWindow, openLoginWindow)
-setMenu()

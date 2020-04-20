@@ -10,7 +10,7 @@
       </div>
 
       <div class="info-background">
-        <img src="../../../../assets/info-bg.png" alt="background" />
+        <img src="@/assets/info-bg.png" alt="background" />
       </div>
     </div>
 
@@ -62,7 +62,8 @@
 </template>
 
 <script>
-import GroupMemberItem from './parts/group-member-item'
+import { SOCKET } from '@/request'
+import GroupMemberItem from '@/components/group-member-item'
 
 export default {
   name: 'group-info',
@@ -82,13 +83,14 @@ export default {
   },
   computed: {
     infoTitles() {
-      return this.$lang.contacts.group_info_titles
+      return this.$store.state.MULTI_LANG_TEXT.contacts.group_info_titles
     },
     defaultInfoContent() {
-      return this.$lang.contacts.info_content.default
+      return this.$store.state.MULTI_LANG_TEXT.contacts.info_content
+        .default
     },
     isGroupOwner() {
-      return this.$uid === this.groupInfo.ownerUid
+      return this.$store.state.uid === this.groupInfo.ownerUid
     },
     isGroupActive() {
       return this.groupInfo.status === 'active'
@@ -107,7 +109,7 @@ export default {
   },
   methods: {
     getGroupInfo() {
-      this.$socket.emit('get-group-info', this.id, data => {
+      SOCKET.emit('get-group-info', this.id, data => {
         this.groupInfo = data
       })
     },
@@ -125,15 +127,19 @@ export default {
     leaveOrDissolveGroup() {
       let event = this.isGroupOwner ? 'dissolve-group' : 'leave-group'
 
-      this.$socket.emit(event, { uid: this.$uid, gid: this.id }, data => {
-        if (data.code === 0) {
-          this.$store.commit('CURRENT_CONTACT', {
-            isDefaultPage: true
-          })
-        }
+      SOCKET.emit(
+        event,
+        { uid: this.$store.state.uid, gid: this.id },
+        data => {
+          if (data.code === 0) {
+            this.$store.commit('CURRENT_CONTACT', {
+              isDefaultPage: true
+            })
+          }
 
-        alert(data.message)
-      })
+          alert(data.message)
+        }
+      )
     }
   }
 }
