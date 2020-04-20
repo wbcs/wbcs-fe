@@ -41,12 +41,10 @@
 <script>
 export default {
   name: 'menu-bar',
-  data() {
-    return {}
-  },
   computed: {
     userInfo() {
-      return this.$store.state.main.userInfo
+      const { main } = this.$store.state
+      return main.userInfo
     }
   }
 }

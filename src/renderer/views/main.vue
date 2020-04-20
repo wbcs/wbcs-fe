@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <div id="sidebar">
-      <menu-bar />
+      <Menu />
       <div class="user-list">
-        <search-bar />
+        <Search />
         <div id="menu-content">
           <keep-alive>
             <router-view name="menus" />
@@ -18,14 +18,14 @@
 </template>
 
 <script>
-import MenuBar from './menu-bar.vue'
-import SearchBar from './search-bar.vue'
+import Menu from './menu.vue'
+import Search from '@/components/search.vue'
 
 export default {
   name: 'app',
   components: {
-    MenuBar,
-    SearchBar
+    Menu,
+    Search
   },
   created() {
     this.$socket.emit('user-connect', this.$uid)

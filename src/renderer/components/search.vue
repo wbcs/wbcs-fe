@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: 'search-bar',
+  name: 'search',
   data() {
     return {
       keyword: '',
