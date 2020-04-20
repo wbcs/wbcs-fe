@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import searchResultItem from './parts/search-result-item'
+import searchResultItem from './search-result-item'
 
 export default {
   name: 'add-new-contact',

@@ -5,9 +5,9 @@
 </template>
 
 <script>
-import AddNewContact from './parts/add-new-contact'
-import CreateGroup from './parts/create-group'
-import ManageCategory from './parts/manage-category'
+import AddNewContact from './add-new-contact'
+import CreateGroup from './create-group'
+import ManageCategory from './manage-category'
 
 export default {
   name: 'content-functions',
