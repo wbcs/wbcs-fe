@@ -1,10 +1,12 @@
-const path = require('path')
 const webpack = require('webpack')
 const WebapckChain = require('webpack-chain')
 const nodeExternals = require('webpack-node-externals')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 const { resolve, useStylesLoader } = require('./utils')
+
+const __DEV__ = process.env.NODE_ENV === 'development'
 
 const chainConfig = new WebapckChain()
 
@@ -20,6 +22,17 @@ chainConfig.output
   .end()
 
 chainConfig.externals([nodeExternals()]).end()
+
+chainConfig.module
+  .rule('vue')
+  .test(/\.vue$/)
+  .use('vue-loader')
+  .loader('vue-loader')
+  .options({
+    extractCSS: !__DEV__,
+    loaders: ['vue-style-loader', 'css-loader', 'less-loader']
+  })
+  .end()
 
 ExtractTextPlugin.extract({
   fallback: 'style-loader',
@@ -79,10 +92,21 @@ chainConfig
   .plugin('webpack-define-plugin')
   .use(webpack.DefinePlugin, [
     {
-      __DEV__: process.env.NODE_ENV === 'development',
-      __static: `"${path
-        .join(__dirname, '../static')
-        .replace(/\\/g, '\\\\')}"`
+      __DEV__
+    }
+  ])
+  .end()
+
+chainConfig
+  .plugin('html-webpack-plugin')
+  .use(HtmlWebpackPlugin, [
+    {
+      template: resolve('../public/index.html'),
+      minify: {
+        collapseWhitespace: true,
+        removeComments: true
+      },
+      nodeModules: __DEV__ ? false : resolve('../node_modules')
     }
   ])
   .end()
