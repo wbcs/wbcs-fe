@@ -18,7 +18,7 @@ const openVideoWindow = (winRef, data) => {
     titleBarStyle: 'hidden',
     webPreferences: {
       nodeIntegration: true,
-      webSecurity: true
+      webSecurity: false
     }
   })
   subWindow.on('closed', () => {

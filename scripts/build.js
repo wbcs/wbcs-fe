@@ -6,7 +6,7 @@ const { log } = require('./utils')
 const buildElectron = async platform => {
   await execa(
     'electron-builder',
-    [`--${platform}`, '--config', 'build.yml'],
+    [`--${platform}`, '--config', 'electron-builder.yml'],
     { stdio: 'inherit' }
   )
   log.success('build electron success.')

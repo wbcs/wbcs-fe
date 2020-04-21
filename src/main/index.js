@@ -18,7 +18,7 @@ const openLoginWindow = () =>
 const createWindow = (configObj = {}) => {
   const WIN_URL = __DEV__
     ? 'http://localhost:9080'
-    : `file://${path.resolve(__dirname, '../../dist/index.html')}`
+    : `file://${path.resolve(__dirname, '../../dist/web/index.html')}`
 
   winRef.mainWindow = new BrowserWindow({
     ...DEFAULT_CONFIG,

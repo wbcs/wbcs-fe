@@ -6,6 +6,7 @@ const baseConfig = require('./base-config')
 const chainConfig = new WebapckChain()
 
 chainConfig.mode('development').end()
+chainConfig.devtool('inline-source-map').end()
 
 chainConfig.output.publicPath('/').end()
 
@@ -14,10 +15,8 @@ chainConfig
   .use(FriendlyErrorsWebpackPlugin, [
     {
       compilationSuccessInfo: {
-        messages: ['You application is running.'],
-        notes: [
-          'Some additional notes to be displayed upon successful compilation'
-        ]
+        messages: ['Your application is running.'],
+        notes: [`wbcs's github: https://github.com/wbcs`]
       },
       clearConsole: true
     }
@@ -26,6 +25,7 @@ chainConfig
 
 chainConfig.devServer
   .set('port', 9080)
+  .set('hot', true)
   .set('quiet', true)
   .set('historyApiFallback', true)
   .end()
