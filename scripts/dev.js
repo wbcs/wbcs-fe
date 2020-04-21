@@ -1,17 +1,16 @@
 const webpack = require('webpack')
-const chalk = require('chalk')
 const electron = require('electron')
 const { spawn } = require('child_process')
 const WebpackDevServer = require('webpack-dev-server')
 
 const config = require('./dev-config')
-const { resolve } = require('./utils')
+const { log, resolve } = require('./utils')
 
 const runElectron = () => {
   const elec = spawn(electron, [resolve('../src/main/index.js')])
   elec.on('close', process.exit)
-  elec.stdout.on('data', data => console.log(chalk.cyan(data.toString())))
-  elec.stderr.on('data', data => console.log(chalk.red(data.toString())))
+  elec.stdout.on('data', data => log.info(data.toString()))
+  elec.stderr.on('data', data => log.error(data.toString()))
 }
 
 let lock = false

@@ -1,10 +1,12 @@
-const path = require('path')
 const webpack = require('webpack')
 const WebapckChain = require('webpack-chain')
 const nodeExternals = require('webpack-node-externals')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 const { resolve } = require('./utils')
+
+const __DEV__ = process.env.NODE_ENV === 'development'
 
 const chainConfig = new WebapckChain()
 
@@ -15,43 +17,34 @@ chainConfig
   .end()
 
 chainConfig.output
-  .path(resolve('../dist'))
-  .filename('[name].[hash].js')
+  .path(resolve('../dist/web'))
+  .filename('js/[name].[hash:7].js')
   .end()
 
 chainConfig.externals([nodeExternals()]).end()
 
-const lessLoaders = ExtractTextPlugin.extract({
-  fallback: 'style-loader',
-  use: ['css-loader', 'less-loader']
-})
-const lessConfig = chainConfig.module.rule('less').test(/\.(less)$/)
+chainConfig.module
+  .rule('vue')
+  .test(/\.vue$/)
+  .use('vue-loader')
+  .loader('vue-loader')
+  .end()
 
-lessLoaders.reduce(
-  (conf, { loader, options }) =>
-    conf
-      .use(loader)
-      .loader(loader)
-      .options(options)
-      .end(),
-  lessConfig
-)
-
-const cssLoaders = ExtractTextPlugin.extract({
-  fallback: 'style-loader',
-  use: ['css-loader']
-})
-const cssConfig = chainConfig.module.rule('css').test(/\.(css)$/)
-
-cssLoaders.reduce(
-  (conf, { loader, options }) =>
-    conf
-      .use(loader)
-      .loader(loader)
-      .options(options)
-      .end(),
-  cssConfig
-)
+chainConfig.module
+  .rule('less')
+  .test(/\.(less|css)$/)
+  .use('mini-css-extract-loader')
+  .loader(__DEV__ ? 'style-loader' : MiniCssExtractPlugin.loader)
+  .options({
+    publicPath: '../'
+  })
+  .end()
+  .use('css-loader')
+  .loader('css-loader')
+  .end()
+  .use('less-loader')
+  .loader('less-loader')
+  .end()
 
 chainConfig.module
   .rule('images')
@@ -61,8 +54,7 @@ chainConfig.module
   .options({
     limit: 1024,
     esModule: false,
-    publicPath: '/',
-    name: 'images/[name].[hash:7].[ext]'
+    name: 'img/[name].[hash:7].[ext]'
   })
   .end()
 
@@ -72,19 +64,26 @@ chainConfig.module
  */
 chainConfig.module
   .rule('svg')
-  .test(/\.(svg|mp4|webm|ogg|mp3|wav|flac|aac|woff2?|eot|ttf|otf)(\?.*)?$/)
+  .test(/\.(svg)$/)
   .use('file-loader')
   .loader('file-loader')
   .options({
-    name: 'images/[name].[hash:7].[ext]',
+    name: 'img/[name].[hash:7].[ext]',
     limit: 10000,
     esModule: false
   })
   .end()
 
-chainConfig
-  .plugin('extract-text-plugin')
-  .use(ExtractTextPlugin, ['style.css'])
+chainConfig.module
+  .rule('file')
+  .test(/\.(mp4|webm|ogg|mp3|wav|flac|aac|woff2?|eot|ttf|otf)(\?.*)?$/)
+  .use('file-loader')
+  .loader('file-loader')
+  .options({
+    name: 'file/[name].[hash:7].[ext]',
+    limit: 10000,
+    esModule: false
+  })
   .end()
 
 chainConfig
@@ -96,10 +95,31 @@ chainConfig
   .plugin('webpack-define-plugin')
   .use(webpack.DefinePlugin, [
     {
-      __DEV__: process.env.NODE_ENV === 'development',
-      __static: `${path
-        .join(__dirname, '../static')
-        .replace(/\\/g, '\\\\')}`
+      __DEV__
+    }
+  ])
+  .end()
+
+chainConfig
+  .plugin('min-cess-extract-plugin')
+  .use(MiniCssExtractPlugin, [
+    {
+      filename: 'css/[name].[hash:7].css',
+      chunkFilename: 'css/[name].[hash:7].css',
+    }
+  ])
+  .end()
+
+chainConfig
+  .plugin('html-webpack-plugin')
+  .use(HtmlWebpackPlugin, [
+    {
+      template: resolve('../public/index.html'),
+      minify: {
+        collapseWhitespace: true,
+        removeComments: true
+      },
+      nodeModules: __DEV__ ? false : resolve('../node_modules')
     }
   ])
   .end()

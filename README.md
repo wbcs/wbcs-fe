@@ -15,6 +15,7 @@ npm run dev
 + [ ] `Notification` 重复
 + [ ] `Router` 有时不跳转
 + [x] 组件引用报错
++ [ ] 打包后图片加载失败
 
 ## feature
 + [ ] 粘贴板图片问题
@@ -28,3 +29,5 @@ npm run dev
 # 坑
 + BrowserWindow在loadURL的时候，url如果是hash模式会报错
 + 需要请求权限的操作，在vscode的zsh里没权限导致失败
++ sideEffects为false时，会将css、less忽略，shaking掉，解决：`sideEffects: ["*.css", "*.less"]`
++ 

@@ -1,10 +1,11 @@
 const path = require('path')
 const { BrowserWindow } = require('electron')
-
 const { setIPCEventHandlers } = require('./ipc')
 const { setAppEventHandlers, setIconInMAC } = require('./app')
 const { loadGlobalVariable } = require('./global')
 const { DEFAULT_CONFIG, getQuit } = require('./utils')
+
+const __DEV__ = process.env.NODE_ENV === 'development'
 
 const openLoginWindow = () =>
   createWindow({
@@ -17,7 +18,7 @@ const openLoginWindow = () =>
 const createWindow = (configObj = {}) => {
   const WIN_URL = __DEV__
     ? 'http://localhost:9080'
-    : `file://${path.resolve(__dirname, '../../dist/index.html')}`
+    : `file://${path.resolve(__dirname, '../../dist/web/index.html')}`
 
   winRef.mainWindow = new BrowserWindow({
     ...DEFAULT_CONFIG,

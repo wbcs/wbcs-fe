@@ -1,18 +1,22 @@
 productName: wbcs
 appId: wbcs
-
+copyright: Copyright © 2020 wbcs
+asar: true
 directories:
   output: dist/electron
+files:
+  - src/main
+  - dist/web/
+  - public/icon.png
 
-copyright: Copyright © 2020 wbcs
-
+mac:
+  # icon: "public/icon.png"
 dmg:
   contents:
     - x: 410
-      'y': 150
+      y: 150
       type: link
       path: /Applications
-
     - x: 130
-      'y': 150
+      y: 150
       type: file
