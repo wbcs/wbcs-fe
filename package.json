@@ -40,8 +40,11 @@
   },
   "sideEffects": false,
   "scripts": {
-    "build-mac": "electron-builder --mac --config build.yml",
     "dev": "NODE_ENV=development node scripts/dev.js",
-    "build": "NODE_ENV=production node scripts/build.js"
+    "build": "NODE_ENV=production node scripts/build.js",
+    "build-web": "NODE_ENV=production node scripts/build.js web",
+    "build-win": "NODE_ENV=production node scripts/build.js win",
+    "build-linux": "NODE_ENV=production node scripts/build.js linux",
+    "build-mac": "NODE_ENV=production node scripts/build.js mac"
   }
 }
