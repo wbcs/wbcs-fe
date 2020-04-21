@@ -4,7 +4,7 @@ const WebapckChain = require('webpack-chain')
 const nodeExternals = require('webpack-node-externals')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
-const { resolve } = require('./utils')
+const { resolve, useStylesLoader } = require('./utils')
 
 const chainConfig = new WebapckChain()
 
@@ -21,37 +21,20 @@ chainConfig.output
 
 chainConfig.externals([nodeExternals()]).end()
 
-const lessLoaders = ExtractTextPlugin.extract({
+ExtractTextPlugin.extract({
   fallback: 'style-loader',
-  use: ['css-loader', 'less-loader']
-})
-const lessConfig = chainConfig.module.rule('less').test(/\.(less)$/)
-
-lessLoaders.reduce(
-  (conf, { loader, options }) =>
-    conf
-      .use(loader)
-      .loader(loader)
-      .options(options)
-      .end(),
-  lessConfig
+  use: ['css-loader', 'less-loader'],
+  publicPath: ''
+}).reduce(
+  useStylesLoader,
+  chainConfig.module.rule('less').test(/\.(less)$/)
 )
 
-const cssLoaders = ExtractTextPlugin.extract({
+ExtractTextPlugin.extract({
   fallback: 'style-loader',
-  use: ['css-loader']
-})
-const cssConfig = chainConfig.module.rule('css').test(/\.(css)$/)
-
-cssLoaders.reduce(
-  (conf, { loader, options }) =>
-    conf
-      .use(loader)
-      .loader(loader)
-      .options(options)
-      .end(),
-  cssConfig
-)
+  use: ['css-loader'],
+  publicPath: ''
+}).reduce(useStylesLoader, chainConfig.module.rule('css').test(/\.(css)$/))
 
 chainConfig.module
   .rule('images')
@@ -84,7 +67,7 @@ chainConfig.module
 
 chainConfig
   .plugin('extract-text-plugin')
-  .use(ExtractTextPlugin, ['style.css'])
+  .use(ExtractTextPlugin, ['style.[hash].css'])
   .end()
 
 chainConfig
@@ -97,9 +80,9 @@ chainConfig
   .use(webpack.DefinePlugin, [
     {
       __DEV__: process.env.NODE_ENV === 'development',
-      __static: `${path
+      __static: `"${path
         .join(__dirname, '../static')
-        .replace(/\\/g, '\\\\')}`
+        .replace(/\\/g, '\\\\')}"`
     }
   ])
   .end()

@@ -9,9 +9,7 @@ const chainConfig = new WebapckChain()
 
 chainConfig.mode('development').end()
 
-chainConfig.output
-  .publicPath('/')
-  .end()
+chainConfig.output.publicPath('/').end()
 
 chainConfig.module
   .rule('vue')
@@ -59,5 +57,4 @@ chainConfig.devServer
   .set('historyApiFallback', true)
   .end()
 
-const devConfig = merge(baseConfig, chainConfig.toConfig())
-module.exports = devConfig
+module.exports = merge(baseConfig, chainConfig.toConfig())

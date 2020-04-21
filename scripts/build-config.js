@@ -7,7 +7,8 @@ const { resolve } = require('./utils')
 
 const chainConfig = new WebapckChain()
 
-chainConfig.mode('production').end()
+// chainConfig.mode('production').end()
+chainConfig.mode('development').end()
 
 chainConfig.module
   .rule('vue')
@@ -41,5 +42,4 @@ chainConfig
   .use(CleanWebpackPlugin)
   .end()
 
-const buildConfig = merge(baseConfig, chainConfig.toConfig())
-module.exports = buildConfig
+module.exports = merge(baseConfig, chainConfig.toConfig())
