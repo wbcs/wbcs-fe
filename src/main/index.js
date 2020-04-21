@@ -1,10 +1,11 @@
 const path = require('path')
 const { BrowserWindow } = require('electron')
-
 const { setIPCEventHandlers } = require('./ipc')
 const { setAppEventHandlers, setIconInMAC } = require('./app')
 const { loadGlobalVariable } = require('./global')
 const { DEFAULT_CONFIG, getQuit } = require('./utils')
+
+const __DEV__ = process.env.NODE_ENV === 'development'
 
 const openLoginWindow = () =>
   createWindow({

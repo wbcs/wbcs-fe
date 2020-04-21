@@ -1,6 +1,8 @@
 const path = require('path')
 const { ipcMain, BrowserWindow } = require('electron')
 
+const __DEV__ = process.env.NODE_ENV === 'development'
+
 const openVideoWindow = (winRef, data) => {
   const { uid, type } = data
   const WIN_URL = __DEV__

@@ -1,4 +1,3 @@
-const path = require('path')
 const Store = require('electron-store')
 const socketClient = require('socket.io-client')
 
@@ -13,11 +12,6 @@ const loadGlobalVariable = () => {
   global.store = store
   global.socket = socket
   global.isAllowLogin = false
-  if (!__DEV__) {
-    global.__static = path
-      .join(__dirname, '/static')
-      .replace(/\\/g, '\\\\')
-  }
 }
 
 module.exports = {
