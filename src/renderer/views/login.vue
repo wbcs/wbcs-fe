@@ -1,7 +1,7 @@
 <template>
   <section class="login">
     <header>wbcs!</header>
-    <img src="../assets/logo.png" alt="logo" />
+    <div class="logo" />
     <div class="form">
       <div>
         <i class="icon-user" />
@@ -168,12 +168,14 @@ header {
   font-size: 36px;
   font-family: 'local-Flavors';
 }
-img {
+.logo {
   display: block;
   margin: 15px auto 35px auto;
-  width: 130px;
-  height: 90px;
+  width: 150px;
+  height: 100px;
   text-align: center;
+  background: url("../assets/logo.png") center;
+  background-size: cover;
 }
 .form {
   -webkit-app-region: no-drag;

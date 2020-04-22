@@ -1,7 +1,5 @@
 <template>
-  <div class="default-page">
-    <img src="@/assets/background.png" alt="background" />
-  </div>
+  <section />
 </template>
 
 <script>
@@ -11,18 +9,12 @@ export default {
 </script>
 
 <style scoped lang="less">
-.default-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+section {
   height: 100%;
-
-  -webkit-app-region: drag;
-  -webkit-user-select: none;
-}
-img {
-  width: 50%;
+  width: 100%;
+  background: url("..//assets/background.png") no-repeat center;
+  background-size: 70%;
   opacity: 0.8;
+  -webkit-app-region: drag;
 }
 </style>

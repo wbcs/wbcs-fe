@@ -8,10 +8,6 @@
       <div class="name">
         {{ groupInfo.nickname || groupInfo.uid }}
       </div>
-
-      <div class="info-background">
-        <img src="@/assets/info-bg.png" alt="background" />
-      </div>
     </div>
 
     <div class="info-details">
@@ -155,6 +151,8 @@ export default {
     height: 173px;
     background: #414952;
     overflow: hidden;
+    background-image: url("../../assets/info-bg.png");
+    background-size: cover;
 
     & > div {
       position: absolute;

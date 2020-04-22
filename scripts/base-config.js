@@ -52,7 +52,7 @@ chainConfig.module
   .use('url-loader')
   .loader('url-loader')
   .options({
-    limit: 1024 * 1000,
+    limit: 1024,
     esModule: false,
     name: 'img/[name].[hash:7].[ext]'
   })

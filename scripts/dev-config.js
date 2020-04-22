@@ -25,7 +25,7 @@ chainConfig
 
 chainConfig.devServer
   .set('port', 9080)
-  .set('hot', true)
+  // .set('hot', true)
   .set('quiet', true)
   .set('historyApiFallback', true)
   .end()
