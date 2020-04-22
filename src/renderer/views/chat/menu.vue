@@ -66,7 +66,7 @@ export default {
         return
       }
       SOCKET.emit(
-        'get-recent-contact-history',
+        'get-chat-history-list',
         {
           userId: this.$store.state.uid,
           chatIdList: this.historyList
