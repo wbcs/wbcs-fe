@@ -17,5 +17,5 @@ const log = {
 
 module.exports = {
   log,
-  resolve,
+  resolve
 }

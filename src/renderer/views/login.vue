@@ -174,7 +174,7 @@ header {
   width: 150px;
   height: 100px;
   text-align: center;
-  background: url("../assets/logo.png") center;
+  background: url('../assets/logo.png') center;
   background-size: cover;
 }
 .form {

@@ -134,7 +134,7 @@ export default {
     height: 173px;
     background: #414952;
     overflow: hidden;
-    background-image: url("../../assets/info-bg.png");
+    background-image: url('../../assets/info-bg.png');
     background-size: cover;
 
     & > div {

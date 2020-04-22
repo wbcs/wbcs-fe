@@ -69,7 +69,6 @@ chainConfig.module
   .loader('file-loader')
   .options({
     name: 'img/[name].[hash:7].[ext]',
-    limit: 1024,
     esModule: false
   })
   .end()
@@ -105,7 +104,7 @@ chainConfig
   .use(MiniCssExtractPlugin, [
     {
       filename: 'css/[name].[hash:7].css',
-      chunkFilename: 'css/[name].[hash:7].css',
+      chunkFilename: 'css/[name].[hash:7].css'
     }
   ])
   .end()
