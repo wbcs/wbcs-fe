@@ -52,7 +52,7 @@ chainConfig.module
   .use('url-loader')
   .loader('url-loader')
   .options({
-    limit: 1024,
+    limit: 1024 * 1000,
     esModule: false,
     name: 'img/[name].[hash:7].[ext]'
   })
@@ -69,7 +69,7 @@ chainConfig.module
   .loader('file-loader')
   .options({
     name: 'img/[name].[hash:7].[ext]',
-    limit: 10000,
+    limit: 1024,
     esModule: false
   })
   .end()
@@ -81,7 +81,7 @@ chainConfig.module
   .loader('file-loader')
   .options({
     name: 'file/[name].[hash:7].[ext]',
-    limit: 10000,
+    limit: 1024,
     esModule: false
   })
   .end()

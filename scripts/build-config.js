@@ -18,6 +18,10 @@ chainConfig
 chainConfig.optimization
   .minimizer('optimize-css')
   .use(OptimizeCSSAssetsPlugin)
+  .end()
+
+chainConfig.optimization
+  .minimizer('optimize-js')
   .use(TerserJSPlugin)
   .end()
 
