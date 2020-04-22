@@ -53,7 +53,7 @@ export default {
   methods: {
     activeFunc() {
       this.$emit('active-item', this.data[this._idName])
-      this.$store.commit('CURRENT_CONTACT', {
+      this.$store.commit('grouping/setCurrentContact', {
         id: this.data[this._idName],
         isGroup: this.isGroup,
         isDefaultPage: false

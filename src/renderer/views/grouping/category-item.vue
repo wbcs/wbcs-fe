@@ -82,7 +82,7 @@ export default {
       this.activatedId = id
     },
     setCurrentCategoryId() {
-      this.$store.commit('SET_CURRENT_CATEGORY_ID', this.category.cid)
+      this.$store.commit('grouping/setCurrentCategoryID', this.category.cid)
     },
     toggleContacts() {
       this.isShowContacts = this.isShowContacts ? false : true
@@ -90,7 +90,7 @@ export default {
     handleGroupingItemDBClick(userOrGroupInfo) {
       const keyOfGidOrUid = userOrGroupInfo.uid ? 'uid' : 'gid'
       const gidOrUid = userOrGroupInfo[keyOfGidOrUid]
-      this.$store.commit('NEW_CHAT', { [keyOfGidOrUid]: gidOrUid })
+      this.$store.commit('chat/newChat', { [keyOfGidOrUid]: gidOrUid })
       this.$router.push({
         path: '/app/chats',
         query: {

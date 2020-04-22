@@ -35,12 +35,12 @@ export default {
     this.getRecentChatHistory()
   },
   computed: {
-    recentChatIdArr() {
-      return this.$store.state.chat.recentChatIdArr
+    historyList() {
+      return this.$store.state.chat.historyList
     }
   },
   watch: {
-    recentChatIdArr() {
+    historyList() {
       this.getRecentChatHistory()
     },
     $route: {
@@ -50,7 +50,7 @@ export default {
         const groupOrUserId = query.gid ? 'gid' : 'uid'
         const id = query[groupOrUserId]
         this.setActiveId(id)
-        this.$store.commit('CURRENT_CHAT', {
+        this.$store.commit('chat/setCurrentChat', {
           [groupOrUserId]: id
         })
       }
@@ -61,7 +61,7 @@ export default {
       this.activatedId = id
     },
     getRecentChatHistory() {
-      if (!this.recentChatIdArr.length) {
+      if (!this.historyList.length) {
         this.recentChatHistory = []
         return
       }
@@ -69,11 +69,10 @@ export default {
         'get-recent-contact-history',
         {
           userId: this.$store.state.uid,
-          chatIdList: this.recentChatIdArr
+          chatIdList: this.historyList
         },
         ({ data = [] }) => {
           this.recentChatHistory = data
-          console.log('chat-history', data)
         }
       )
     }

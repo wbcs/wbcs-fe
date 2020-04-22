@@ -31,7 +31,7 @@ export default {
   methods: {
     activeFunc() {
       this.$emit('active-item', this.config.id)
-      this.$store.commit('CURRENT_FUNCTION', this.config.flag)
+      this.$store.commit('functions/setCurrentFunction', this.config.flag)
     }
   }
 }

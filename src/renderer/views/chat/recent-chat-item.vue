@@ -70,11 +70,9 @@ export default {
     },
     handleDeleteClick() {
       if (this.isActive) {
-        this.$store.commit('CURRENT_CHAT', {})
+        this.$store.commit('chat/setCurrentChat', {})
       }
-      this.$store.commit('DELETE_CHAT', {
-        [this._idName]: this._id
-      })
+      this.$store.commit('chat/removeChat', this._id)
     }
   }
 }

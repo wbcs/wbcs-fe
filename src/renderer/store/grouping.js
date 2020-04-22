@@ -1,31 +1,17 @@
-const state = {
-  currentCategoryId: '',
-  currentContact: ''
-}
-
-const mutations = {
-  SET_CURRENT_CATEGORY_ID(state, id) {
-    // 1234
-    state.currentCategoryId = id
+const store = {
+  namespaced: true,
+  state: {
+    currentCategoryId: NaN,
+    currentContact: {}
   },
-  CURRENT_CONTACT(state, obj) {
-    // {
-    //   id: 1234,
-    //   isGroup: false
-    // }
-    state.currentContact = obj
+  mutations: {
+    setCurrentCategoryID(state, id) {
+      state.currentCategoryId = id
+    },
+    setCurrentContact(state, contact) {
+      state.currentContact = contact
+    }
   }
 }
 
-const actions = {
-  someAsyncTask({ commit }) {
-    // do something async
-    commit('INCREMENT_MAIN_COUNTER')
-  }
-}
-
-export default {
-  state,
-  mutations,
-  actions
-}
+export default store

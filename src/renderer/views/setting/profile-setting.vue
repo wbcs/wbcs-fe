@@ -190,7 +190,7 @@ export default {
           ...this.userInfo,
           ...data
         }
-        this.$store.commit('SET_USERINFO', data)
+        this.$store.commit('main/setUserInformation', data)
       })
     },
     updateUserInfo() {

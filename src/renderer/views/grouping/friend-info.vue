@@ -94,7 +94,7 @@ export default {
     readyToChat() {
       let uid = this.friendInfo.uid
 
-      this.$store.commit('NEW_CHAT', { uid })
+      this.$store.commit('chat/newChat', { uid })
       this.$router.push({
         path: '/app/chats',
         query: {
@@ -111,7 +111,7 @@ export default {
         },
         data => {
           if (data.code === 0) {
-            this.$store.commit('CURRENT_CONTACT', {
+            this.$store.commit('grouping/setCurrentContact', {
               isDefaultPage: true
             })
           }

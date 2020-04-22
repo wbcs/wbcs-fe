@@ -2,7 +2,7 @@ import store from '@/store'
 import router from '@/router'
 
 export const openUser = uid => {
-  store.commit('NEW_CHAT', { uid })
+  store.commit('chat/newChat', { uid })
   router.replace({
     path: '/app/chats',
     query: {
@@ -11,7 +11,7 @@ export const openUser = uid => {
   })
 }
 export const openGroup = gid => {
-  store.commit('NEW_CHAT', { gid })
+  store.commit('chat/newChat', { gid })
   router.replace({
     path: '/app/chats',
     query: {

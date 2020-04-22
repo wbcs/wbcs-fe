@@ -1,77 +1,42 @@
-const state = {
-  currentChat: '',
-  recentChatIdArr: []
+const NAME_SPACE = 'chat/historyList'
+const getStorage = (key, defaultVal) => {
+  const storageData = localStorage.getItem(key)
+  return JSON.parse(storageData) || defaultVal
+}
+const setStorage = (key, value) => {
+  const stringifyVal = JSON.stringify(value)
+  localStorage.setItem(key, stringifyVal)
 }
 
-const getters = {
-  //
-}
-
-const mutations = {
-  CURRENT_CHAT(state, obj) {
-    state.currentChat = obj
+const store = {
+  namespaced: true,
+  state: {
+    currentChat: '',
+    historyList: [],
   },
-  LOAD_RECENT_CHAT(state) {
-    let key = 'recentChatIdArr'
-    let recentChatIdArr = JSON.parse(localStorage.getItem(key)) || []
-
-    state.recentChatIdArr = recentChatIdArr
-  },
-  NEW_CHAT(state, chatObj) {
-    let key = 'recentChatIdArr'
-    let recentChatIdArr = JSON.parse(localStorage.getItem(key)) || []
-    let _idName = chatObj.uid ? 'uid' : 'gid'
-    let _id = chatObj[_idName]
-    let isIdExist = false
-
-    recentChatIdArr.forEach(el => {
-      if (el[_idName] === _id) {
-        isIdExist = true
-      }
-    })
-
-    if (!isIdExist) {
-      recentChatIdArr.push(chatObj)
+  mutations: {
+    setCurrentChat(state, chat) {
+      state.currentChat = chat
+    },
+    loadRecentChat(state) {
+      state.historyList = getStorage(NAME_SPACE, [])
+    },
+    newChat(state, { uid, gid }) {
+      const historyList = getStorage(NAME_SPACE, [])
+      const key = uid ? 'uid' : 'gid'
+      const id = uid || gid
+      if (historyList.includes(id)) return
+      historyList.push(id)
+      state.historyList.push({ [key]: id })
+      setStorage(NAME_SPACE, historyList)
+    },
+    removeChat(state, currItem) {
+      const index = state.historyList.indexOf(currItem)
+      if (index === -1) return
+      state.historyList.splice(index, 1)
+      setStorage(NAME_SPACE, state.historyList)
     }
-
-    localStorage.setItem(key, JSON.stringify(recentChatIdArr))
-    state.recentChatIdArr = recentChatIdArr
-  },
-  DELETE_CHAT(state, chatObj) {
-    let key = 'recentChatIdArr'
-    let recentChatIdArr = JSON.parse(localStorage.getItem(key)) || []
-    let _idName = chatObj.uid ? 'uid' : 'gid'
-    let _id = chatObj[_idName]
-    let deleteIndex
-
-    recentChatIdArr.find((el, index) => {
-      if (el[_idName] === _id) {
-        deleteIndex = index
-        return true
-      }
-      return false
-    })
-
-    // delete the target chat
-    if (deleteIndex >= 0) {
-      recentChatIdArr.splice(deleteIndex, 1)
-    }
-
-    localStorage.setItem(key, JSON.stringify(recentChatIdArr))
-    state.recentChatIdArr = recentChatIdArr
   }
 }
 
-const actions = {
-  someAsyncTask({ commit }) {
-    // do something async
-    commit('INCREMENT_MAIN_COUNTER')
-  }
-}
-
-export default {
-  state,
-  getters,
-  mutations,
-  actions
-}
+export default store

@@ -42,11 +42,11 @@ export default {
         return
       }
       SOCKET.emit('get-user-info', this.$store.state.uid, data => {
-        this.$store.commit('SET_USERINFO', data)
+        this.$store.commit('main/setUserInformation', data)
       })
     },
     loadRecentChatList() {
-      this.$store.commit('LOAD_RECENT_CHAT')
+      this.$store.commit('chat/loadRecentChat')
     }
   }
 }
