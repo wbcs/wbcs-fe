@@ -364,6 +364,7 @@ export default {
 }
 .chat-box {
   position: relative;
+  height: 100%;
   & > div {
     display: flex;
     flex-direction: column;

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div id="sidebar">
+    <aside>
       <Menu />
       <div class="user-list" ref="sidebar">
         <Search />
@@ -11,10 +11,12 @@
         </div>
       </div>
       <Resize @resize="handleResize" />
-    </div>
-    <keep-alive>
-      <router-view id="content" name="contents" />
-    </keep-alive>
+    </aside>
+    <main>
+      <keep-alive>
+        <router-view id="content" name="contents" />
+      </keep-alive>
+    </main>
   </div>
 </template>
 
@@ -37,9 +39,6 @@ export default {
     SOCKET.emit('user-connect', this.$store.state.uid)
     this.getUserInfo()
     this.loadRecentChatList()
-  },
-  mounted() {
-    console.log(this.$refs.sidebar)
   },
   methods: {
     handleResize(offset) {
@@ -70,8 +69,11 @@ export default {
   height: 100vh;
   overflow: hidden;
 }
-#sidebar {
+aside {
   display: flex;
+}
+main {
+  flex: 1;
 }
 .user-list {
   width: 250px;
