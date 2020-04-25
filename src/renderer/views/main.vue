@@ -2,7 +2,7 @@
   <div id="app">
     <div id="sidebar">
       <Menu />
-      <div class="user-list">
+      <div class="user-list" ref="sidebar">
         <Search />
         <div id="menu-content">
           <keep-alive>
@@ -10,6 +10,7 @@
           </keep-alive>
         </div>
       </div>
+      <Resize @resize="handleResize" />
     </div>
     <keep-alive>
       <router-view id="content" name="contents" />
@@ -21,13 +22,15 @@
 import { ipcRenderer } from 'electron'
 import { SOCKET } from '@/request'
 
-import Search from '@/components/search.vue'
+import Search from '@/components/search'
+import Resize from '@/components/resize'
 import Menu from './menu.vue'
 
 export default {
   name: 'app',
   components: {
     Menu,
+    Resize,
     Search
   },
   created() {
@@ -35,7 +38,15 @@ export default {
     this.getUserInfo()
     this.loadRecentChatList()
   },
+  mounted() {
+    console.log(this.$refs.sidebar)
+  },
   methods: {
+    handleResize(offset) {
+      const { sidebar } = this.$refs
+      const newWidth = sidebar.offsetWidth + offset
+      sidebar.style.width = `${newWidth}px`
+    },
     getUserInfo() {
       if (!this.$store.state.uid) {
         ipcRenderer.send('logout')
@@ -57,12 +68,10 @@ export default {
   display: flex;
   width: 100vw;
   height: 100vh;
-  // background: #f6f9fd;
   overflow: hidden;
 }
 #sidebar {
   display: flex;
-  border-right: 1px solid #d9dbde;
 }
 .user-list {
   width: 250px;
@@ -70,7 +79,6 @@ export default {
   max-width: 300px;
 }
 #menu-content {
-  // height: 550px - 50px;
   overflow-y: auto;
 }
 #content {

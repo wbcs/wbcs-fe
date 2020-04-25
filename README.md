@@ -18,6 +18,7 @@ npm run dev
 + [x] 打包后图片加载失败
 
 ## feature
++ [x] sidebar resize
 + [ ] 粘贴板图片问题
 + [ ] 聊天记录懒加载
 + [ ] 表情、语音、文件发送
