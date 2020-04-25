@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { SOCKET } from '@/request'
+import { fetchChatHistoryList } from '@/request'
 import RecentChatHistory from './recent-chat-item.vue'
 
 export default {
@@ -65,15 +65,12 @@ export default {
         this.recentChatHistory = []
         return
       }
-      SOCKET.emit(
-        'get-chat-history-list',
-        {
-          userId: this.$store.state.uid,
-          chatIdList: this.historyList
-        },
-        ({ data = [] }) => {
-          this.recentChatHistory = data
-        }
+      const params = {
+        userId: this.$store.state.uid,
+        chatIdList: this.historyList
+      }
+      fetchChatHistoryList(params).then(
+        ({ data = [] }) => (this.recentChatHistory = data)
       )
     }
   }

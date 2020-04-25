@@ -1,12 +1,8 @@
 <template>
-  <div
-    ref="resize"
-    @mousedown="handleMouseDown"
-  />
+  <div ref="resize" @mousedown="handleMouseDown" />
 </template>
 
 <script>
-
 export default {
   methods: {
     handleMouseDown(e) {
@@ -23,7 +19,7 @@ export default {
       window.removeEventListener('mousemove', this.handleMouseMove)
       window.removeEventListener('mouseup', this.handleMouseUp)
     }
-  },
+  }
 }
 </script>
 

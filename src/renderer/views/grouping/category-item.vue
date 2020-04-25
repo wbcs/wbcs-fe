@@ -82,7 +82,10 @@ export default {
       this.activatedId = id
     },
     setCurrentCategoryId() {
-      this.$store.commit('grouping/setCurrentCategoryID', this.category.cid)
+      this.$store.commit(
+        'grouping/setCurrentCategoryID',
+        this.category.cid
+      )
     },
     toggleContacts() {
       this.isShowContacts = this.isShowContacts ? false : true

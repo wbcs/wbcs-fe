@@ -10,6 +10,9 @@ export const fetchLogin = params =>
   })
 
 export const fetchAuthcode = params =>
-  new Promise(resolve => {
-    SOCKET.emit('get-authcode', params, resolve)
-  })
+  new Promise(resolve => SOCKET.emit('get-authcode', params, resolve))
+
+export const fetchChatHistoryList = params =>
+  new Promise(resolve =>
+    SOCKET.emit('get-chat-history-list', params, resolve)
+  )
