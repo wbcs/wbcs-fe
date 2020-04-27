@@ -38,7 +38,6 @@ export default {
   border-radius: 4px;
   font-size: 12px;
   color: #666666;
-
   &:hover {
     background: #ebebeb;
   }

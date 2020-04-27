@@ -90,7 +90,7 @@
             :key="member.uid"
             :data="member"
             style="width:100%;"
-          ></group-member-item>
+          />
         </div>
       </div>
     </div>
@@ -466,7 +466,7 @@ export default {
   right: 0;
   z-index: 999;
   width: 240px;
-  height: 550px;
+  height: 100%;
   background: #ffffff;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.5);
   transform: translateX(100%);
@@ -499,7 +499,6 @@ export default {
   }
 
   .sidebar-content {
-    height: 500px;
     overflow: auto;
   }
 }
