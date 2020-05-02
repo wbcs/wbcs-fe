@@ -1,5 +1,5 @@
-const { app } = require('electron')
 const path = require('path')
+const { app } = require('electron')
 const { setMenu } = require('./menu')
 const { setQuit } = require('./utils')
 

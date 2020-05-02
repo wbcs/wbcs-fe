@@ -23,11 +23,10 @@ const store = {
     },
     newChat(state, { uid, gid }) {
       const historyList = getStorage(NAME_SPACE, [])
-      const key = uid ? 'uid' : 'gid'
       const id = uid || gid
       if (historyList.includes(id)) return
       historyList.push(id)
-      state.historyList.push({ [key]: id })
+      state.historyList.push(id)
       setStorage(NAME_SPACE, historyList)
     },
     removeChat(state, currItem) {

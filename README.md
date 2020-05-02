@@ -32,3 +32,4 @@ npm run dev
 + 需要请求权限的操作，在vscode的zsh里没权限导致失败
 + sideEffects为false时，会将css、less忽略，shaking掉，解决：`sideEffects: ["*.css", "*.less"]`
 + `<img />` 来引用图片打包后总是有问题，目前采用css引入，绕开这一错误
++ xcode

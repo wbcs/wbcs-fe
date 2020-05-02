@@ -1,6 +1,7 @@
 const merge = require('webpack-merge')
 const WebapckChain = require('webpack-chain')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
+// const { HotModuleReplacementPlugin } = require('webpack')
 const baseConfig = require('./base-config')
 
 const chainConfig = new WebapckChain()
@@ -23,8 +24,14 @@ chainConfig
   ])
   .end()
 
+// chainConfig
+//   .plugin('hmr')
+//   .use(HotModuleReplacementPlugin)
+//   .end()
+
 chainConfig.devServer
   .set('port', 9080)
+  // .set('hot', true)
   .set('quiet', true)
   .set('historyApiFallback', true)
   .end()
