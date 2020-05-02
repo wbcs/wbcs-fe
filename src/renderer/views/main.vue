@@ -74,6 +74,7 @@ aside {
 }
 main {
   flex: 1;
+  overflow: hidden;
 }
 .user-list {
   width: 250px;
