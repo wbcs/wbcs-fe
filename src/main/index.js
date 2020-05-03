@@ -1,6 +1,5 @@
 const path = require('path')
-const { BrowserWindow, autoUpdater, dialog } = require('electron')
-// const updateElectronApp = require('update-electron-app')
+const { BrowserWindow } = require('electron')
 
 const { setIPCEventHandlers } = require('./ipc')
 const { setAppEventHandlers, setIconInMAC } = require('./app')
@@ -22,20 +21,21 @@ const createWindow = (configObj = {}) => {
     ? 'http://localhost:9080'
     : `file://${path.resolve(__dirname, '../../dist/web/index.html')}`
 
-  winRef.mainWindow = new BrowserWindow({
+  const mainWindow = new BrowserWindow({
     ...DEFAULT_CONFIG,
     ...configObj
   })
-  setIconInMAC()
-  winRef.mainWindow.on('close', e => {
+  mainWindow.on('close', e => {
     if (getQuit()) {
       winRef.mainWindow = null
       return
     }
     e.preventDefault()
-    winRef.mainWindow.hide()
+    mainWindow.hide()
   })
-  winRef.mainWindow.loadURL(WIN_URL)
+  mainWindow.loadURL(WIN_URL)
+  setIconInMAC()
+  winRef.mainWindow = mainWindow
 }
 
 const winRef = {
@@ -45,26 +45,3 @@ const winRef = {
 loadGlobalVariable()
 setIPCEventHandlers(winRef, createWindow, openLoginWindow)
 setAppEventHandlers(winRef, createWindow, openLoginWindow)
-// updateElectronApp({
-//   repo: 'https://github.com/wbcs/wbcs-fe'
-// })
-
-
-autoUpdater.setFeedURL('https://github.com/wbcs/wbcs-fe/releases/tag/0.1.0')
-autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
-  const dialogOpts = {
-    type: 'info',
-    buttons: ['Restart', 'Later'],
-    title: 'Application Update',
-    message: process.platform === 'win32' ? releaseNotes : releaseName,
-    detail: 'A new version has been downloaded. Restart the application to apply the updates.'
-  }
-
-  dialog.showMessageBox(dialogOpts).then((returnValue) => {
-    if (returnValue.response === 0) autoUpdater.quitAndInstall()
-  })
-})
-autoUpdater.on('error', message => {
-  console.error('There was a problem updating the application')
-  console.error(message)
-})
