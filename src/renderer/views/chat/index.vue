@@ -2,54 +2,44 @@
   <div class="chat-box" @click="hideGroupSidebar">
     <div v-if="currentChat.uid || currentChat.gid">
       <header class="chat-box-head">
-        <span class="title">{{
-          contactInfo.alias || contactInfo.nickname || contactInfo.uid
-        }}</span>
-
+        <span class="title">{{ title }}</span>
         <span
-          v-show="isGroup"
           class="icon icon-users"
+          v-show="isGroup"
           @click.stop="showGroupSidebar"
-        ></span>
+        />
       </header>
-
       <div class="chat-box-content" ref="chatBoxContent">
         <message-item
           v-for="item in messageArr"
           :key="item.uuid"
           :message="item"
-        ></message-item>
+        />
       </div>
-
       <div class="chat-box-foot" @click="handleFooterClick">
         <div>
           <div class="foot-tools">
-            <span class="icon icon-happy2" @click="openFaceDialog"></span>
-
+            <span class="icon icon-happy2" @click="openFaceDialog" />
             <span
               class="icon icon-photo_size_select_actual"
               @click="openImageDialog"
-            ></span>
-
+            />
             <span
               v-show="!isGroup"
               class="icon icon-folder"
               @click="openFileDialog"
-            ></span>
-
+            />
             <span
               v-show="!isGroup"
               class="icon icon-microphone"
               @click="openVoiceChatDialog"
-            ></span>
-
+            />
             <span
               v-show="!isGroup"
               class="icon icon-video-camera"
               @click="openVideoChatDialog('call')"
-            ></span>
+            />
           </div>
-
           <div class="foot-input">
             <textarea
               v-model="message"
@@ -62,13 +52,12 @@
           </div>
         </div>
         <div>
-          <span class="icon icon-send-o" @click="sendTextMessage"></span>
+          <span class="icon icon-send-o" @click="sendTextMessage" />
         </div>
       </div>
-
       <div
-        v-if="isGroup"
         class="chat-box-group-sidebar"
+        v-if="isGroup"
         :class="{ 'show-group-sidebar': isShowGroupSidebar }"
         @click.stop
       >
@@ -79,10 +68,7 @@
             }}</span>
             <span style="font-size:12px;">[{{ memberArr.length }}]</span>
           </span>
-          <span
-            class="icon icon-close"
-            @click.stop="hideGroupSidebar"
-          ></span>
+          <span class="icon icon-close" @click.stop="hideGroupSidebar" />
         </div>
         <div class="sidebar-content">
           <group-member-item
@@ -138,6 +124,10 @@ export default {
     },
     memberArr() {
       return this.contactInfo.members || []
+    },
+    title() {
+      const { alias, nickname, uid } = this.contactInfo
+      return alias || nickname || uid
     }
   },
   watch: {
@@ -220,30 +210,24 @@ export default {
       })
     },
     getHistoryMessage() {
-      let query = this.isGroup
+      const query = this.isGroup
         ? { gid: this.contactInfo.gid }
         : { uid: this.$store.state.uid, friendUid: this.contactInfo.uid }
-
       SOCKET.emit('get-history-message', query, data => {
-        let messages = data.data
-
+        const messages = data.data
         this.messageArr.push(...messages)
       })
     },
-
     showGroupSidebar() {
       this.isShowGroupSidebar = true
     },
-
     hideGroupSidebar() {
       this.isShowGroupSidebar = false
     },
-
     openFaceDialog() {
       // do something
       alert('待开发')
     },
-
     openImageDialog() {
       const { dialog } = remote
       const option = {
@@ -255,7 +239,6 @@ export default {
           }
         ]
       }
-
       dialog.showOpenDialog(option, filePaths => {
         if (filePaths && filePaths.length) {
           filePaths.forEach(path => {
@@ -269,7 +252,6 @@ export default {
 
     sendImage(path) {
       const base64Data = fs.readFileSync(path, 'base64')
-
       SOCKET.emit('store-image', { base64Data }, data => {
         const message = {
           uuid: generateUUID(),
@@ -280,21 +262,17 @@ export default {
             url: data.data.url
           }
         }
-
         this.sendMessage(message)
       })
     },
-
     openFileDialog() {
       // do something
       alert('待开发')
     },
-
     openVoiceChatDialog() {
       // do something
       alert('待开发')
     },
-
     openVideoChatDialog(type) {
       const handleClose = () => {
         if (type === 'call') {
@@ -317,11 +295,9 @@ export default {
       })
       ipcRenderer.on('sub-closed', handleClose)
     },
-
     detectCompositionInput(value) {
       this.isCompositionInput = value
     },
-
     sendTextMessage(e) {
       if (e.shiftKey || this.isCompositionInput) {
         // enter+shift  next line
@@ -344,7 +320,6 @@ export default {
       this.sendMessage(message)
       this.message = ''
     },
-
     sendMessage(msg) {
       SOCKET.emit('message', msg, res => console.log(res))
       this.messageArr.push(msg)
@@ -353,7 +328,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style scoped lang="less">
 .icon {
   color: #a8b0ba;
   cursor: pointer;
@@ -372,15 +347,14 @@ export default {
     height: 100%;
   }
 }
-
 .chat-box-head {
   position: relative;
   padding: 0.8em 20px;
   border-bottom: 1px solid #ddd;
   -webkit-app-region: drag;
   .title {
-    font-size: 16px;
-    color: #666666;
+    font-size: 1.1em;
+    font-weight: 400;
   }
   .icon {
     position: absolute;
@@ -389,13 +363,11 @@ export default {
     z-index: 2;
   }
 }
-
 .chat-box-content {
   flex: 1;
   padding: 12px 20px;
   overflow-y: auto;
 }
-
 .chat-box-foot {
   display: flex;
   justify-content: space-between;
@@ -417,18 +389,14 @@ export default {
 
       font-size: 18px;
       text-align: center;
-      // // {icon-hover};
     }
-
     .icon-happy2 {
       transform: scale(0.92);
     }
   }
-
   .foot-input {
     width: 490px;
     height: 60px;
-
     textarea {
       display: block;
       width: 100%;
@@ -440,11 +408,9 @@ export default {
       font-size: 14px;
       color: #666;
       letter-spacing: 0.07px;
-
       &:focus {
         outline: none;
       }
-
       &::placeholder {
         color: #ddd;
         letter-spacing: 0.1px;
@@ -452,14 +418,11 @@ export default {
       }
     }
   }
-
   .icon-send-o {
     line-height: 90px;
     font-size: 35px;
-    // {icon-hover};
   }
 }
-
 .chat-box-group-sidebar {
   position: absolute;
   top: 0;
@@ -471,11 +434,9 @@ export default {
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.5);
   transform: translateX(100%);
   transition: 0.2s;
-
   &.show-group-sidebar {
     transform: translateX(0);
   }
-
   .sidebar-head {
     display: flex;
     justify-content: space-between;
@@ -484,20 +445,17 @@ export default {
     line-height: 50px;
     padding: 0 15px;
     border-bottom: 1px solid #dddddd;
-
     &__title {
       font-size: 16px;
       color: #666666;
       letter-spacing: 0.04px;
     }
-
     .icon-close {
       font-size: 18px;
       color: #999999;
       cursor: pointer;
     }
   }
-
   .sidebar-content {
     overflow: auto;
   }
