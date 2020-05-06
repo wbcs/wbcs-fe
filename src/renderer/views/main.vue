@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
+  <div class="app">
+    <Menu />
     <aside>
-      <Menu />
       <div class="user-list" ref="sidebar">
         <Search />
         <div id="menu-content">
@@ -10,8 +10,8 @@
           </keep-alive>
         </div>
       </div>
-      <Resize @resize="handleResize" />
     </aside>
+    <Resize @resize="handleResize" />
     <main>
       <keep-alive>
         <router-view id="content" name="contents" />
@@ -63,14 +63,19 @@ export default {
 </script>
 
 <style scoped lang="less">
-#app {
+.app {
   display: flex;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
 }
+aside,
+main {
+  background: #f3f3f3;
+}
 aside {
   display: flex;
+  background: #fff;
 }
 main {
   flex: 1;

@@ -6,7 +6,7 @@
     <div class="menu">
       <router-link
         tag="span"
-        to="/app/chats"
+        to="/app/chats?"
         exact-active-class="active"
         class="icon-commenting"
       />
@@ -54,8 +54,19 @@ export default {
 .menu-bar {
   position: relative;
   width: 65px;
-  background: linear-gradient(#55607d, #2b3244);
+  background: rgba(255, 255, 255, 0.8);
   -webkit-app-region: drag;
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    filter: blur(50px);
+    background: rgb(0, 0, 0);
+  }
 }
 .avatar {
   width: 40px;
@@ -71,7 +82,6 @@ export default {
     }
   }
 }
-
 .menu {
   display: flex;
   justify-content: center;
