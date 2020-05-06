@@ -13,7 +13,8 @@ const DEFAULT_CONFIG = {
   titleBarStyle: 'hidden',
   webPreferences: {
     nodeIntegration: true,
-    webSecurity: false
+    webSecurity: false,
+    experimentalFeatures: true
   },
   icon: path.join(__dirname, '../../public/icon.png'),
   transparent: true

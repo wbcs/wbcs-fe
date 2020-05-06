@@ -34,8 +34,8 @@ const createWindow = (configObj = {}) => {
     mainWindow.hide()
   })
   mainWindow.loadURL(WIN_URL)
-  setIconInMAC()
   winRef.mainWindow = mainWindow
+  setIconInMAC()
 }
 
 const winRef = {
