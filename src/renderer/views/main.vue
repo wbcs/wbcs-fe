@@ -10,8 +10,8 @@
           </keep-alive>
         </div>
       </div>
+      <Resize @resize="handleResize" />
     </aside>
-    <Resize @resize="handleResize" />
     <main>
       <keep-alive>
         <router-view id="content" name="contents" />
