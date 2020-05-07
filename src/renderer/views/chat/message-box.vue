@@ -23,7 +23,6 @@
 
 <script>
 import { SOCKET } from '@/request'
-import { capitalizeFirstLetter } from '@/utils'
 import Popover from '@/components/popover'
 
 import TextMessage from './message-types/text-message'
@@ -71,7 +70,10 @@ export default {
     },
     messageType() {
       const { data } = this.$props
-      return `${capitalizeFirstLetter(data.type)}Message`
+      const typeOfBigCamelCase = data.type.replace(/^./, l =>
+        l.toUpperCase()
+      )
+      return `${typeOfBigCamelCase}Message`
     }
   },
   methods: {

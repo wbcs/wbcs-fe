@@ -9,6 +9,3 @@ export const generateUUID = () => {
 
   return `${s4() + s4()}-${new Date().getTime()}`
 }
-
-export const capitalizeFirstLetter = str =>
-  str.charAt(0).toUpperCase() + str.slice(1)
