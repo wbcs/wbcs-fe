@@ -10,10 +10,10 @@
         />
       </header>
       <div class="chat-box-content" ref="chatBoxContent">
-        <message-item
-          v-for="item in messageArr"
-          :key="item.uuid"
-          :message="item"
+        <message-box
+          v-for="msg in messageArr"
+          :key="msg.uuid"
+          :data="msg"
         />
       </div>
       <div class="chat-box-foot" @click="handleFooterClick">
@@ -92,14 +92,14 @@ import { SOCKET } from '@/request'
 import { openChat, generateUUID } from '@/utils'
 import DefaultPage from '@/components/default-page'
 
-import MessageItem from './message-item'
+import MessageBox from './message-box'
 import GroupMemberItem from '@/components/group-member-item'
 
 export default {
   name: 'chat-box',
   components: {
     DefaultPage,
-    MessageItem,
+    MessageBox,
     GroupMemberItem
   },
   data() {
@@ -111,6 +111,40 @@ export default {
       message: '',
       messageArr: []
     }
+  },
+  created() {
+    // TODO 时间比较紧，暂时在客户端这样分发消息
+    // 这样做的局限是，无法全局监听消息，所以有新消息时，没法及时给出通知
+    SOCKET.on('new-message', message => {
+      const { nickname, avatar, content, from } = message
+      const noti = {
+        title: nickname || 'hehe',
+        body: content.text,
+        icon:
+          avatar ||
+          'http://localhost:3000/upload/default/default-user-avatar.png'
+      }
+      const notification = new Notification(noti.title, noti)
+      notification.onclick = () => {
+        openChat(from)
+      }
+      console.log(message)
+      const fromId = message.from
+      const toId = message.to
+      const isGroupMessage = message.to.startsWith('g')
+
+      if (isGroupMessage && toId === this.contactInfo.gid) {
+        this.messageArr.push(message)
+      } else if (!isGroupMessage && fromId === this.currentChat.uid) {
+        this.messageArr.push(message)
+      }
+    })
+
+    SOCKET.on('request-video-chat', ({ from }) => {
+      if (this.currentChat.uid === from) {
+        this.openVideoChatDialog('pickUp')
+      }
+    })
   },
   computed: {
     userInfo() {
@@ -155,40 +189,6 @@ export default {
         }
       })
     }
-  },
-  created() {
-    // TODO 时间比较紧，暂时在客户端这样分发消息
-    // 这样做的局限是，无法全局监听消息，所以有新消息时，没法及时给出通知
-    SOCKET.on('new-message', message => {
-      const { nickname, avatar, content, from } = message
-      const noti = {
-        title: nickname || 'hehe',
-        body: content.text,
-        icon:
-          avatar ||
-          'http://localhost:3000/upload/default/default-user-avatar.png'
-      }
-      const notification = new Notification(noti.title, noti)
-      notification.onclick = () => {
-        openChat(from)
-      }
-      console.log(message)
-      const fromId = message.from
-      const toId = message.to
-      const isGroupMessage = message.to.startsWith('g')
-
-      if (isGroupMessage && toId === this.contactInfo.gid) {
-        this.messageArr.push(message)
-      } else if (!isGroupMessage && fromId === this.currentChat.uid) {
-        this.messageArr.push(message)
-      }
-    })
-
-    SOCKET.on('request-video-chat', ({ from }) => {
-      if (this.currentChat.uid === from) {
-        this.openVideoChatDialog('pickUp')
-      }
-    })
   },
   methods: {
     handleFooterClick() {
