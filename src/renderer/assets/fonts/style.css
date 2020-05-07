@@ -9,6 +9,11 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'local-Flavors';
+  src: url('./custom-fonts/Flavors-Regular.ttf');
+}
+
 [class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'icomoon' !important;
