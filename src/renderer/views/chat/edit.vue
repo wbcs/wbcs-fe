@@ -1,8 +1,5 @@
 <template>
-  <section
-    class="chat-box-foot"
-    @click="handleFooterClick"
-  >
+  <section class="chat-box-foot" @click="handleFooterClick">
     <div>
       <div class="foot-tools">
         <span class="icon icon-happy2" @click="openFaceDialog" />
@@ -48,10 +45,7 @@ export default {
       message: ''
     }
   },
-  props: [
-    'isGroup',
-    'handleFooterClick',
-  ]
+  props: ['isGroup', 'handleFooterClick']
 }
 </script>
 

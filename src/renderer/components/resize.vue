@@ -25,7 +25,7 @@ export default {
 
 <style scoped lang="less">
 div {
-  width: 3px;
+  width: 5px;
   border-right: 1px solid #d9dbde;
   &:hover {
     cursor: col-resize;

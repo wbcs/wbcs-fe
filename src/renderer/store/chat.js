@@ -12,7 +12,7 @@ const store = {
   namespaced: true,
   state: {
     currentChat: '',
-    historyList: [],
+    historyList: []
   },
   mutations: {
     setCurrentChat(state, chat) {
