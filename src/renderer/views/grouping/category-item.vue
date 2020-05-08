@@ -92,13 +92,10 @@ export default {
     },
     handleGroupingItemDBClick(userOrGroupInfo) {
       const keyOfGidOrUid = userOrGroupInfo.uid ? 'uid' : 'gid'
-      const gidOrUid = userOrGroupInfo[keyOfGidOrUid]
-      this.$store.commit('chat/newChat', { [keyOfGidOrUid]: gidOrUid })
+      const id = userOrGroupInfo[keyOfGidOrUid]
+      this.$store.commit('chat/newChat', { id })
       this.$router.push({
-        path: '/app/chats',
-        query: {
-          [keyOfGidOrUid]: gidOrUid
-        }
+        path: `/app/chats/${id}`
       })
     }
   }

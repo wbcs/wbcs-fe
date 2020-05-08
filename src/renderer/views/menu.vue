@@ -6,7 +6,7 @@
     <div class="menu">
       <router-link
         tag="span"
-        to="/app/chats?"
+        :to="`/app/chats/${id}`"
         exact-active-class="active"
         class="icon-commenting"
       />
@@ -45,6 +45,10 @@ export default {
     userInfo() {
       const { main } = this.$store.state
       return main.userInfo
+    },
+    id() {
+      const { currentChat } = this.$store.state.chat
+      return currentChat
     }
   }
 }

@@ -21,9 +21,8 @@ const store = {
     loadRecentChat(state) {
       state.historyList = getStorage(NAME_SPACE, [])
     },
-    newChat(state, { uid, gid }) {
+    newChat(state, { id }) {
       const historyList = getStorage(NAME_SPACE, [])
-      const id = uid || gid
       if (historyList.includes(id)) return
       historyList.push(id)
       state.historyList.push(id)

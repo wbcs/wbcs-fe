@@ -118,7 +118,6 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 9;
   font-size: 0.7em;
   color: #6c7989;
 }

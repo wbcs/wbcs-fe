@@ -92,14 +92,10 @@ export default {
       )
     },
     readyToChat() {
-      let uid = this.friendInfo.uid
-
-      this.$store.commit('chat/newChat', { uid })
+      const id = this.friendInfo.uid
+      this.$store.commit('chat/newChat', { id })
       this.$router.push({
-        path: '/app/chats',
-        query: {
-          uid
-        }
+        path: `/app/chats/${id}`
       })
     },
     deleteFriend() {

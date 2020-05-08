@@ -1,15 +1,13 @@
 import { remote } from 'electron'
 
-const { dialog } = remote
-
 export class Message {
   static info({ message }) {
-    dialog.showMessageBox({
+    remote.dialog.showMessageBox({
       type: 'info',
       message
     })
   }
   static error({ title, message }) {
-    dialog.showErrorBox(title, message)
+    remote.dialog.showErrorBox(title, message)
   }
 }

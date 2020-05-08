@@ -110,14 +110,11 @@ export default {
       })
     },
     readyToChat() {
-      let gid = this.groupInfo.gid
+      const id = this.groupInfo.gid
 
-      this.$store.commit('chat/newChat', { gid })
+      this.$store.commit('chat/newChat', { id })
       this.$router.push({
-        path: '/app/chats',
-        query: {
-          gid
-        }
+        path: `/app/chats/${id}`
       })
     },
     leaveOrDissolveGroup() {

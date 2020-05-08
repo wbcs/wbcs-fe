@@ -166,7 +166,6 @@ export default {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    padding: 0 40px;
 
     & > div {
       width: 242px;
