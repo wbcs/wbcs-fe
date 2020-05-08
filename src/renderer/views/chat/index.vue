@@ -67,9 +67,13 @@ export default {
           'http://localhost:3000/upload/default/default-user-avatar.png'
       }
       const notification = new Notification(noti.title, noti)
-      notification.onclick = () => openChat(from)
-      console.log(message)
-      if (to === this.contactInfo.gid || from === this.currentChat.uid) {
+      const isToGroup = to[0] === 'g'
+
+      notification.onclick = () => openChat(isToGroup ? to : from)
+      if (
+        (isToGroup && to === this.contactInfo.gid) ||
+        (!isToGroup && from === this.currentChat.uid)
+      ) {
         this.messageList.push(message)
       }
     })
@@ -108,12 +112,12 @@ export default {
   methods: {
     getContactInfo() {
       return new Promise(resolve => {
-        let event = this.isGroup ? 'get-group-info' : 'get-friend-info'
-        let _idName = this.isGroup ? 'gid' : 'uid'
-        let _id = this.currentChat[_idName]
-        let queryObj = this.isGroup
-          ? _id
-          : { uid: this.$store.state.uid, friendUid: _id }
+        const event = this.isGroup ? 'get-group-info' : 'get-friend-info'
+        const idName = this.isGroup ? 'gid' : 'uid'
+        const id = this.currentChat[idName]
+        const queryObj = this.isGroup
+          ? id
+          : { uid: this.$store.state.uid, friendUid: id }
 
         SOCKET.emit(event, queryObj, data => {
           this.contactInfo = data
@@ -141,7 +145,6 @@ export default {
       alert('待开发')
     },
     openImageDialog() {
-      const { dialog } = remote
       const option = {
         properties: ['openFile', 'multiSelections'],
         filters: [
@@ -151,17 +154,11 @@ export default {
           }
         ]
       }
-      dialog.showOpenDialog(option, filePaths => {
-        if (filePaths && filePaths.length) {
-          filePaths.forEach(path => {
-            if (path) {
-              this.sendImage(path)
-            }
-          })
-        }
+      remote.dialog.showOpenDialog(option).then(res => {
+        if (!res.filePaths) return
+        res.filePaths.forEach(this.sendImage)
       })
     },
-
     sendImage(path) {
       const base64Data = fs.readFileSync(path, 'base64')
       SOCKET.emit('store-image', { base64Data }, data => {
@@ -222,7 +219,7 @@ export default {
       this.sendMessage(message)
     },
     sendMessage(msg) {
-      SOCKET.emit('message', msg, res => console.log(res))
+      SOCKET.emit('message', msg, console.log)
       this.messageList.push(msg)
     }
   }
@@ -241,7 +238,6 @@ export default {
 .chat-box {
   position: relative;
   height: 100%;
-  border: 1px solid red;
   & > div {
     display: flex;
     flex-direction: column;
