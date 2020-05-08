@@ -31,7 +31,8 @@ export default {
 .group-member-item {
   position: relative;
   display: inline-block;
-  width: 230px;
+  // width: 230px;
+  width: 100%;
   height: 34px;
   margin-bottom: 10px;
   background: #fff;

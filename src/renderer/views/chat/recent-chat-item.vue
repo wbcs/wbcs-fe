@@ -46,17 +46,16 @@ export default {
     return {}
   },
   computed: {
-    _id() {
-      return this.contactInfo.uid || this.contactInfo.gid
-    },
-    _idName() {
-      return this.contactInfo.uid ? 'uid' : 'gid'
+    id() {
+      const { uid, gid } = this.contactInfo
+      return uid || gid
     },
     isGroup() {
-      return this.contactInfo.gid ? true : false
+      return Boolean(this.contactInfo.gid)
     },
     isGroupDissolve() {
-      return this.contactInfo.status === 'dissolve'
+      const { status } = this.contactInfo
+      return status === 'dissolve'
     }
   },
   methods: {
@@ -65,14 +64,14 @@ export default {
         return
       }
       if (!this.isActive) {
-        openChat(this._id)
+        openChat(this.id)
       }
     },
     handleDeleteClick() {
       if (this.isActive) {
         this.$store.commit('chat/setCurrentChat', {})
       }
-      this.$store.commit('chat/removeChat', this._id)
+      this.$store.commit('chat/removeChat', this.id)
     }
   }
 }
