@@ -28,7 +28,7 @@ div {
   width: 5px;
   border-right: 1px solid #d9dbde;
   &:hover {
-    cursor: col-resize;
+    cursor: ew-resize;
   }
 }
 </style>
