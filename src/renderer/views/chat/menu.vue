@@ -33,6 +33,7 @@ export default {
   },
   activated() {
     this.getRecentChatHistory()
+    this.updateView()
   },
   computed: {
     historyList() {
@@ -46,17 +47,18 @@ export default {
     $route: {
       deep: true,
       handler() {
-        const { query } = this.$route
-        const groupOrUserId = query.gid ? 'gid' : 'uid'
-        const id = query[groupOrUserId]
-        this.setActiveId(id)
-        this.$store.commit('chat/setCurrentChat', {
-          [groupOrUserId]: id
-        })
+        this.updateView()
       }
     }
   },
   methods: {
+    updateView() {
+      const { id: paramsId } = this.$route.params
+      const { currentChat } = this.$store.state.chat
+      const id = paramsId || currentChat
+      this.setActiveId(id)
+      this.$store.commit('chat/setCurrentChat', id)
+    },
     setActiveId(id) {
       this.activatedId = id
     },

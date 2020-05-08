@@ -148,7 +148,7 @@ export default {
   created() {
     if (!remote.getGlobal('isAllowLogin')) return
     this.$router.push({
-      path: '/app/chats'
+      path: '/app/chats/'
     })
   }
 }

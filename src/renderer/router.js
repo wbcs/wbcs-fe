@@ -23,7 +23,7 @@ const routes = [
     component: Main,
     children: [
       {
-        path: 'chats',
+        path: 'chats/:id?',
         name: 'chats',
         components: {
           menus: MenuOfChat,
@@ -76,5 +76,10 @@ const router = new Router({
   mode: 'history',
   routes
 })
+
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 export default router

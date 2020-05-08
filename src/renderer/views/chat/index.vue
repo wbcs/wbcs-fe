@@ -1,6 +1,6 @@
 <template>
   <div class="chat-box" @click="hideGroupSidebar">
-    <div v-if="currentChat.uid || currentChat.gid">
+    <div v-if="currentChat">
       <Header
         :title="title"
         :isGroup="isGroup"
@@ -72,13 +72,13 @@ export default {
       notification.onclick = () => openChat(isToGroup ? to : from)
       if (
         (isToGroup && to === this.contactInfo.gid) ||
-        (!isToGroup && from === this.currentChat.uid)
+        (!isToGroup && from === this.currentChat)
       ) {
         this.messageList.push(message)
       }
     })
     SOCKET.on('request-video-chat', ({ from }) => {
-      if (this.currentChat.uid === from) {
+      if (this.currentChat === from) {
         this.openVideoChatDialog('pickUp')
       }
     })
@@ -91,7 +91,7 @@ export default {
       return this.$store.state.chat.currentChat
     },
     isGroup() {
-      return this.currentChat.gid ? true : false
+      return this.currentChat[0] === 'g' ? true : false
     },
     memberArr() {
       return this.contactInfo.members || []
@@ -114,7 +114,7 @@ export default {
       return new Promise(resolve => {
         const event = this.isGroup ? 'get-group-info' : 'get-friend-info'
         const idName = this.isGroup ? 'gid' : 'uid'
-        const id = this.currentChat[idName]
+        const id = this.currentChat
         const queryObj = this.isGroup
           ? id
           : { uid: this.$store.state.uid, friendUid: id }
@@ -165,7 +165,7 @@ export default {
         const message = {
           uuid: generateUUID(),
           from: this.$store.state.uid,
-          to: this.currentChat[this.isGroup ? 'gid' : 'uid'],
+          to: this.currentChat,
           type: 'image',
           content: {
             url: data.data.url
@@ -188,7 +188,7 @@ export default {
           let message = {
             uuid: generateUUID(),
             from: this.$store.state.uid,
-            to: this.currentChat.uid,
+            to: this.currentChat,
             type: 'video',
             content: {
               text: '视频通话已结束'
@@ -208,7 +208,7 @@ export default {
       const message = {
         uuid: generateUUID(),
         from: this.$store.state.uid,
-        to: this.currentChat[this.isGroup ? 'gid' : 'uid'],
+        to: this.currentChat,
         type: 'text',
         nickname,
         avatar,
