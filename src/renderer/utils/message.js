@@ -1,13 +1,17 @@
-import { remote } from 'electron'
+import { ipcRenderer } from 'electron'
 
 export class Message {
   static info({ message }) {
-    remote.dialog.showMessageBox({
+    ipcRenderer.send('dialog', {
       type: 'info',
       message
     })
   }
   static error({ title, message }) {
-    remote.dialog.showErrorBox(title, message)
+    ipcRenderer.send('dialog', {
+      type: 'error',
+      title,
+      message
+    })
   }
 }
