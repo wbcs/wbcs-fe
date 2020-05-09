@@ -5,9 +5,7 @@
 npm install
 npm run dev
 ```
-
 ![image](./public/chat.png)
-
 ![image](./public/dev-icon.png)
 
 # TODO
@@ -16,6 +14,7 @@ npm run dev
 + [x] `Router` 有时不跳转
 + [x] 组件引用报错
 + [x] 打包后图片加载失败
++ [ ] 视频连接bug
 
 ## feature
 + [x] sidebar resize
@@ -26,13 +25,13 @@ npm run dev
 + [ ] 消息加密解密
 + [ ] 更新：思路是 `app.asar`
 
-
 # 坑
 + BrowserWindow在loadURL的时候，url如果是hash模式会报错
 + 需要请求权限的操作，在vscode的zsh里没权限导致失败
 + sideEffects为false时，会将css、less忽略，shaking掉，解决：`sideEffects: ["*.css", "*.less"]`
 + `<img />` 来引用图片打包后总是有问题，目前采用css引入，绕开这一错误
-+ xcode
++ APP有时候需要安装之后并且开启权限才能获取stream
++ 签名需要xcode
 
 # fork from 
 https://github.com/percy507/hola
