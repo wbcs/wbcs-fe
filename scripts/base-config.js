@@ -7,6 +7,7 @@ const { VueLoaderPlugin } = require('vue-loader')
 const { resolve } = require('./utils')
 
 const __DEV__ = process.env.NODE_ENV === 'development'
+const SERVER_ADDRESS = 'http://localhost:3000/'
 
 const chainConfig = new WebapckChain()
 
@@ -94,7 +95,8 @@ chainConfig
   .plugin('webpack-define-plugin')
   .use(webpack.DefinePlugin, [
     {
-      __DEV__
+      __DEV__,
+      __PUBLIC__: `'${SERVER_ADDRESS}'`
     }
   ])
   .end()
