@@ -32,7 +32,7 @@ import * as fs from 'fs'
 import { remote, ipcRenderer } from 'electron'
 
 import { SOCKET } from '@/request'
-import { openChat, generateUUID } from '@/utils'
+import { openChat, generateUUID, Message } from '@/utils'
 import DefaultPage from '@/components/default-page'
 
 import Header from './header'
@@ -58,16 +58,16 @@ export default {
   },
   mounted() {
     SOCKET.on('new-message', message => {
-      const { nickname, avatar, content, from, to } = message
+      const { type, nickname, avatar, content, from, to } = message
       const noti = {
-        title: nickname || 'hehe',
-        body: content.text,
+        title: nickname || from,
+        body: content.text || `[${type}]`,
         icon:
-          avatar ||
-          'http://localhost:3000/upload/default/default-user-avatar.png'
+          avatar || __PUBLIC__ + `upload/default/default-user-avatar.png`
       }
       const notification = new Notification(noti.title, noti)
       const isToGroup = to[0] === 'g'
+      console.log(message)
 
       notification.onclick = () => openChat(isToGroup ? to : from)
       if (
@@ -77,10 +77,16 @@ export default {
         this.messageList.push(message)
       }
     })
-    SOCKET.on('request-video-chat', ({ from }) => {
-      if (this.currentChat === from) {
-        this.openVideoChatDialog('pickUp')
+    SOCKET.on('REQUEST_VIDEO_CHAT', ({ to, from }) => {
+      const accept = confirm(`${from}要和你视频，是否接收？`)
+      if (!accept) {
+        SOCKET.emit('REQUEST_VIDEO_REJECT', {
+          to: from,
+          from: to
+        })
+        return
       }
+      this.openVideoChatDialog('pickUp')
     })
   },
   computed: {
@@ -183,25 +189,11 @@ export default {
       alert('待开发')
     },
     openVideoChatDialog(type) {
-      const handleClose = () => {
-        if (type === 'call') {
-          let message = {
-            uuid: generateUUID(),
-            from: this.$store.state.uid,
-            to: this.currentChat,
-            type: 'video',
-            content: {
-              text: '视频通话已结束'
-            }
-          }
-          this.sendMessage(message)
-        }
-      }
       ipcRenderer.send('open-window', {
         uid: this.contactInfo.uid,
         type
       })
-      ipcRenderer.on('sub-closed', handleClose)
+      ipcRenderer.on('sub-closed', () => console.log('%c video over', 'color: red'))
     },
     sendTextMessage(data) {
       const { nickname, avatar } = this.userInfo
