@@ -8,7 +8,7 @@ import { ipcRenderer } from 'electron'
 export default {
   name: 'app',
   mounted() {
-    ipcRenderer.on('goto-video', ({ uid, type }) => {
+    ipcRenderer.on('goto-video', (_, { uid, type }) => {
       this.$router.push({
         path: '/video-chat',
         query: {
