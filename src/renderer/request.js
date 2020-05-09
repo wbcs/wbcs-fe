@@ -14,5 +14,5 @@ export const fetchAuthcode = params =>
 
 export const fetchChatHistoryList = params =>
   new Promise(resolve =>
-    SOCKET.emit('get-chat-history-list', params, resolve)
+    SOCKET.emit('CHAT_HISTORY_LIST', params, resolve)
   )

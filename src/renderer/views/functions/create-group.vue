@@ -41,8 +41,7 @@ export default {
   data() {
     return {
       nickname: '',
-      avatar:
-        'http://localhost:3000/upload/default/default-group-avatar.png'
+      avatar: __PUBLIC__ + 'upload/default/default-group-avatar.png'
     }
   },
   computed: {
