@@ -56,8 +56,9 @@ export default {
         alert('群组名称不得为空')
         return
       }
+      console.log('fuck')
       SOCKET.emit(
-        'create-group',
+        'CREATE_GROUP',
         {
           uid: this.$store.state.uid,
           groupInfo: {

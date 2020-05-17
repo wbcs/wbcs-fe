@@ -26,22 +26,24 @@ export default {
       src: ''
     }
   },
-  created() {
+  mounted() {
     this.loadImage()
   },
   methods: {
     loadImage() {
       const img = new Image()
       const src = this.message.content.url
-
       img.onload = () => {
-        // TODO 本地测试，为了展示加载中效果
-        setTimeout(() => {
+        if (__DEV__) {
+          setTimeout(() => {
+            this.isImageLoad = true
+            this.src = src
+          }, 1000)
+        } else {
           this.isImageLoad = true
           this.src = src
-        }, 1200)
+        }
       }
-
       img.src = src
     }
   }

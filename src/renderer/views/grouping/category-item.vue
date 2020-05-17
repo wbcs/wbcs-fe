@@ -4,11 +4,11 @@
       <span
         v-show="!isShowContacts"
         class="icon icon-keyboard_arrow_right"
-      ></span>
+      />
       <span
         v-show="isShowContacts"
         class="icon icon-keyboard_arrow_down"
-      ></span>
+      />
 
       <span v-if="isGroupCategory">{{
         $store.state.MULTI_LANG_TEXT.contacts.category.my_groups

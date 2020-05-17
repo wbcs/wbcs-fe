@@ -9,7 +9,7 @@
         @keydown.enter="searchFunc"
       />
       <div class="search-icon" @click="searchFunc">
-        <span class="icon icon-search"></span>
+        <span class="icon icon-search" />
       </div>
     </div>
 
@@ -17,23 +17,23 @@
       <div class="friend-result">
         <div class="title">{{ friendTitle }}</div>
         <div class="content">
-          <search-result-item
+          <SearchResultItem
             v-for="item in friendResultArr"
             :key="item.uid"
             :isGroup="false"
             :data="item"
-          ></search-result-item>
+          />
         </div>
       </div>
       <div class="group-result">
         <div class="title">{{ groupTitle }}</div>
         <div class="content">
-          <search-result-item
+          <SearchResultItem
             v-for="item in groupResultArr"
             :key="item.gid"
             :isGroup="true"
             :data="item"
-          ></search-result-item>
+          />
         </div>
       </div>
     </div>
@@ -42,12 +42,12 @@
 
 <script>
 import { SOCKET } from '@/request'
-import searchResultItem from './search-result-item'
+import SearchResultItem from './search-result-item'
 
 export default {
   name: 'add-new-contact',
   components: {
-    searchResultItem
+    SearchResultItem
   },
   data() {
     return {
@@ -76,7 +76,7 @@ export default {
         return
       }
       SOCKET.emit(
-        'search-contact',
+        'SEARCH_CONTACT',
         {
           uid: this.$store.state.uid,
           keyword: this.keyword
@@ -155,8 +155,8 @@ export default {
       cursor: pointer;
 
       .icon {
-        margin-left: 8px;
-        font-size: 18px;
+        vertical-align: middle;
+        margin: 0.5em;
         color: #999999;
       }
     }
