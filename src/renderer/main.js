@@ -15,6 +15,3 @@ new Vue({
   render: h => h(App)
 }).$mount('#app')
 
-if (__DEV__) {
-  document.documentElement.style = 'border: 1px solid red'
-}
