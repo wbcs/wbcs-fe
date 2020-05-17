@@ -12,6 +12,9 @@ const loadGlobalVariable = () => {
   global.store = store
   global.socket = socket
   global.isAllowLogin = false
+  socket.on('EMIT_USER_CONNECT', () => {
+    socket.emit('user-connect', store.get('uid'))
+  })
 }
 
 module.exports = {
