@@ -96,6 +96,7 @@ chainConfig
   .use(webpack.DefinePlugin, [
     {
       __DEV__,
+      __DEFAULT_AVATAR__: `'http://localhost:3000/upload/default/default-user-avatar.png'`,
       __PUBLIC__: `'${SERVER_ADDRESS}'`
     }
   ])
