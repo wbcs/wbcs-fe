@@ -4,7 +4,6 @@
       <div class="avatar">
         <img :src="friendInfo.avatar" alt="avatar" />
       </div>
-
       <div class="name">
         {{ friendInfo.nickname || friendInfo.uid }}
       </div>
@@ -21,14 +20,14 @@
           <span :class="{ 'default-content': !friendInfo[item] }">{{
             friendInfo[item] ? friendInfo[item] : defaultInfoContent
           }}</span>
-          <span v-if="item === 'alias'" class="icon icon-edit"></span>
+          <span v-if="item === 'alias'" class="icon icon-edit"/>
         </div>
       </div>
     </div>
 
     <div class="info-foot">
-      <span class="icon icon-commenting" @click="readyToChat"></span>
-      <span class="icon icon-delete" @click="deleteFriend"></span>
+      <span class="icon icon-commenting" @click="readyToChat"/>
+      <span class="icon icon-delete" @click="deleteFriend"/>
     </div>
   </div>
 </template>
@@ -100,7 +99,7 @@ export default {
     },
     deleteFriend() {
       SOCKET.emit(
-        'delete-friend',
+        'DELETE_FRIEND',
         {
           uid: this.$store.state.uid,
           friendUid: this.id
@@ -130,12 +129,18 @@ export default {
     height: 173px;
     background: #414952;
     overflow: hidden;
-    background-image: url('../../assets/info-bg.png');
-    background-size: cover;
+    background-image: url('../../assets/smell.png');
+    background-size: 50%;
+    background-position: 30% 50%;
+    -webkit-app-region: drag;
 
     & > div {
       position: absolute;
       z-index: 3;
+    }
+    .avatar,
+    .name {
+      -webkit-app-region: none;
     }
 
     .avatar {

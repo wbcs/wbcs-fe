@@ -1,5 +1,6 @@
 const path = require('path')
-const { ipcMain, BrowserWindow } = require('electron')
+const { ipcMain, dialog, BrowserWindow } = require('electron')
+const { DEFAULT_CONFIG } = require('./utils')
 
 const __DEV__ = process.env.NODE_ENV === 'development'
 
@@ -7,19 +8,15 @@ const openVideoWindow = (winRef, data) => {
   const { uid, type } = data
   const WIN_URL = __DEV__
     ? `http://localhost:9080/video-chat?to=${uid}&type=${type}`
-    : `file://${path.resolve(__dirname, '../../dist/index.html')}`
+    : `file://${path.resolve(__dirname, '../../dist/web/index.html')}`
 
   let subWindow = new BrowserWindow({
+    ...DEFAULT_CONFIG,
     width: 600,
     height: 360,
     minWidth: 600,
     minHeight: 360,
     useContentSize: true,
-    titleBarStyle: 'hidden',
-    webPreferences: {
-      nodeIntegration: true,
-      webSecurity: false
-    }
   })
   subWindow.on('closed', () => {
     subWindow = null
@@ -49,6 +46,13 @@ const setIPCEventHandlers = (winRef, createWindow, openLoginWindow) => {
   })
   ipcMain.on('open-window', (_, data) => {
     openVideoWindow(winRef, data)
+  })
+  ipcMain.on('dialog', (_, data) => {
+    if (data.type === 'info') {
+      dialog.showMessageBox(data)
+    } else if (data.type === 'error') {
+      dialog.showErrorBox(data.title, data.message)
+    }
   })
 }
 

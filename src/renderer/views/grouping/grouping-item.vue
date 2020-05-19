@@ -6,7 +6,7 @@
     @dblclick="$emit('dblclick', data)"
   >
     <div class="avatar">
-      <img :src="data.avatar" alt="avatar" />
+      <img :src="data.avatar || __DEFAULT_AVATAR__" alt="avatar" />
     </div>
 
     <div v-if="isGroup" class="detail">
@@ -43,6 +43,7 @@ export default {
     dblclick: Function
   },
   data() {
+    this.__DEFAULT_AVATAR__ = `http://localhost:3000/upload/default/default-group-avatar.png`
     return {}
   },
   computed: {

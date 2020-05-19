@@ -1,11 +1,10 @@
 <template>
   <div id="menu-contacts">
     <category-item
-      v-for="item in categoryArr"
+      v-for="item in categoryList"
       :key="item.cid"
       :category="item"
-    >
-    </category-item>
+    />
   </div>
 </template>
 
@@ -20,7 +19,7 @@ export default {
   },
   data() {
     return {
-      categoryArr: []
+      categoryList: []
     }
   },
   created() {
@@ -47,8 +46,8 @@ export default {
       this.getCategoryList()
     },
     getCategoryList() {
-      SOCKET.emit('get-category-list', this.$store.state.uid, data => {
-        this.categoryArr = data
+      SOCKET.emit('GET_CATEGORY_LIST', this.$store.state.uid, data => {
+        this.categoryList = data
       })
     }
   }

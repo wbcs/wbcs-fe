@@ -17,7 +17,7 @@ const DEFAULT_CONFIG = {
     experimentalFeatures: true
   },
   icon: path.join(__dirname, '../../public/icon.png'),
-  transparent: true
+  // transparent: true
 }
 
 module.exports = {

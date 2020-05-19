@@ -36,7 +36,6 @@ export default {
     Search
   },
   created() {
-    SOCKET.emit('user-connect', this.$store.state.uid)
     this.getUserInfo()
     this.loadRecentChatList()
   },

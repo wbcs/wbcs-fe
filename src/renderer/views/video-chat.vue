@@ -4,19 +4,17 @@
       class="local-video-container"
       :class="{ 'remote-video-loaded': isRemoteVideoLoaded }"
     >
-      <video class="local-video" ref="local-video" autoplay></video>
+      <video class="local-video" ref="local-video" autoplay />
     </div>
-
     <div
       class="remote-video-container"
       :class="{ 'remote-video-loaded': isRemoteVideoLoaded }"
     >
-      <video class="remote-video" ref="remote-video" autoplay></video>
+      <video class="remote-video" ref="remote-video" autoplay />
     </div>
-
     <div class="video-tools">
-      <div class="hang-up" @click.stop="hangUpFunc">
-        <span class="icon icon-phone-hang-up"></span>
+      <div class="hang-up" @click.stop="closeVideo">
+        <span class="icon icon-phone-hang-up" />
       </div>
     </div>
   </div>
@@ -24,10 +22,9 @@
 
 <script>
 import { remote } from 'electron'
-// adapter.js is a shim of WebRTC to insulate apps from spec changes and prefix differences
-// https://github.com/webrtc/adapter
-import 'webrtc-adapter'
 import { SOCKET } from '@/request'
+import { Message } from '@/utils'
+import 'webrtc-adapter'
 
 export default {
   name: 'video-chat',
@@ -39,12 +36,37 @@ export default {
       pc: null
     }
   },
+  mounted() {
+    this.loadLocalVideo().then(() => {
+      this.initConnect()
+      if (this.type === 'call') {
+        SOCKET.emit('REQUEST_VIDEO_CHAT', {
+          from: this.$store.state.uid,
+          to: this.toUid
+        })
+        SOCKET.on('VIDEO_CHAT_REDAY', () => this.createOffer())
+        SOCKET.on('REQUEST_VIDEO_REJECT', () => {
+          Message.info({ message: '视频被拒绝' })
+          this.closeVideo()
+        })
+
+        return
+      }
+      if (this.type === 'pickUp') {
+        this.createAnswer()
+        SOCKET.emit('VIDEO_CHAT_REDAY', {
+          from: this.$store.state.uid,
+          to: this.toUid
+        })
+        return
+      }
+    })
+  },
   computed: {
     toUid() {
       return this.$route.query.to
     },
     type() {
-      // call or pickUp   打电话或接电话
       return this.$route.query.type
     }
   },
@@ -56,57 +78,28 @@ export default {
       this.$refs['remote-video'].srcObject = this.remoteStream
     }
   },
-  mounted() {
-    this.loadLocalVideo().then(() => {
-      this.initConnect()
-
-      if (this.type === 'call') {
-        SOCKET.emit('request-video-chat', {
-          from: this.$store.state.uid,
-          to: this.toUid
-        })
-
-        SOCKET.on('video-chat-ready', () => {
-          this.createOffer()
-        })
-      } else if (this.type === 'pickUp') {
-        this.createAnswer()
-
-        SOCKET.emit('video-chat-ready', {
-          from: this.$store.state.uid,
-          to: this.toUid
-        })
-      } else {
-        alert('Unknown error')
-      }
-    })
-  },
   methods: {
     loadLocalVideo() {
-      return new Promise((resolve, reject) => {
-        let constraints = {
-          audio: true,
-          video: {
-            width: 1200,
-            height: 720
-          }
+      const constraints = {
+        audio: true,
+        video: {
+          width: 1200,
+          height: 720
         }
-
-        navigator.mediaDevices
-          .getUserMedia(constraints)
-          .then(mediaStream => {
-            this.localStream = mediaStream
-            resolve()
-          })
-          .catch(err => {
-            console.log(err)
-            reject(new Error(err))
-          })
-      })
+      }
+      return navigator.mediaDevices
+        .getUserMedia(constraints)
+        .then(mediaStream => {
+          this.localStream = mediaStream
+          console.log('%c 本地视频加载成功', 'color: #41C02D')
+        })
+        .catch(e => {
+          console.log('%c 本地视频加载失败', 'color: red', e)
+        })
     },
     initConnect() {
-      let rtcConfig = {
-        // use free stun server
+      // use free stun server
+      const RTCConfig = {
         iceServers: [
           { urls: 'stun:stun.voxgratia.org' },
           { urls: 'stun:stun.voipstunt.com' },
@@ -114,58 +107,42 @@ export default {
           { urls: 'stun:stun.ekiga.net' }
         ]
       }
-      let pc = null
-
-      pc = new RTCPeerConnection(rtcConfig)
-
+      const pc = new RTCPeerConnection(RTCConfig)
       this.pc = pc
-
-      SOCKET.on('rtc-candidate', ({ candidateSdp }) => {
-        let candidate = new RTCIceCandidate({
-          candidate: candidateSdp
+      SOCKET.on('RTC_CANDIDATE', ({ candidateSdp }) => {
+        const candidate = new RTCIceCandidate({
+          candidate: candidateSdp,
+          sdpMid: '',
+          sdpMLineIndex: null
         })
-
         pc.addIceCandidate(candidate)
           .then(() => {
-            console.log('pc addIceCandidate success')
+            console.log('%c 候选人添加成功', 'color:#41C02D')
           })
-          .catch(() => {
-            console.error('pc addIceCandidate failed')
+          .catch(e => {
+            console.error('%c 候选人添加失败', 'color: red', e)
           })
       })
 
-      pc.onicecandidate = event => {
-        console.log('candidate: ', event)
-
-        if (event.candidate) {
-          let candidateSdp = event.candidate.candidate
-
-          SOCKET.emit('rtc-candidate', {
-            from: this.$store.state.uid,
-            to: this.toUid,
-            candidateSdp
-          })
-        }
+      pc.onicecandidate = e => {
+        if (!e.candidate) return
+        const { candidate: candidateSdp } = e.candidate
+        SOCKET.emit('RTC_CANDIDATE', {
+          from: this.$store.state.uid,
+          to: this.toUid,
+          candidateSdp
+        })
       }
-
       pc.oniceconnectionstatechange = event => {
         console.log(`ICE state: ${pc.iceConnectionState}`)
         console.log('ICE state change event: ', event)
       }
-
-      pc.ontrack = event => {
-        console.log('%c pc.ontrack', 'color:#41C02D')
-        console.log(event)
-
-        if (this.remoteStream !== event.streams[0]) {
-          this.remoteStream = event.streams[0]
-          this.isRemoteVideoLoaded = true
-          console.log('%c received remote stream', 'color:#41C02D')
-        }
+      pc.ontrack = e => {
+        if (this.remoteStream === e.streams[0]) return
+        this.remoteStream = e.streams[0]
+        this.isRemoteVideoLoaded = true
+        console.log('%c 远程视频流接收', 'color:#41C02D')
       }
-
-      console.log('add local tracks to pc')
-
       this.localStream.getTracks().forEach(track => {
         // note: chrome  not support addTrack method now, so we use a shim
         // https://github.com/webrtc/adapter
@@ -179,9 +156,7 @@ export default {
         offerToReceiveVideo: 1
       }
 
-      if (!pc) {
-        return
-      }
+      if (!pc) return
 
       pc.createOffer(offerOptions)
         .then(offer => {
@@ -189,13 +164,11 @@ export default {
           console.log(offer)
           console.log('\n')
           console.log('pc start setLocalDescription')
-
           pc.setLocalDescription(offer)
             .then(() => {
               console.log('pc setLocalDescription complete')
-
               // send offer to remote client
-              SOCKET.emit('rtc-offer', {
+              SOCKET.emit('RTC_OFFER', {
                 from: this.$store.state.uid,
                 to: this.toUid,
                 offerSdp: offer.sdp
@@ -211,7 +184,7 @@ export default {
           console.error(`pc createOffer fail：${err.toString()}`)
         })
 
-      SOCKET.on('rtc-answer', ({ answerSdp }) => {
+      SOCKET.on('RTC_ANSWER', ({ answerSdp }) => {
         let answer = new RTCSessionDescription({
           type: 'answer',
           sdp: answerSdp
@@ -234,7 +207,7 @@ export default {
     createAnswer() {
       let pc = this.pc
 
-      SOCKET.on('rtc-offer', ({ offerSdp }) => {
+      SOCKET.on('RTC_OFFER', ({ offerSdp }) => {
         let offer = new RTCSessionDescription({
           type: 'offer',
           sdp: offerSdp
@@ -259,7 +232,6 @@ export default {
           .then(answer => {
             console.log('\ncreateAnswer -> answer:')
             console.log(answer)
-            console.log('\n')
             console.log('pc start setLocalDescription')
 
             pc.setLocalDescription(answer)
@@ -267,7 +239,7 @@ export default {
                 console.log('pc setLocalDescription complete')
 
                 // send answer to remote client
-                SOCKET.emit('rtc-answer', {
+                SOCKET.emit('RTC_ANSWER', {
                   from: this.$store.state.uid,
                   to: this.toUid,
                   answerSdp: answer.sdp
@@ -284,7 +256,7 @@ export default {
           })
       })
     },
-    hangUpFunc() {
+    closeVideo() {
       let win = remote.getCurrentWindow()
 
       this.pc.close()

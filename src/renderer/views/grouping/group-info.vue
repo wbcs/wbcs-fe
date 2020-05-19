@@ -2,7 +2,7 @@
   <div class="group-info">
     <div class="info-head">
       <div class="avatar">
-        <img :src="groupInfo.avatar" alt="avatar" />
+        <img :src="groupInfo.avatar || __DEFAULT_AVATAR__" alt="avatar" />
       </div>
 
       <div class="name">
@@ -36,7 +36,7 @@
               v-for="member in groupInfo.members"
               :key="member.uid"
               :data="member"
-            ></group-member-item>
+            />
           </div>
         </div>
       </div>
@@ -72,9 +72,10 @@ export default {
     }
   },
   data() {
+    this.__DEFAULT_AVATAR__ = __DEFAULT_AVATAR__
     return {
       titleArr: ['nickname', 'gid', 'createdAt', 'groupInfo', 'members'],
-      groupInfo: {}
+      groupInfo: {},
     }
   },
   computed: {
@@ -148,7 +149,7 @@ export default {
     height: 173px;
     background: #414952;
     overflow: hidden;
-    background-image: url('../../assets/info-bg.png');
+    background-image: url('../../assets/smell.png');
     background-size: cover;
 
     & > div {

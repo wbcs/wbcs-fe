@@ -36,7 +36,7 @@ export default {
         return
       }
 
-      const event = this.isGroup ? 'join-group' : 'add-friend'
+      const event = this.isGroup ? 'join-group' : 'ADD_FRIEND'
       const prop = this.isGroup ? 'gid' : 'friendUid'
 
       let obj = {
