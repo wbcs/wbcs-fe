@@ -25,6 +25,7 @@ export default {
   border-radius: 6px;
   font-size: 12px;
   word-break: break-all;
+  cursor: text;
   &::before,
   &::after {
     content: '';

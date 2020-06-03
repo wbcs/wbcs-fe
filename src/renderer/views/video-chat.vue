@@ -2,7 +2,7 @@
   <div class="video-chat">
     <div
       class="local-video-container"
-      :class="{ 'remote-video-loaded': isRemoteVideoLoaded }"
+      :class="{ 'remote-video-loaded': isLocalVideoLoaded }"
     >
       <video class="local-video" ref="local-video" autoplay />
     </div>
@@ -31,6 +31,7 @@ export default {
   data() {
     return {
       isRemoteVideoLoaded: false,
+      isLocalVideoLoaded: false,
       localStream: null,
       remoteStream: null,
       pc: null
@@ -91,6 +92,7 @@ export default {
         .getUserMedia(constraints)
         .then(mediaStream => {
           this.localStream = mediaStream
+          this.isLocalVideoLoaded = true
           console.log('%c 本地视频加载成功', 'color: #41C02D')
         })
         .catch(e => {
@@ -155,7 +157,6 @@ export default {
         offerToReceiveAudio: 1,
         offerToReceiveVideo: 1
       }
-
       if (!pc) return
 
       pc.createOffer(offerOptions)
@@ -275,7 +276,7 @@ body {
 .video-chat {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
   -webkit-app-region: drag;
 

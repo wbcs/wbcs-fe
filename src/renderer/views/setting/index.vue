@@ -28,12 +28,8 @@ export default {
   },
   watch: {
     currentFunction() {
-      if (
-        !['ProfileSetting', 'SoftwareSetting', 'SystemMessage'].includes(
-          this.currentFunction
-        )
-      )
-        return
+      const whiteList = ['ProfileSetting', 'SoftwareSetting', 'SystemMessage']
+      if (!whiteList.includes(this.currentFunction)) return
       this.currentComponent = this.currentFunction
     }
   }

@@ -29,5 +29,6 @@ article {
   flex: 1;
   padding: 0.5em 1em;
   overflow-y: auto;
+  user-select: text;
 }
 </style>

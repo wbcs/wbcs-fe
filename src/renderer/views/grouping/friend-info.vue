@@ -17,10 +17,17 @@
       <div class="detail-item" v-for="item in titleArr" :key="item">
         <div class="item-title">{{ infoTitles[item] }}</div>
         <div class="item-content">
-          <span :class="{ 'default-content': !friendInfo[item] }">{{
+          <input
+            type="text"
+            v-if="item === 'alias'"
+            v-model="friendInfo.alias"
+            :disabled="locks.alias"
+            @blur="handleAliasBlur"
+          />
+          <span v-else :class="{ 'default-content': !friendInfo[item] }">{{
             friendInfo[item] ? friendInfo[item] : defaultInfoContent
           }}</span>
-          <span v-if="item === 'alias'" class="icon icon-edit"/>
+          <span v-if="item === 'alias'" class="icon icon-edit" @click="handleEditClick" />
         </div>
       </div>
     </div>
@@ -54,7 +61,10 @@ export default {
         'address',
         'selfIntro'
       ],
-      friendInfo: {}
+      friendInfo: {},
+      locks: {
+        alias: true,
+      }
     }
   },
   computed: {
@@ -78,6 +88,21 @@ export default {
     this.getFriendInfo()
   },
   methods: {
+    handleEditClick() {
+      this.locks.alias = false
+    },
+    handleAliasBlur() {
+      if (this.copyFriendInfo.alias === this.friendInfo.alias) {
+        return
+      }
+      this.locks.alias = true
+      this.copyFriendInfo.alias = this.friendInfo.alias
+      SOCKET.emit('UPDATE_ALIAS', {
+          uid: this.$store.state.uid,
+          friendUid: this.id,
+          alias: this.friendInfo.alias
+      })
+    },
     getFriendInfo() {
       SOCKET.emit(
         'get-friend-info',
@@ -87,6 +112,7 @@ export default {
         },
         data => {
           this.friendInfo = data
+          this.copyFriendInfo = { ...data }
         }
       )
     },
@@ -110,7 +136,6 @@ export default {
               isDefaultPage: true
             })
           }
-
           alert(data.message)
         }
       )
@@ -268,5 +293,8 @@ export default {
       right: 20px;
     }
   }
+}
+input:disabled {
+  cursor: not-allowed;
 }
 </style>

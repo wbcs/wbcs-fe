@@ -1,7 +1,6 @@
 <template>
   <div class="software-setting">
     <div class="head">{{ contentTitle }}</div>
-
     <div class="content">
       <div>
         <select v-model="currentLanguage" @change="changeLanguage">
@@ -10,9 +9,8 @@
           <option value="en">English</option>
         </select>
       </div>
-
       <div>
-        <button class="wbcs-logout" @click="logoutFunc">退出登录</button>
+        <button class="wbcs-logout" @click="handleLogout">退出登录</button>
       </div>
     </div>
   </div>
@@ -46,7 +44,7 @@ export default {
       this.$store.state.REMOTE_STORE.set('lang', this.currentLanguage)
       location.reload()
     },
-    logoutFunc() {
+    handleLogout() {
       SOCKET.emit('logout', this.userInfo.uid, data => {
         if (data.isLogoutSuccess) {
           SOCKET.emit('user-disconnect', this.userInfo.uid)

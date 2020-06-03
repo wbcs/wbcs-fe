@@ -72,7 +72,9 @@ export default {
         chatIdList: this.historyList
       }
       fetchChatHistoryList(params).then(
-        ({ data = [] }) => (this.recentChatHistory = data)
+        ({ data = [] }) => {
+          this.recentChatHistory = data
+        }
       )
     }
   }
