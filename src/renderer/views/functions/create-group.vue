@@ -56,6 +56,7 @@ export default {
         alert('群组名称不得为空')
         return
       }
+      console.log('fuck')
       SOCKET.emit(
         'CREATE_GROUP',
         {

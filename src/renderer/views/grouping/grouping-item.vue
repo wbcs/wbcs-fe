@@ -6,7 +6,7 @@
     @dblclick="$emit('dblclick', data)"
   >
     <div class="avatar">
-      <img :src="data.avatar || avatar" alt="avatar" />
+      <img :src="data.avatar || __DEFAULT_AVATAR__" alt="avatar" />
     </div>
 
     <div v-if="isGroup" class="detail">
